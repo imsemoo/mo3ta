@@ -98,11 +98,6 @@
       { t: '7 شهداء و183 جريحاً في 6009 انتهاكاً إسرائيلياً في الضفة والقدس خلال أغسطس 2025', d: '2 سبتمبر 2025', tag: 'تقرير دوري', img: 'assets/img/reports/report-3.webp' },
       { t: '7 جرحى إسرائيليين | 263 عملاً مقاوماً في الضفة الغربية خلال أغسطس 2025', d: '1 سبتمبر 2025', tag: 'تقرير دوري', img: 'assets/img/reports/report-4.webp' }
     ],
-    REPORTS: [
-      { t: 'تقرير خاص — الحواجز والبوابات الحديدية: تقطيعٌ لأوصال الضفة الغربية', d: '18 سبتمبر 2025', img: 'assets/img/reports/special-1.webp' },
-      { t: 'تقرير خاص: الشعارات التي ظهرت على منصّة تسليم الأسرى في صفقة التبادل الرابعة', d: '1 فبراير 2025', img: 'assets/img/reports/special-2.webp' },
-      { t: 'تقرير خاص: دلالات الرموز ونوعية السلاح الذي غنمته المقاومة في جباليا', d: '30 يناير 2025', img: 'assets/img/reports/special-3.webp' }
-    ],
     TIMELINE: [
       { d: '2 أكتوبر 2025', t: '16 شهيداً و248 جريحاً في 7514 انتهاكاً إسرائيلياً في الضفة والقدس خلال سبتمبر 2025', tag: 'تقرير دوري' },
       { d: '1 أكتوبر 2025', t: '10 قتلى و51 جريحاً إسرائيلياً — عمليات نوعية تهزّ الاحتلال خلال سبتمبر 2025', tag: 'تقرير دوري' },
@@ -112,15 +107,41 @@
     DOWS: ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'],
     // أحداث التقويم — مفتاح "السنة-الشهر-اليوم"؛ كل يوم قائمة بأحداثه (نقطة الربط بالـ CMS)
     CAL_EVENTS: {
-      '2025-10-2':  [{ t: '16 شهيداً و248 جريحاً في 7,514 انتهاكاً إسرائيلياً في الضفة والقدس خلال سبتمبر 2025', tag: 'تقرير دوري', img: 'assets/img/reports/report-1.webp' }],
-      '2025-10-1':  [{ t: '10 قتلى و51 جريحاً إسرائيلياً — عمليات نوعية تهزّ الاحتلال في الضفة والقدس خلال سبتمبر 2025', tag: 'تقرير دوري', img: 'assets/img/reports/report-2.webp' }],
-      '2025-9-18':  [{ t: 'تقرير خاص — الحواجز والبوابات الحديدية: تقطيعٌ لأوصال الضفة الغربية', tag: 'تقرير خاص', img: 'assets/img/reports/special-1.webp' }],
-      '2025-9-2':   [{ t: '7 شهداء و183 جريحاً في 6,009 انتهاكاً إسرائيلياً في الضفة والقدس خلال أغسطس 2025', tag: 'تقرير دوري', img: 'assets/img/reports/report-3.webp' }],
-      '2025-9-1':   [{ t: '7 جرحى إسرائيليين و263 عملاً مقاوماً في الضفة الغربية خلال أغسطس 2025', tag: 'تقرير دوري', img: 'assets/img/reports/report-4.webp' }],
-      '2025-2-1':   [{ t: 'تقرير خاص: الشعارات التي ظهرت على منصّة تسليم الأسرى في صفقة التبادل الرابعة', tag: 'تقرير خاص', img: 'assets/img/reports/special-2.webp' }],
-      '2025-1-30':  [{ t: 'تقرير خاص: دلالات الرموز ونوعية السلاح الذي غنمته المقاومة في جباليا', tag: 'تقرير خاص', img: 'assets/img/reports/special-3.webp' }],
-      '2023-10-7':  [{ t: 'بدء «طوفان الأقصى» — منعطفٌ تاريخي في توثيق الأحداث الميدانية', tag: 'حدث مفصلي' }],
-      '2021-5-14':  [{ t: 'الذروة التاريخية — 556 حدثاً موثّقاً في يومٍ واحد', tag: 'ذروة تاريخية' }]
+      '2025-10-2':  [
+        { t: '16 شهيداً و248 جريحاً في 7,514 انتهاكاً إسرائيلياً في الضفة والقدس خلال سبتمبر 2025', tag: 'تقرير دوري', img: 'assets/img/reports/report-1.webp' },
+        { t: 'رواية مصوّرة: أبرز محطّات الحصاد الميداني خلال سبتمبر', tag: 'رواية مصوّرة' }
+      ],
+      '2025-10-1':  [
+        { t: '10 قتلى و51 جريحاً إسرائيلياً — عمليات نوعية تهزّ الاحتلال في الضفة والقدس خلال سبتمبر 2025', tag: 'تقرير دوري', img: 'assets/img/reports/report-2.webp' }
+      ],
+      '2025-9-18':  [
+        { t: 'تقرير خاص — الحواجز والبوابات الحديدية: تقطيعٌ لأوصال الضفة الغربية', tag: 'تقرير خاص', img: 'assets/img/reports/special-1.webp' }
+      ],
+      '2025-9-10':  [
+        { t: 'رصد ميداني: تصاعد اقتحامات المستوطنين للمسجد الأقصى خلال الأسبوع', tag: 'رصد ميداني' }
+      ],
+      '2025-9-2':   [
+        { t: '7 شهداء و183 جريحاً في 6,009 انتهاكاً إسرائيلياً في الضفة والقدس خلال أغسطس 2025', tag: 'تقرير دوري', img: 'assets/img/reports/report-3.webp' },
+        { t: 'إنفوغرافيك: توزيع الانتهاكات على المحافظات خلال أغسطس', tag: 'إنفوغرافيك' }
+      ],
+      '2025-9-1':   [
+        { t: '7 جرحى إسرائيليين و263 عملاً مقاوماً في الضفة الغربية خلال أغسطس 2025', tag: 'تقرير دوري', img: 'assets/img/reports/report-4.webp' }
+      ],
+      '2025-8-5':   [
+        { t: 'تقرير: حصيلة الاعتقالات في الضفة الغربية منذ بداية العام', tag: 'تقرير دوري' }
+      ],
+      '2025-2-1':   [
+        { t: 'تقرير خاص: الشعارات التي ظهرت على منصّة تسليم الأسرى في صفقة التبادل الرابعة', tag: 'تقرير خاص', img: 'assets/img/reports/special-2.webp' }
+      ],
+      '2025-1-30':  [
+        { t: 'تقرير خاص: دلالات الرموز ونوعية السلاح الذي غنمته المقاومة في جباليا', tag: 'تقرير خاص', img: 'assets/img/reports/special-3.webp' }
+      ],
+      '2023-10-7':  [
+        { t: 'بدء «طوفان الأقصى» — منعطفٌ تاريخي في توثيق الأحداث الميدانية', tag: 'حدث مفصلي' }
+      ],
+      '2021-5-14':  [
+        { t: 'الذروة التاريخية — 556 حدثاً موثّقاً في يومٍ واحد', tag: 'ذروة تاريخية' }
+      ]
     },
     FILTERS: [
       { id: 'range', label: 'النطاق', options: [
@@ -1005,26 +1026,33 @@
     var p = state.selDay.split('-'), y = +p[0], m = +p[1], d = +p[2];
     var dateEl = $('[data-day-date]');
     if (dateEl) dateEl.textContent = d + ' ' + AR_MONTHS[m - 1] + ' ' + y;
+
     var evs = DATA.CAL_EVENTS[state.selDay] || [];
     if (!evs.length) {
-      box.appendChild(h('p', 'day-empty', 'لا توجد أحداث موثّقة في هذا اليوم — اختر يوماً معلّماً بنقطة.'));
+      var empty = h('div', 'day-empty');
+      var icon = h('div', 'day-empty__icon', '🗓'); icon.setAttribute('aria-hidden', 'true');
+      empty.appendChild(icon);
+      empty.appendChild(h('p', 'day-empty__title', 'لا توجد أحداث موثّقة في هذا اليوم'));
+      empty.appendChild(h('p', 'day-empty__text', 'اختر يوماً معلّماً بنقطة على التقويم لعرض الأحداث والتقارير الموثّقة فيه.'));
+      box.appendChild(empty);
       return;
     }
+
     evs.forEach(function (ev) {
-      var item = h('a', 'report-item'); item.href = '#'; item.setAttribute('data-st', '');
+      var item = h('a', 'day-event'); item.href = '#'; item.setAttribute('data-st', '');
       if (ev.img) {
-        var img = h('img', 'report-item__thumb');
+        var img = h('img', 'day-event__thumb');
         img.src = ev.img; img.alt = ''; img.loading = 'lazy'; img.decoding = 'async';
-        img.width = 84; img.height = 64;
+        img.width = 96; img.height = 68;
         item.appendChild(img);
       } else {
-        var ph = h('div', 'report-item__thumb report-item__thumb--icon', '⚑');
+        var ph = h('div', 'day-event__thumb day-event__thumb--icon', '⚑');
         ph.setAttribute('aria-hidden', 'true');
         item.appendChild(ph);
       }
-      var body = document.createElement('div');
-      body.appendChild(h('h4', 'report-item__title', ev.t));
-      body.appendChild(h('span', 'report-item__date', ev.tag));
+      var body = h('div', 'day-event__body');
+      body.appendChild(h('span', 'day-event__tag', ev.tag));
+      body.appendChild(h('p', 'day-event__title', ev.t));
       item.appendChild(body);
       box.appendChild(item);
     });

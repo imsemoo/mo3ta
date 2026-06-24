@@ -1290,7 +1290,7 @@ h1, h2, h3, h4 { margin: 0; }
   display: grid;
   grid-template-columns: 360px 1fr;
   gap: clamp(20px, 3vw, 40px);
-  align-items: start;
+  align-items: stretch;
 }
 .calendar {
   background: var(--surface);
@@ -1315,52 +1315,139 @@ h1, h2, h3, h4 { margin: 0; }
 .calendar__title-wrap { text-align: center; }
 .calendar__eyebrow { font-size: 11px; color: var(--accent); font-weight: 700; letter-spacing: .05em; }
 .calendar__month { font-size: 17px; font-weight: 700; color: var(--ink); margin-top: 2px; }
+.calendar__count { text-align: center; font-size: 11.5px; color: var(--muted); margin: -8px 0 16px; }
+.calendar__count strong { color: var(--accent); font-weight: 700; }
 .calendar__grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 5px;
 }
-.calendar__dow { text-align: center; font-size: 10.5px; font-weight: 600; color: var(--muted); }
+.calendar__dow { text-align: center; font-size: 10.5px; font-weight: 600; color: var(--muted); padding-bottom: 4px; }
 .calendar__cell {
+  position: relative;
   aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 13px;
+  font-weight: 500;
   border-radius: 9px;
-  color: var(--muted);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ink);
+  transition: background var(--t-fast) ease, border-color var(--t-fast) ease, color var(--t-fast) ease;
 }
-.calendar__cell.is-marked { background: var(--surface-2); color: var(--ink); font-weight: 700; cursor: pointer; }
-.calendar__cell.is-today { background: var(--accent); color: var(--on-accent); font-weight: 700; cursor: pointer; }
+button.calendar__cell { cursor: pointer; }
+button.calendar__cell:hover { background: var(--surface-2); }
+.calendar__cell--out { color: var(--muted); opacity: .4; }
+/* «يحتوي أحداثاً» = نقطة مميّزة أسفل الرقم */
+.calendar__cell.is-marked::after {
+  content: "";
+  position: absolute;
+  bottom: 5px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+/* «اليوم» = إطار مميّز */
+.calendar__cell.is-today { border-color: var(--accent); color: var(--accent); font-weight: 700; }
+/* اليوم المحدّد = تعبئة مميّزة */
+.calendar__cell.is-selected { background: var(--accent); color: var(--on-accent); font-weight: 700; border-color: transparent; }
+.calendar__cell.is-selected::after { background: var(--on-accent); }
 .calendar__legend { display: flex; gap: 16px; margin-top: 16px; font-size: 11.5px; color: var(--muted); }
 .calendar__legend-item { display: flex; align-items: center; gap: 6px; }
 .calendar__legend-swatch { width: 11px; height: 11px; border-radius: 3px; }
-.calendar__legend-swatch--marked { background: var(--surface-2); }
-.calendar__legend-swatch--today { background: var(--accent); }
+.calendar__legend-swatch--marked { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.calendar__legend-swatch--today { background: transparent; border: 1.5px solid var(--accent); }
 
-.report-list { display: flex; flex-direction: column; gap: 14px; }
-.report-item {
+/* لوحة أحداث اليوم المحدّد — كارت متساوي الارتفاع مع التقويم */
+.day-panel {
+  min-width: 0;
   display: flex;
-  gap: 18px;
-  align-items: center;
-  padding: 16px;
-  border-radius: var(--radius);
+  flex-direction: column;
   background: var(--surface);
   border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 26px;
+}
+.day-panel__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 6px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.day-panel__eyebrow { font-size: 15px; font-weight: 700; color: var(--ink); }
+.day-panel__date { font-size: 13px; font-weight: 700; color: var(--accent); }
+.day-panel__body { flex: 1; display: flex; flex-direction: column; }
+
+/* صفّ حدث داخل اللوحة (بدون إطار — فاصل خفيف بين الصفوف) */
+.day-event {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 0;
   text-decoration: none;
 }
-.report-item:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 0, 0, .06); }
-.report-item__thumb {
+.day-event + .day-event { border-top: 1px solid var(--border); }
+.day-event__thumb {
   flex: none;
-  width: 84px;
-  height: 64px;
-  border-radius: 11px;
+  width: 96px;
+  height: 68px;
+  border-radius: 12px;
   object-fit: cover;
   background: var(--surface-2);
   border: 1px solid var(--border);
 }
-.report-item__title { margin: 0 0 6px; font-size: 15px; line-height: 1.45; font-weight: 600; color: var(--ink); text-wrap: pretty; }
-.report-item__date { font-size: 12px; color: var(--muted); }
+.day-event__thumb--icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 24px;
+  background: var(--accent-soft);
+  object-fit: initial;
+}
+.day-event__body { min-width: 0; }
+.day-event__tag {
+  display: inline-block;
+  margin-bottom: 7px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 3px 11px;
+  border-radius: 999px;
+}
+.day-event__title { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: var(--ink); text-wrap: pretty; }
+.day-event:hover .day-event__title { color: var(--accent); }
+
+/* حالة «لا توجد أحداث» — تتمركز وتملأ ارتفاع اللوحة */
+.day-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 14px;
+  padding: 36px 24px;
+}
+.day-empty__icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--surface-2);
+  font-size: 28px;
+}
+.day-empty__title { margin: 0; font-size: 15.5px; font-weight: 700; color: var(--ink); }
+.day-empty__text { margin: 0; font-size: 13px; color: var(--muted); max-width: 34ch; line-height: 1.6; }
 
 /* --------------------------------------------------------------------------
    21. التذييل (Footer)
