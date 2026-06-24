@@ -154,7 +154,7 @@
       list.slice(0, state.shown).forEach(function (r) { grid.appendChild(reportCard(r)); });
     }
     var more = $('[data-loadmore]');
-    if (more) more.hidden = state.shown >= list.length || !list.length;
+    if (more && more.parentElement) more.parentElement.hidden = state.shown >= list.length || !list.length;
   }
 
   function resetFilters() {

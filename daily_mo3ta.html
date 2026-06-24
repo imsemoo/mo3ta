@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-mode="light" data-dir="editorial">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1f2147">
+  <meta name="description" content="رصد يومي موثّق منذ 7 أكتوبر 2023 — سجلّ تراكمي وقابل للتصفية للأحداث الميدانية الفلسطينية، من مركز معلومات فلسطين «مُعطى».">
+  <title>منذ 7 أكتوبر — رصد يومي موثّق — مُعطى</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- ===================== الرأس ===================== -->
+  <header class="site-header" data-st>
+    <a class="brand" href="index.html" aria-label="مُعطى — الصفحة الرئيسية">
+      <img class="brand__logo" src="assets/img/logo.webp" alt="" width="160" height="46">
+    </a>
+    <nav class="main-nav" aria-label="التنقّل الرئيسي">
+      <a class="main-nav__link" href="index.html">الرئيسية</a>
+      <a class="main-nav__link is-active" href="daily_mo3ta.html" aria-current="page">منذ 7 أكتوبر</a>
+      <a class="main-nav__link" href="articles.html">التقارير</a>
+      <a class="main-nav__link" href="#">الرواية المصوّرة</a>
+      <a class="main-nav__link" href="#">المحافظات</a>
+      <a class="main-nav__link" href="#">من نحن</a>
+    </nav>
+    <div class="header-controls">
+      <div class="seg" role="group" aria-label="الاتجاه التحريري">
+        <button class="seg__btn" type="button" data-dir-set="conservative" title="محافظ">محافظ</button>
+        <button class="seg__btn is-active" type="button" data-dir-set="editorial" title="تحريري">تحريري</button>
+        <button class="seg__btn" type="button" data-dir-set="bold" title="جريء">جريء</button>
+      </div>
+      <button class="theme-toggle" type="button" data-theme-toggle title="تبديل السمة" aria-label="تبديل السمة"><span class="theme-toggle__icon" aria-hidden="true">☾</span></button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <nav class="breadcrumb" aria-label="مسار التنقّل">
+      <a href="index.html">الرئيسية</a>
+      <span class="breadcrumb__sep" aria-hidden="true">›</span>
+      <span class="breadcrumb__current">منذ 7 أكتوبر</span>
+    </nav>
+
+    <!-- مركز القيادة -->
+    <section class="cc-hero rv">
+      <div class="cc-hero__top">
+        <div class="cc-hero__intro">
+          <p class="cc-hero__eyebrow"><span class="live-badge__dot" aria-hidden="true"></span> رصد يومي موثّق</p>
+          <h1 class="cc-hero__title">منذ 7 أكتوبر <span class="accent">2023</span> — توثيقٌ مستمرّ للميدان الفلسطيني</h1>
+          <div class="cc-hero__meta">
+            <span class="cc-hero__chip"><strong class="num" data-day-counter>0</strong> يوماً من التوثيق المتواصل</span>
+            <span>آخر تحديث: 23 يونيو 2026</span>
+            <a class="cc-hero__link" href="#">منهجية التوثيق ←</a>
+          </div>
+        </div>
+        <div class="cc-hero__cta">
+          <a class="btn btn--primary" href="index.html">الإحصائيات الكاملة</a>
+          <a class="btn btn--soft" href="articles.html">التقارير الدورية</a>
+        </div>
+      </div>
+
+      <div class="cc-hero__kpis">
+        <div class="kpi-card" data-st>
+          <div class="kpi-card__head"><span class="kpi-card__icon t-accent">◆</span><span class="kpi-card__label">إجمالي الأحداث</span></div>
+          <div class="kpi-card__value num" data-count="434505">0</div>
+          <div class="kpi-card__spark" data-spark-seed="3" data-tone="ink"></div>
+        </div>
+        <div class="kpi-card" data-st>
+          <div class="kpi-card__head"><span class="kpi-card__icon t-violations">⚠</span><span class="kpi-card__label">انتهاكات الاحتلال</span></div>
+          <div class="kpi-card__value num" data-count="370772">0</div>
+          <div class="kpi-card__spark" data-spark-seed="18" data-tone="red"></div>
+        </div>
+        <div class="kpi-card" data-st>
+          <div class="kpi-card__head"><span class="kpi-card__icon t-resistance">✊</span><span class="kpi-card__label">مقاومة شعبية</span></div>
+          <div class="kpi-card__value num" data-count="55516">0</div>
+          <div class="kpi-card__spark" data-spark-seed="13" data-tone="accent"></div>
+        </div>
+        <div class="kpi-card" data-st>
+          <div class="kpi-card__head"><span class="kpi-card__icon t-resistance">⊛</span><span class="kpi-card__label">مقاومة نوعية</span></div>
+          <div class="kpi-card__value num" data-count="8217">0</div>
+          <div class="kpi-card__spark" data-spark-seed="8" data-tone="olive"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- شريط التحكّم -->
+    <section class="control-bar rv" data-st aria-label="تخصيص العرض">
+      <div class="control-bar__head">
+        <span class="control-bar__legend"><span aria-hidden="true">⚙</span> تخصيص العرض — اختر النطاق الزمني والجغرافيا</span>
+        <button class="btn btn--ghost control-bar__reset" type="button" data-reset hidden>إعادة الضبط</button>
+      </div>
+      <div class="control-bar__row">
+        <div class="control-field">
+          <span class="control-field__label">المنطقة</span>
+          <div class="chip-row chip-row--inline" role="group" aria-label="المنطقة" data-render="regions"></div>
+        </div>
+        <div class="control-field">
+          <span class="control-field__label">النوع</span>
+          <div class="chip-row chip-row--inline" role="group" aria-label="نوع الحدث" data-render="typefilters"></div>
+        </div>
+        <div class="control-field">
+          <span class="control-field__label">النطاق الزمني</span>
+          <div class="seg seg--soft" role="group" aria-label="النطاق الزمني">
+            <button class="seg__btn is-active" type="button" data-range="all">الكل</button>
+            <button class="seg__btn" type="button" data-range="30">آخر 30 يوماً</button>
+            <button class="seg__btn" type="button" data-range="7">آخر 7 أيام</button>
+          </div>
+        </div>
+      </div>
+      <div class="control-bar__tokens" data-render="activefilters" aria-live="polite"></div>
+    </section>
+
+    <!-- عدّادات الفئات -->
+    <div class="counters rv" data-render="counters"></div>
+
+    <!-- مستكشف الأحداث -->
+    <section class="section rv">
+      <div class="explorer" data-st>
+        <div class="explorer__head">
+          <div class="explorer__heading">
+            <h2 class="explorer__title">تفاصيل أبرز الأحداث</h2>
+            <span class="explorer__count" data-render="exp-count" role="status" aria-live="polite"></span>
+          </div>
+          <div class="explorer__tools">
+            <span class="archive-search">
+              <span class="archive-search__icon" aria-hidden="true">🔍</span>
+              <input class="archive-search__input" type="search" data-search placeholder="ابحث في الأحداث…" aria-label="بحث في الأحداث">
+            </span>
+            <div class="seg seg--soft" role="group" aria-label="نمط العرض">
+              <button class="seg__btn is-active" type="button" data-view="table">جدول</button>
+              <button class="seg__btn" type="button" data-view="cards">بطاقات</button>
+            </div>
+            <button class="btn btn--soft" type="button" data-export aria-label="تصدير CSV">⬇ CSV</button>
+          </div>
+        </div>
+        <div data-render="explorer"></div>
+        <div class="explorer__more"><button class="btn btn--soft" type="button" data-loadmore>تحميل المزيد ↓</button></div>
+      </div>
+    </section>
+
+    <!-- التفصيلات -->
+    <section class="section rv">
+      <div class="split-2">
+        <div class="panel" data-st>
+          <p class="panel__title">أعمال المقاومة النوعية</p>
+          <p class="panel__sub">8,217 عملاً نوعياً موثّقاً منذ بدء الرصد</p>
+          <div class="bd-tiles" data-render="bd-qualitative"></div>
+        </div>
+        <div class="panel" data-st>
+          <p class="panel__title">حراكات وأعمال المقاومة الشعبية</p>
+          <p class="panel__sub">55,516 فعلاً شعبياً موثّقاً منذ بدء الرصد</p>
+          <div class="bd-rows" data-render="bd-popular"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== بانر النشرة البريدية ===================== -->
+  <section class="news-band rv" data-st>
+    <div class="news-band__inner">
+      <div class="news-band__intro">
+        <h2 class="news-band__title">ابقَ على اطّلاع بالتوثيق</h2>
+        <p class="news-band__text">اشترك لتصلك أبرز التقارير الدورية والتحديثات الموثّقة أولاً بأول.</p>
+      </div>
+      <form class="news-band__form" onsubmit="return false">
+        <label class="visually-hidden" for="news-band-email">بريدك الإلكتروني</label>
+        <input class="news-band__input" id="news-band-email" type="email" placeholder="بريدك الإلكتروني" autocomplete="email">
+        <button class="btn btn--primary news-band__btn" type="submit">اشترك الآن</button>
+      </form>
+      <div class="news-band__links">
+        <a class="news-band__chip" href="#">القرى الفلسطينية ↗</a>
+        <a class="news-band__chip" href="#">مرصد شيرين ↗</a>
+        <a class="news-band__chip" href="#">الرواية المصوّرة ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== التذييل ===================== -->
+  <footer class="site-footer" data-st>
+    <div class="site-footer__top">
+      <div class="footer-brand">
+        <img class="footer-brand__logo" src="assets/img/logo.webp" alt="مُعطى — مركز معلومات فلسطين" width="188" height="54">
+        <p class="footer-brand__text">نوثّق ونحلّل كل ما يتعلّق بالقضية الفلسطينية باحترافية وموضوعية، ونقدّم تقارير دورية حول الواقع الفلسطيني ومواجهة الاحتلال.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col__title">روابط سريعة</div>
+        <nav class="footer-links" aria-label="روابط سريعة">
+          <a href="index.html">الرئيسية</a>
+          <a href="#">من نحن</a>
+          <a href="articles.html">التقارير</a>
+          <a href="daily_mo3ta.html">منذ 7 أكتوبر</a>
+        </nav>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col__title">روابط موصى بها</div>
+        <nav class="footer-links" aria-label="روابط موصى بها">
+          <a href="#">القرى الفلسطينية</a>
+          <a href="#">مرصد شيرين</a>
+          <a href="#">الرواية المصوّرة</a>
+        </nav>
+      </div>
+      <div class="footer-news">
+        <div class="footer-col__title">النشرة البريدية</div>
+        <p class="footer-news__text">اشترك لتصلك أبرز التقارير والتحديثات.</p>
+        <form class="footer-news__form" onsubmit="return false">
+          <input class="footer-news__input" type="email" placeholder="بريدك الإلكتروني" aria-label="بريدك الإلكتروني">
+          <button class="footer-news__btn" type="submit">اشترك</button>
+        </form>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <div class="site-footer__bottom-inner">
+        <span>© 2026 مُعطى — مركز معلومات فلسطين. جميع الحقوق محفوظة.</span>
+        <nav class="site-footer__legal" aria-label="روابط قانونية">
+          <a href="#">سياسة الخصوصية</a>
+          <a href="#">الشروط والأحكام</a>
+          <a href="#">تواصل معنا</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/daily.js" defer></script>
+</body>
+</html>
