@@ -2133,7 +2133,6 @@ body.lb-open { overflow: hidden; }
 .nv-fig__value { font-size: clamp(20px, 2.6vw, 26px); font-weight: 800; color: var(--ink); letter-spacing: -.02em; line-height: 1; }
 .nv-fig__label { font-size: 14px; font-weight: 600; color: var(--ink); }
 .nv-fig__unit { font-size: 12px; color: var(--muted); }
-.nv-fig__est { font-size: 10.5px; font-weight: 700; color: var(--muted); background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px; padding: 1px 7px; }
 
 .nv-scrolly { display: grid; grid-template-columns: auto minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(16px, 2.5vw, 32px); align-items: start; margin-block: clamp(24px, 4vw, 48px); }
 .nv-rail { position: sticky; inset-block-start: clamp(120px, 30vh, 280px); display: flex; flex-direction: column; gap: 12px; align-items: center; padding-block: 4px; }
@@ -2161,6 +2160,7 @@ body.lb-open { overflow: hidden; }
 .nv-alt__list { columns: 2; column-gap: 32px; margin: 0; padding-inline-start: 1.5em; font-size: 12.5px; line-height: 1.8; color: var(--muted); }
 .nv-alt__list li { break-inside: avoid; }
 
+.nv-ranking { margin-block-start: clamp(20px, 4vw, 40px); }
 .nv-rank { display: flex; flex-direction: column; gap: 14px; }
 .nv-rank__row { display: block; }
 .nv-rank__head { display: flex; justify-content: space-between; align-items: baseline; margin-block-end: 7px; }
@@ -2169,6 +2169,7 @@ body.lb-open { overflow: hidden; }
 .nv-rank__fill { height: 100%; width: 0; background: var(--tone, var(--accent)); border-radius: 99px; transition: width .9s var(--ease-out); transition-delay: calc(var(--i, 0) * 55ms); }
 .nv-ranking.is-filled .nv-rank__fill { width: var(--w, 0%); }
 
+.nv-reckon { border-block-start: 1px solid var(--border); }
 .nv-reckon__cta { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-block-start: clamp(22px, 3vw, 32px); }
 
 /* --------------------------------------------------------------------------
@@ -2216,6 +2217,12 @@ body.lb-open { overflow: hidden; }
   .rgrid--3 { grid-template-columns: repeat(2, 1fr); }
   .pager { grid-template-columns: 1fr; }
   .pager__item--next { text-align: start; align-items: flex-start; }
+  .nv-scrolly { grid-template-columns: 1fr; }
+  .nv-rail { display: none; }
+  .nv-map-col { position: static; height: auto; }
+  .nv-map-panel { height: clamp(320px, 55vh, 480px); }
+  .nv-step { min-block-size: auto; padding-block: 14px; }
+  .nv-alt__list { columns: 1; }
 }
 
 @media (max-width: 860px) {
@@ -2257,6 +2264,13 @@ body.lb-open { overflow: hidden; }
     scroll-behavior: auto !important;
   }
   .rv { opacity: 1; }
+  /* الرواية المصوّرة: تفكيك التثبيت إلى تخطيط ثابت قابل للقراءة */
+  .nv-scrolly { display: block; }
+  .nv-map-col { position: static; height: auto; }
+  .nv-map-panel { height: clamp(320px, 60vh, 520px); }
+  .nv-rail { display: none; }
+  .nv-step { min-block-size: auto; padding-block: 12px; }
+  .nv-rank__fill { transition: none; width: var(--w, 0%); }
 }
 
 @media print {
