@@ -341,17 +341,18 @@
 
     <!-- ===================== التقويم + تقارير مختارة ===================== -->
     <section class="section rv">
-      <h2 class="visually-hidden">التقويم وتقارير مختارة</h2>
+      <h2 class="visually-hidden">تقويم الأحداث الموثّقة</h2>
       <div class="cal-layout">
         <div class="calendar" data-st>
           <div class="calendar__head">
-            <button class="calendar__nav" type="button" aria-label="الشهر التالي">‹</button>
+            <button class="calendar__nav" type="button" data-cal-prev aria-label="الشهر السابق">›</button>
             <div class="calendar__title-wrap">
-              <div class="calendar__eyebrow">حدث في مثل هذا اليوم</div>
-              <div class="calendar__month">يونيو 2026</div>
+              <div class="calendar__eyebrow">تقويم الأحداث الموثّقة</div>
+              <div class="calendar__month" data-cal-month>—</div>
             </div>
-            <button class="calendar__nav" type="button" aria-label="الشهر السابق">›</button>
+            <button class="calendar__nav" type="button" data-cal-next aria-label="الشهر التالي">‹</button>
           </div>
+          <div class="calendar__count" data-cal-count></div>
           <div class="calendar__grid" data-render="calendar-dows"></div>
           <div data-render="calendar"></div>
           <div class="calendar__legend">
@@ -360,9 +361,12 @@
           </div>
         </div>
 
-        <div>
-          <h3 class="subhead">تقارير مختارة</h3>
-          <div class="report-list" data-render="reports"></div>
+        <div class="day-panel">
+          <div class="day-panel__head">
+            <h3 class="day-panel__eyebrow">أحداث اليوم المحدّد</h3>
+            <span class="day-panel__date" data-day-date>—</span>
+          </div>
+          <div class="report-list" data-render="day-events"></div>
         </div>
       </div>
     </section>

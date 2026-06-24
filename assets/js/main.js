@@ -109,8 +109,19 @@
       { d: '2 سبتمبر 2025', t: '7 شهداء و183 جريحاً في 6009 انتهاكاً إسرائيلياً خلال شهر أغسطس 2025', tag: 'تقرير دوري' },
       { d: '1 سبتمبر 2025', t: '7 جرحى إسرائيليين و263 عملاً مقاوماً في الضفة الغربية خلال أغسطس 2025', tag: 'تقرير دوري' }
     ],
-    CAL: { month: 'يونيو 2026', days: 30, firstDow: 1, today: 23, marked: [3, 9, 14, 17, 23, 28] },
     DOWS: ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'],
+    // أحداث التقويم — مفتاح "السنة-الشهر-اليوم"؛ كل يوم قائمة بأحداثه (نقطة الربط بالـ CMS)
+    CAL_EVENTS: {
+      '2025-10-2':  [{ t: '16 شهيداً و248 جريحاً في 7,514 انتهاكاً إسرائيلياً في الضفة والقدس خلال سبتمبر 2025', tag: 'تقرير دوري', img: 'assets/img/reports/report-1.webp' }],
+      '2025-10-1':  [{ t: '10 قتلى و51 جريحاً إسرائيلياً — عمليات نوعية تهزّ الاحتلال في الضفة والقدس خلال سبتمبر 2025', tag: 'تقرير دوري', img: 'assets/img/reports/report-2.webp' }],
+      '2025-9-18':  [{ t: 'تقرير خاص — الحواجز والبوابات الحديدية: تقطيعٌ لأوصال الضفة الغربية', tag: 'تقرير خاص', img: 'assets/img/reports/special-1.webp' }],
+      '2025-9-2':   [{ t: '7 شهداء و183 جريحاً في 6,009 انتهاكاً إسرائيلياً في الضفة والقدس خلال أغسطس 2025', tag: 'تقرير دوري', img: 'assets/img/reports/report-3.webp' }],
+      '2025-9-1':   [{ t: '7 جرحى إسرائيليين و263 عملاً مقاوماً في الضفة الغربية خلال أغسطس 2025', tag: 'تقرير دوري', img: 'assets/img/reports/report-4.webp' }],
+      '2025-2-1':   [{ t: 'تقرير خاص: الشعارات التي ظهرت على منصّة تسليم الأسرى في صفقة التبادل الرابعة', tag: 'تقرير خاص', img: 'assets/img/reports/special-2.webp' }],
+      '2025-1-30':  [{ t: 'تقرير خاص: دلالات الرموز ونوعية السلاح الذي غنمته المقاومة في جباليا', tag: 'تقرير خاص', img: 'assets/img/reports/special-3.webp' }],
+      '2023-10-7':  [{ t: 'بدء «طوفان الأقصى» — منعطفٌ تاريخي في توثيق الأحداث الميدانية', tag: 'حدث مفصلي' }],
+      '2021-5-14':  [{ t: 'الذروة التاريخية — 556 حدثاً موثّقاً في يومٍ واحد', tag: 'ذروة تاريخية' }]
+    },
     FILTERS: [
       { id: 'range', label: 'النطاق', options: [
         { v: 'all', t: '2018 → 2026' }, { v: 'aqsa', t: 'منذ 7 أكتوبر 2023' },
@@ -141,8 +152,13 @@
     mapHover: null,
     trendType: 'area',
     heatCat: 'all',
-    filters: { range: 'all', geo: 'all', gov: 'all', type: 'all' }
+    filters: { range: 'all', geo: 'all', gov: 'all', type: 'all' },
+    cal: { y: 2025, m: 10 },   // الشهر المعروض في التقويم
+    selDay: '2025-10-2'        // اليوم المحدّد
   };
+
+  var AR_MONTHS = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+  function todayParts() { var d = new Date(); return { y: d.getFullYear(), m: d.getMonth() + 1, d: d.getDate() }; }
 
   var reduceMotion = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -908,22 +924,6 @@
     });
   }
 
-  function renderReports() {
-    var box = slot('reports'); if (!box) return; clear(box);
-    DATA.REPORTS.forEach(function (r) {
-      var item = h('a', 'report-item'); item.href = '#'; item.setAttribute('data-st', '');
-      var img = h('img', 'report-item__thumb');
-      img.src = r.img; img.alt = ''; img.loading = 'lazy'; img.decoding = 'async';
-      img.width = 84; img.height = 64;
-      item.appendChild(img);
-      var body = document.createElement('div');
-      body.appendChild(h('h4', 'report-item__title', r.t));
-      body.appendChild(h('span', 'report-item__date', 'تقرير خاص · ' + r.d));
-      item.appendChild(body);
-      box.appendChild(item);
-    });
-  }
-
   function renderCalendar() {
     var dowsBox = slot('calendar-dows');
     if (dowsBox) {
@@ -931,23 +931,103 @@
       DATA.DOWS.forEach(function (d) { dowsBox.appendChild(h('div', 'calendar__dow', d)); });
     }
     var box = slot('calendar'); if (!box) return; clear(box);
-    var c = DATA.CAL, day = 1, w, dow;
-    var marked = {}; c.marked.forEach(function (d) { marked[d] = true; });
-    for (w = 0; w < 5; w++) {
-      var row = h('div', 'calendar__grid');
-      for (dow = 0; dow < 7; dow++) {
-        if ((w === 0 && dow < c.firstDow) || day > c.days) {
-          row.appendChild(h('div', 'calendar__cell', ''));
-        } else {
-          var cls = 'calendar__cell';
-          if (day === c.today) cls += ' is-today';
-          else if (marked[day]) cls += ' is-marked';
-          row.appendChild(h('div', cls, String(day)));
-          day++;
-        }
-      }
-      box.appendChild(row);
+
+    var y = state.cal.y, m = state.cal.m, today = todayParts();
+
+    var titleEl = $('[data-cal-month]');
+    if (titleEl) titleEl.textContent = AR_MONTHS[m - 1] + ' ' + y;
+
+    // عدد أحداث الشهر المعروض
+    var prefix = y + '-' + m + '-', monthCount = 0;
+    Object.keys(DATA.CAL_EVENTS).forEach(function (k) {
+      if (k.indexOf(prefix) === 0) monthCount += DATA.CAL_EVENTS[k].length;
+    });
+    var countEl = $('[data-cal-count]');
+    if (countEl) {
+      clear(countEl);
+      countEl.appendChild(document.createTextNode('إجمالي أحداث الشهر: '));
+      countEl.appendChild(h('strong', 'num', String(monthCount)));
     }
+
+    // بناء الشبكة (6 صفوف ثابتة) مع أيام الشهرين المجاورين باهتة
+    var first = new Date(y, m - 1, 1).getDay();        // 0 = الأحد
+    var dim = new Date(y, m, 0).getDate();             // أيام الشهر
+    var prevDim = new Date(y, m - 1, 0).getDate();     // أيام الشهر السابق
+    var cells = [], i;
+    for (i = first; i > 0; i--) cells.push({ day: prevDim - i + 1, out: true });
+    for (i = 1; i <= dim; i++) cells.push({ day: i, out: false });
+    var nextDay = 1;
+    while (cells.length < 42) cells.push({ day: nextDay++, out: true });
+
+    var grid = h('div', 'calendar__grid');
+    cells.forEach(function (c) {
+      var key = y + '-' + m + '-' + c.day;
+      var marked = !c.out && !!DATA.CAL_EVENTS[key];
+      var isToday = !c.out && today.y === y && today.m === m && today.d === c.day;
+      var isSel = !c.out && state.selDay === key;
+      var cls = 'calendar__cell';
+      if (c.out) cls += ' calendar__cell--out';
+      if (marked) cls += ' is-marked';
+      if (isToday) cls += ' is-today';
+      if (isSel) cls += ' is-selected';
+      var cell;
+      if (c.out) {
+        cell = h('div', cls, String(c.day));
+      } else {
+        cell = h('button', cls, String(c.day));
+        cell.type = 'button';
+        if (marked) cell.setAttribute('aria-label', c.day + ' ' + AR_MONTHS[m - 1] + ' — يحتوي أحداثاً');
+        cell.addEventListener('click', (function (dd) {
+          return function () { selectDay(y, m, dd); };
+        })(c.day));
+      }
+      grid.appendChild(cell);
+    });
+    box.appendChild(grid);
+  }
+
+  function selectDay(y, m, d) {
+    state.selDay = y + '-' + m + '-' + d;
+    renderCalendar();
+    renderDayEvents();
+  }
+
+  function calShift(delta) {
+    var m = state.cal.m + delta, y = state.cal.y;
+    if (m < 1) { m = 12; y--; }
+    if (m > 12) { m = 1; y++; }
+    state.cal = { y: y, m: m };
+    renderCalendar();
+  }
+
+  function renderDayEvents() {
+    var box = slot('day-events'); if (!box) return; clear(box);
+    var p = state.selDay.split('-'), y = +p[0], m = +p[1], d = +p[2];
+    var dateEl = $('[data-day-date]');
+    if (dateEl) dateEl.textContent = d + ' ' + AR_MONTHS[m - 1] + ' ' + y;
+    var evs = DATA.CAL_EVENTS[state.selDay] || [];
+    if (!evs.length) {
+      box.appendChild(h('p', 'day-empty', 'لا توجد أحداث موثّقة في هذا اليوم — اختر يوماً معلّماً بنقطة.'));
+      return;
+    }
+    evs.forEach(function (ev) {
+      var item = h('a', 'report-item'); item.href = '#'; item.setAttribute('data-st', '');
+      if (ev.img) {
+        var img = h('img', 'report-item__thumb');
+        img.src = ev.img; img.alt = ''; img.loading = 'lazy'; img.decoding = 'async';
+        img.width = 84; img.height = 64;
+        item.appendChild(img);
+      } else {
+        var ph = h('div', 'report-item__thumb report-item__thumb--icon', '⚑');
+        ph.setAttribute('aria-hidden', 'true');
+        item.appendChild(ph);
+      }
+      var body = document.createElement('div');
+      body.appendChild(h('h4', 'report-item__title', ev.t));
+      body.appendChild(h('span', 'report-item__date', ev.tag));
+      item.appendChild(body);
+      box.appendChild(item);
+    });
   }
 
   function renderHist() {
@@ -1090,6 +1170,12 @@
       setActive($$('[data-op-cat]', opsTabs), 'data-op-cat', state.opCat);
       renderOps();
     });
+
+    // تنقّل شهور التقويم
+    var calPrev = $('[data-cal-prev]');
+    if (calPrev) calPrev.addEventListener('click', function () { calShift(-1); });
+    var calNext = $('[data-cal-next]');
+    if (calNext) calNext.addEventListener('click', function () { calShift(1); });
   }
 
   /* =========================================================================
@@ -1131,8 +1217,8 @@
     renderTop10();
     renderTimeline();
     renderArticles();
-    renderReports();
     renderCalendar();
+    renderDayEvents();
     renderHist();
 
     // الرسوم المعتمدة على السمة
