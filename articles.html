@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-mode="light" data-dir="editorial">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1f2147">
+  <meta name="description" content="أرشيف التقارير والدراسات الموثّقة — تقارير دورية وخاصة حول الانتهاكات والمقاومة والواقع الفلسطيني، من مركز معلومات فلسطين «مُعطى».">
+  <title>التقارير والدراسات — مُعطى</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- ===================== الرأس ===================== -->
+  <header class="site-header" data-st>
+    <a class="brand" href="index.html" aria-label="مُعطى — الصفحة الرئيسية">
+      <img class="brand__logo" src="assets/img/logo.webp" alt="" width="160" height="46">
+    </a>
+
+    <nav class="main-nav" aria-label="التنقّل الرئيسي">
+      <a class="main-nav__link" href="index.html">الرئيسية</a>
+      <a class="main-nav__link" href="#">منذ 7 أكتوبر</a>
+      <a class="main-nav__link is-active" href="articles.html" aria-current="page">التقارير</a>
+      <a class="main-nav__link" href="#">الرواية المصوّرة</a>
+      <a class="main-nav__link" href="#">المحافظات</a>
+      <a class="main-nav__link" href="#">من نحن</a>
+    </nav>
+
+    <div class="header-controls">
+      <div class="seg" role="group" aria-label="الاتجاه التحريري">
+        <button class="seg__btn" type="button" data-dir-set="conservative" title="محافظ">محافظ</button>
+        <button class="seg__btn is-active" type="button" data-dir-set="editorial" title="تحريري">تحريري</button>
+        <button class="seg__btn" type="button" data-dir-set="bold" title="جريء">جريء</button>
+      </div>
+      <button class="theme-toggle" type="button" data-theme-toggle title="تبديل السمة" aria-label="تبديل السمة"><span class="theme-toggle__icon" aria-hidden="true">☾</span></button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <nav class="breadcrumb" aria-label="مسار التنقّل">
+      <a href="index.html">الرئيسية</a>
+      <span class="breadcrumb__sep" aria-hidden="true">›</span>
+      <span class="breadcrumb__current">التقارير</span>
+    </nav>
+
+    <header class="page-head rv">
+      <div>
+        <h1 class="page-head__title">التقارير والدراسات</h1>
+        <p class="page-head__sub">أرشيف موثّق للتقارير الدورية والخاصة والدراسات حول الانتهاكات والمقاومة والواقع الفلسطيني.</p>
+      </div>
+      <span class="page-head__count"><strong class="num">14</strong> تقريراً</span>
+    </header>
+
+    <section class="rv" data-render="featured" aria-label="التقرير المميّز"></section>
+
+    <div class="chip-row rv" role="group" aria-label="فئات التقارير" data-render="cats"></div>
+
+    <div class="archive-toolbar rv" data-st>
+      <span class="archive-search">
+        <span class="archive-search__icon" aria-hidden="true">🔍</span>
+        <input class="archive-search__input" type="search" data-search placeholder="ابحث في عناوين التقارير…" aria-label="بحث في التقارير">
+      </span>
+      <div class="seg seg--soft" role="group" aria-label="الترتيب">
+        <button class="seg__btn is-active" type="button" data-sort="newest">الأحدث</button>
+        <button class="seg__btn" type="button" data-sort="read">الأكثر قراءة</button>
+      </div>
+      <button class="btn btn--ghost" type="button" data-reset>إعادة الضبط</button>
+      <span class="archive-toolbar__count" data-render="count" role="status" aria-live="polite"></span>
+    </div>
+
+    <div class="archive-layout rv">
+      <div class="archive-main">
+        <div class="rgrid" data-render="grid"></div>
+        <div class="archive-more">
+          <button class="btn btn--soft" type="button" data-loadmore>تحميل المزيد ↓</button>
+        </div>
+      </div>
+
+      <aside class="archive-aside">
+        <div class="panel" data-st>
+          <p class="panel__title">الأكثر قراءة</p>
+          <div class="popular-list" data-render="popular"></div>
+        </div>
+        <div class="panel" data-st>
+          <p class="panel__title">وسوم شائعة</p>
+          <div class="tag-cloud" data-render="tags"></div>
+        </div>
+        <a class="aside-cta" href="index.html" data-st>
+          <span class="aside-cta__title">لوحة الإحصائيات الكاملة</span>
+          <span class="aside-cta__text">استكشف البيانات والخرائط والمؤشّرات التفاعلية ←</span>
+        </a>
+      </aside>
+    </div>
+
+  </main>
+
+  <!-- ===================== بانر النشرة البريدية ===================== -->
+  <section class="news-band rv" data-st>
+    <div class="news-band__inner">
+      <div class="news-band__intro">
+        <h2 class="news-band__title">ابقَ على اطّلاع بالتوثيق</h2>
+        <p class="news-band__text">اشترك لتصلك أبرز التقارير الدورية والتحديثات الموثّقة أولاً بأول.</p>
+      </div>
+      <form class="news-band__form" onsubmit="return false">
+        <label class="visually-hidden" for="news-band-email">بريدك الإلكتروني</label>
+        <input class="news-band__input" id="news-band-email" type="email" placeholder="بريدك الإلكتروني" autocomplete="email">
+        <button class="btn btn--primary news-band__btn" type="submit">اشترك الآن</button>
+      </form>
+      <div class="news-band__links">
+        <a class="news-band__chip" href="#">القرى الفلسطينية ↗</a>
+        <a class="news-band__chip" href="#">مرصد شيرين ↗</a>
+        <a class="news-band__chip" href="#">الرواية المصوّرة ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== التذييل ===================== -->
+  <footer class="site-footer" data-st>
+    <div class="site-footer__top">
+      <div class="footer-brand">
+        <img class="footer-brand__logo" src="assets/img/logo.webp" alt="مُعطى — مركز معلومات فلسطين" width="188" height="54">
+        <p class="footer-brand__text">نوثّق ونحلّل كل ما يتعلّق بالقضية الفلسطينية باحترافية وموضوعية، ونقدّم تقارير دورية حول الواقع الفلسطيني ومواجهة الاحتلال.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col__title">روابط سريعة</div>
+        <nav class="footer-links" aria-label="روابط سريعة">
+          <a href="index.html">الرئيسية</a>
+          <a href="#">من نحن</a>
+          <a href="articles.html">التقارير</a>
+          <a href="#">منذ 7 أكتوبر</a>
+        </nav>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col__title">روابط موصى بها</div>
+        <nav class="footer-links" aria-label="روابط موصى بها">
+          <a href="#">القرى الفلسطينية</a>
+          <a href="#">مرصد شيرين</a>
+          <a href="#">الرواية المصوّرة</a>
+        </nav>
+      </div>
+      <div class="footer-news">
+        <div class="footer-col__title">النشرة البريدية</div>
+        <p class="footer-news__text">اشترك لتصلك أبرز التقارير والتحديثات.</p>
+        <form class="footer-news__form" onsubmit="return false">
+          <input class="footer-news__input" type="email" placeholder="بريدك الإلكتروني" aria-label="بريدك الإلكتروني">
+          <button class="footer-news__btn" type="submit">اشترك</button>
+        </form>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <div class="site-footer__bottom-inner">
+        <span>© 2026 مُعطى — مركز معلومات فلسطين. جميع الحقوق محفوظة.</span>
+        <nav class="site-footer__legal" aria-label="روابط قانونية">
+          <a href="#">سياسة الخصوصية</a>
+          <a href="#">الشروط والأحكام</a>
+          <a href="#">تواصل معنا</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/articles.js" defer></script>
+</body>
+</html>

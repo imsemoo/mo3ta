@@ -916,7 +916,7 @@
       var dt = splitDate(ev.d);
 
       var item = h('a', 'timeline__item');
-      item.href = '#';
+      item.href = 'single_article.html';
       item.setAttribute('data-st', '');
       item.setAttribute('aria-label', ev.tag + ' — ' + ev.d + ' — ' + ev.t);
 
@@ -954,7 +954,7 @@
   function renderArticles() {
     var box = slot('articles'); if (!box) return; clear(box);
     DATA.ARTICLES.slice(1).forEach(function (a) {
-      var card = h('a', 'article-card'); card.href = '#'; card.setAttribute('data-st', '');
+      var card = h('a', 'article-card'); card.href = 'single_article.html'; card.setAttribute('data-st', '');
       var img = h('img', 'thumb thumb--sm');
       img.src = a.img; img.alt = ''; img.loading = 'lazy'; img.decoding = 'async';
       img.width = 760; img.height = 475;
