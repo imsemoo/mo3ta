@@ -77,6 +77,15 @@
       <div class="hero__figures rv" data-render="hero"></div>
     </section>
 
+    <!-- ===================== شريط التحديثات الحيّة ===================== -->
+    <section class="ticker rv" aria-label="آخر التحديثات الموثّقة" data-st>
+      <span class="ticker__badge"><span class="ticker__pulse" aria-hidden="true"></span> آخر التحديثات</span>
+      <div class="ticker__viewport">
+        <div class="ticker__track" data-render="ticker"></div>
+      </div>
+      <button class="ticker__toggle" type="button" data-ticker-toggle aria-label="إيقاف/تشغيل الشريط">⏸</button>
+    </section>
+
     <!-- ===================== شريط الفلاتر ===================== -->
     <section class="section rv">
       <div class="filter-bar" data-st>
@@ -339,6 +348,18 @@
       <div class="article-grid" data-render="articles"></div>
     </section>
 
+    <!-- ===================== مرئيات ===================== -->
+    <section class="section rv">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">مرئيات من الميدان</h2>
+          <p class="section__sub">لقطات ورواية مصوّرة موثّقة — انقر لعرض الصورة</p>
+        </div>
+        <a class="link-more" href="#">الرواية المصوّرة ←</a>
+      </div>
+      <div class="gallery" data-render="visuals"></div>
+    </section>
+
     <!-- ===================== التقويم + تقارير مختارة ===================== -->
     <section class="section rv">
       <h2 class="visually-hidden">تقويم الأحداث الموثّقة</h2>
@@ -371,7 +392,53 @@
       </div>
     </section>
 
+    <!-- ===================== شريط الثقة ===================== -->
+    <section class="section rv">
+      <div class="trust" data-st>
+        <div class="trust__item">
+          <span class="trust__value num">+50</span>
+          <span class="trust__label">مصدر موثوق</span>
+        </div>
+        <span class="trust__sep" aria-hidden="true"></span>
+        <div class="trust__item">
+          <span class="trust__value num">90٪</span>
+          <span class="trust__label">نسبة التغطية</span>
+        </div>
+        <span class="trust__sep" aria-hidden="true"></span>
+        <div class="trust__item">
+          <span class="trust__value num">12</span>
+          <span class="trust__label">محافظة مرصودة</span>
+        </div>
+        <span class="trust__sep" aria-hidden="true"></span>
+        <div class="trust__item">
+          <span class="trust__value">23 يونيو 2026</span>
+          <span class="trust__label">آخر تحديث</span>
+        </div>
+        <a class="trust__link" href="#">منهجية التوثيق ←</a>
+      </div>
+    </section>
+
   </main>
+
+  <!-- ===================== بانر النشرة البريدية ===================== -->
+  <section class="news-band rv" data-st>
+    <div class="news-band__inner">
+      <div class="news-band__intro">
+        <h2 class="news-band__title">ابقَ على اطّلاع بالتوثيق</h2>
+        <p class="news-band__text">اشترك لتصلك أبرز التقارير الدورية والتحديثات الموثّقة أولاً بأول.</p>
+      </div>
+      <form class="news-band__form" onsubmit="return false">
+        <label class="visually-hidden" for="news-band-email">بريدك الإلكتروني</label>
+        <input class="news-band__input" id="news-band-email" type="email" placeholder="بريدك الإلكتروني" autocomplete="email">
+        <button class="btn btn--primary news-band__btn" type="submit">اشترك الآن</button>
+      </form>
+      <div class="news-band__links">
+        <a class="news-band__chip" href="#">القرى الفلسطينية ↗</a>
+        <a class="news-band__chip" href="#">مرصد شيرين ↗</a>
+        <a class="news-band__chip" href="#">الرواية المصوّرة ↗</a>
+      </div>
+    </div>
+  </section>
 
   <!-- ===================== التذييل ===================== -->
   <footer class="site-footer" data-st>
@@ -417,6 +484,18 @@
       </div>
     </div>
   </footer>
+
+  <!-- ===================== Lightbox للمرئيات ===================== -->
+  <div class="lightbox" data-lightbox hidden>
+    <div class="lightbox__backdrop" data-lightbox-close></div>
+    <button class="lightbox__close" type="button" data-lightbox-close aria-label="إغلاق">✕</button>
+    <button class="lightbox__nav lightbox__nav--prev" type="button" data-lightbox-prev aria-label="السابق">›</button>
+    <figure class="lightbox__figure">
+      <img class="lightbox__img" data-lightbox-img src="" alt="">
+      <figcaption class="lightbox__caption" data-lightbox-caption></figcaption>
+    </figure>
+    <button class="lightbox__nav lightbox__nav--next" type="button" data-lightbox-next aria-label="التالي">‹</button>
+  </div>
 
   <script src="assets/vendor/leaflet/leaflet.js" defer></script>
   <script src="assets/data/palestine-governorates.js" defer></script>

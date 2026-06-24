@@ -143,6 +143,26 @@
         { t: 'الذروة التاريخية — 556 حدثاً موثّقاً في يومٍ واحد', tag: 'ذروة تاريخية' }
       ]
     },
+    // شريط التحديثات الحيّة — أحدث الأحداث الموثّقة (tone = اللون الدلالي)
+    TICKER: [
+      { d: '23 يونيو', gov: 'نابلس', type: 'اقتحام', tone: 'violations', t: 'اقتحام بلدة بيتا وإطلاق قنابل الغاز تجاه المنازل' },
+      { d: '23 يونيو', gov: 'الخليل', type: 'اعتقال', tone: 'violations', t: 'حملة اعتقالات طالت 6 مواطنين من المدينة' },
+      { d: '22 يونيو', gov: 'جنين', type: 'مقاومة', tone: 'resistance', t: 'اشتباكات مسلّحة خلال اقتحام المخيّم' },
+      { d: '22 يونيو', gov: 'القدس', type: 'انتهاك', tone: 'violations', t: 'إخطارات هدم جديدة في حيّ سلوان' },
+      { d: '21 يونيو', gov: 'رام الله', type: 'مواجهات', tone: 'resistance', t: 'مواجهات مع المستوطنين عند مدخل بلدة المغيّر' },
+      { d: '21 يونيو', gov: 'طولكرم', type: 'إصابة', tone: 'casualties', t: 'إصابة شاب بالرصاص خلال اقتحام مخيّم نور شمس' }
+    ],
+    // المرئيات (معرض + lightbox)
+    VISUALS: [
+      { img: 'assets/img/reports/report-1.webp', caption: 'حصاد سبتمبر الميداني في الضفة والقدس' },
+      { img: 'assets/img/reports/special-1.webp', caption: 'الحواجز والبوابات الحديدية تقطّع أوصال الضفة' },
+      { img: 'assets/img/reports/report-3.webp', caption: 'توثيق انتهاكات أغسطس عبر المحافظات' },
+      { img: 'assets/img/reports/special-3.webp', caption: 'دلالات الرموز ونوعية السلاح في جباليا' },
+      { img: 'assets/img/reports/report-2.webp', caption: 'عمليات نوعية تهزّ الاحتلال خلال سبتمبر' },
+      { img: 'assets/img/reports/special-2.webp', caption: 'شعارات منصّة تسليم الأسرى في صفقة التبادل' },
+      { img: 'assets/img/reports/report-4.webp', caption: 'حصيلة المقاومة الشعبية في الضفة الغربية' },
+      { img: 'assets/img/reports/report-1.webp', caption: 'رصد ميداني موثّق لأحداث المحافظات' }
+    ],
     FILTERS: [
       { id: 'range', label: 'النطاق', options: [
         { v: 'all', t: '2018 → 2026' }, { v: 'aqsa', t: 'منذ 7 أكتوبر 2023' },
@@ -1058,6 +1078,57 @@
     });
   }
 
+  // ===== شريط التحديثات الحيّة =====
+  function renderTicker() {
+    var box = slot('ticker'); if (!box) return; clear(box);
+    function build() {
+      DATA.TICKER.forEach(function (it) {
+        var a = h('a', 'ticker__item'); a.href = '#';
+        a.appendChild(h('span', 'ticker__item-date', it.d));
+        var type = h('span', 'ticker__item-type', it.type);
+        cssVar(type, '--tone', 'var(--' + (it.tone || 'accent') + ')');
+        a.appendChild(type);
+        a.appendChild(h('span', 'ticker__item-text', it.t + ' — ' + it.gov));
+        box.appendChild(a);
+      });
+    }
+    build(); build(); // نسختان للالتفاف السلس
+  }
+
+  // ===== المرئيات + Lightbox =====
+  var _lbIndex = 0;
+  function renderVisuals() {
+    var box = slot('visuals'); if (!box) return; clear(box);
+    DATA.VISUALS.forEach(function (v, i) {
+      var item = h('button', 'gallery__item'); item.type = 'button';
+      item.setAttribute('aria-label', 'عرض الصورة: ' + v.caption);
+      var img = h('img', 'gallery__img'); img.src = v.img; img.alt = v.caption; img.loading = 'lazy'; img.decoding = 'async';
+      item.appendChild(img);
+      var zoom = h('span', 'gallery__zoom', '⤢'); zoom.setAttribute('aria-hidden', 'true'); item.appendChild(zoom);
+      var ov = h('div', 'gallery__overlay'); ov.appendChild(h('span', 'gallery__caption', v.caption)); item.appendChild(ov);
+      item.addEventListener('click', function () { openLightbox(i); });
+      box.appendChild(item);
+    });
+  }
+  function updateLightbox() {
+    var v = DATA.VISUALS[_lbIndex]; if (!v) return;
+    var img = $('[data-lightbox-img]'); if (img) { img.src = v.img; img.alt = v.caption; }
+    var cap = $('[data-lightbox-caption]'); if (cap) cap.textContent = v.caption;
+  }
+  function openLightbox(i) {
+    _lbIndex = i; updateLightbox();
+    var lb = $('[data-lightbox]'); if (lb) lb.hidden = false;
+    document.body.classList.add('lb-open');
+  }
+  function closeLightbox() {
+    var lb = $('[data-lightbox]'); if (lb) lb.hidden = true;
+    document.body.classList.remove('lb-open');
+  }
+  function lbStep(delta) {
+    _lbIndex = (_lbIndex + delta + DATA.VISUALS.length) % DATA.VISUALS.length;
+    updateLightbox();
+  }
+
   function renderHist() {
     var m = monthly();
     var since = m.tot.slice(69).reduce(function (a, b) { return a + b; }, 0);
@@ -1204,6 +1275,25 @@
     if (calPrev) calPrev.addEventListener('click', function () { calShift(-1); });
     var calNext = $('[data-cal-next]');
     if (calNext) calNext.addEventListener('click', function () { calShift(1); });
+
+    // المرئيات: Lightbox
+    $$('[data-lightbox-close]').forEach(function (el) { el.addEventListener('click', closeLightbox); });
+    var lbPrev = $('[data-lightbox-prev]'); if (lbPrev) lbPrev.addEventListener('click', function () { lbStep(-1); });
+    var lbNext = $('[data-lightbox-next]'); if (lbNext) lbNext.addEventListener('click', function () { lbStep(1); });
+    document.addEventListener('keydown', function (e) {
+      var lb = $('[data-lightbox]'); if (!lb || lb.hidden) return;
+      if (e.key === 'Escape') closeLightbox();
+      else if (e.key === 'ArrowRight') lbStep(-1);
+      else if (e.key === 'ArrowLeft') lbStep(1);
+    });
+
+    // شريط التحديثات: إيقاف/تشغيل
+    var tkToggle = $('[data-ticker-toggle]');
+    if (tkToggle) tkToggle.addEventListener('click', function () {
+      var sec = tkToggle.closest('.ticker'); if (!sec) return;
+      var paused = sec.classList.toggle('is-paused');
+      tkToggle.textContent = paused ? '▶' : '⏸';
+    });
   }
 
   /* =========================================================================
@@ -1230,6 +1320,8 @@
 
     // المحتوى الثابت (يُبنى مرّة واحدة)
     renderFilters();
+    renderTicker();
+    renderVisuals();
     renderHero();
     renderKpisLead();
     renderKpisSub();
