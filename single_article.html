@@ -14,6 +14,8 @@
 </head>
 <body>
 
+  <a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+
   <!-- شريط تقدّم القراءة -->
   <div class="reading-progress" aria-hidden="true"><span class="reading-progress__bar" data-progress></span></div>
 
@@ -40,7 +42,7 @@
     </div>
   </header>
 
-  <main class="container">
+  <main class="container" id="main" tabindex="-1">
 
     <nav class="breadcrumb" aria-label="مسار التنقّل">
       <a href="index.html">الرئيسية</a>
@@ -130,7 +132,7 @@
           <nav class="toc" data-toc aria-label="محتويات التقرير">
             <div class="toc__title">محتويات التقرير</div>
             <div class="toc__list">
-              <a class="toc__link is-active" href="#intro">مقدّمة</a>
+              <a class="toc__link is-active" href="#intro" aria-current="location">مقدّمة</a>
               <a class="toc__link" href="#toll">الحصيلة العامة</a>
               <a class="toc__link" href="#violations">تفصيل الانتهاكات</a>
               <a class="toc__link" href="#geo">التوزيع الجغرافي</a>

@@ -32,9 +32,9 @@
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.isIntersecting) {
-          links.forEach(function (a) { a.classList.remove('is-active'); });
+          links.forEach(function (a) { a.classList.remove('is-active'); a.removeAttribute('aria-current'); });
           var a = map[e.target.id];
-          if (a) a.classList.add('is-active');
+          if (a) { a.classList.add('is-active'); a.setAttribute('aria-current', 'location'); }
         }
       });
     }, { rootMargin: '-18% 0px -72% 0px' });
@@ -60,13 +60,17 @@
       else done();
     }
   };
+  var copyBtn = document.querySelector('[data-share="copy"]');
+  var copyOrig = copyBtn && copyBtn.getAttribute('aria-label');
   function flashCopied() {
-    var c = document.querySelector('[data-share="copy"]');
-    if (!c) return;
-    c.classList.add('is-copied');
-    var prev = c.getAttribute('aria-label');
-    c.setAttribute('aria-label', 'تم نسخ الرابط ✓');
-    setTimeout(function () { c.classList.remove('is-copied'); if (prev) c.setAttribute('aria-label', prev); }, 1600);
+    if (!copyBtn) return;
+    copyBtn.classList.add('is-copied');
+    copyBtn.setAttribute('aria-label', 'تم نسخ الرابط ✓');
+    clearTimeout(copyBtn._t);
+    copyBtn._t = setTimeout(function () {
+      copyBtn.classList.remove('is-copied');
+      if (copyOrig) copyBtn.setAttribute('aria-label', copyOrig);
+    }, 1600);
   }
   Array.prototype.slice.call(document.querySelectorAll('[data-share]')).forEach(function (btn) {
     btn.addEventListener('click', function () {

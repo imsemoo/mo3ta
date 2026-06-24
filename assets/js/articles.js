@@ -119,6 +119,7 @@
       var btn = h('button', 'chip' + (c.k === state.cat ? ' is-active' : ''), c.label + ' · ' + count);
       btn.type = 'button';
       btn.setAttribute('data-cat-set', c.k);
+      btn.setAttribute('aria-pressed', String(c.k === state.cat));
       btn.addEventListener('click', function () {
         state.cat = c.k; state.shown = PER;
         renderCats(); renderGrid();
@@ -182,9 +183,9 @@
     TAGS.forEach(function (t) {
       var chip = h('button', 'tag-chip', '#' + t); chip.type = 'button';
       chip.addEventListener('click', function () {
-        state.q = t; state.shown = PER;
+        state.cat = 'all'; state.q = t; state.shown = PER;
         var search = $('[data-search]'); if (search) search.value = t;
-        renderGrid();
+        renderCats(); renderGrid();
         var grid = slot('grid'); if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
       box.appendChild(chip);
@@ -192,7 +193,7 @@
   }
 
   function setActiveSort() {
-    $$('[data-sort]').forEach(function (b) { b.classList.toggle('is-active', b.getAttribute('data-sort') === state.sort); });
+    $$('[data-sort]').forEach(function (b) { var on = b.getAttribute('data-sort') === state.sort; b.classList.toggle('is-active', on); b.setAttribute('aria-pressed', String(on)); });
   }
 
   function bind() {

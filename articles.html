@@ -14,6 +14,8 @@
 </head>
 <body>
 
+  <a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+
   <!-- ===================== الرأس ===================== -->
   <header class="site-header" data-st>
     <a class="brand" href="index.html" aria-label="مُعطى — الصفحة الرئيسية">
@@ -39,7 +41,7 @@
     </div>
   </header>
 
-  <main class="container">
+  <main class="container" id="main" tabindex="-1">
 
     <nav class="breadcrumb" aria-label="مسار التنقّل">
       <a href="index.html">الرئيسية</a>
@@ -65,8 +67,8 @@
         <input class="archive-search__input" type="search" data-search placeholder="ابحث في عناوين التقارير…" aria-label="بحث في التقارير">
       </span>
       <div class="seg seg--soft" role="group" aria-label="الترتيب">
-        <button class="seg__btn is-active" type="button" data-sort="newest">الأحدث</button>
-        <button class="seg__btn" type="button" data-sort="read">الأكثر قراءة</button>
+        <button class="seg__btn is-active" type="button" data-sort="newest" aria-pressed="true">الأحدث</button>
+        <button class="seg__btn" type="button" data-sort="read" aria-pressed="false">الأكثر قراءة</button>
       </div>
       <button class="btn btn--ghost" type="button" data-reset>إعادة الضبط</button>
       <span class="archive-toolbar__count" data-render="count" role="status" aria-live="polite"></span>

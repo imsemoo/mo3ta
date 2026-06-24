@@ -19,7 +19,7 @@
   // --- عدّاد الأيام منذ 7 أكتوبر 2023 ---
   function daysSinceOct7() {
     var start = new Date(2023, 9, 7), now = new Date();
-    return Math.max(0, Math.floor((now - start) / 86400000));
+    return Math.max(1, Math.floor((now - start) / 86400000) + 1);
   }
 
   // --- تصنيفات الأحداث ---
@@ -91,6 +91,7 @@
   // ===== الحالة =====
   var state = { region: 'all', type: 'all', range: 'all', q: '', sort: 'date', dir: 'desc', view: 'table', shown: 10 };
   var PER = 10;
+  var coll = new Intl.Collator('ar');
 
   function rangeFloor() {
     if (state.range === 'all') return -Infinity;
@@ -105,14 +106,15 @@
       if (govs && govs.indexOf(r.gov) < 0) return false;
       if (state.type !== 'all' && r.cat !== state.type) return false;
       if (r.ts < floor) return false;
-      if (state.q && (r.desc + ' ' + r.gov + ' ' + r.type).indexOf(state.q.trim()) < 0) return false;
+      if (state.q && (r.desc + ' ' + r.gov + ' ' + r.type).indexOf(state.q) < 0) return false;
       return true;
     });
     var key = state.sort, mul = state.dir === 'asc' ? 1 : -1;
     list.sort(function (a, b) {
-      var av = key === 'date' ? a.ts : (key === 'gov' ? a.gov : a.type);
-      var bv = key === 'date' ? b.ts : (key === 'gov' ? b.gov : b.type);
-      if (av < bv) return -1 * mul; if (av > bv) return 1 * mul; return 0;
+      if (key === 'date') return (a.ts - b.ts) * mul;
+      var av = key === 'gov' ? a.gov : a.type;
+      var bv = key === 'gov' ? b.gov : b.type;
+      return coll.compare(av, bv) * mul;
     });
     return list;
   }
@@ -131,6 +133,7 @@
       clear(rbox);
       REGIONS.forEach(function (rg) {
         var b = h('button', 'chip chip--sm' + (rg.k === state.region ? ' is-active' : ''), rg.label); b.type = 'button';
+        b.setAttribute('aria-pressed', String(rg.k === state.region));
         b.addEventListener('click', function () { state.region = rg.k; state.shown = PER; renderControls(); renderAll(); });
         rbox.appendChild(b);
       });
@@ -140,6 +143,7 @@
       clear(tbox);
       TYPE_FILTERS.forEach(function (tf) {
         var b = h('button', 'chip chip--sm' + (tf.k === state.type ? ' is-active' : ''), tf.label); b.type = 'button';
+        b.setAttribute('aria-pressed', String(tf.k === state.type));
         b.addEventListener('click', function () { state.type = tf.k; state.shown = PER; renderControls(); renderAll(); });
         tbox.appendChild(b);
       });
@@ -219,6 +223,8 @@
     var th = h('th', 'dtable__th' + (state.sort === key ? ' is-sorted' : ''));
     th.setAttribute('scope', 'col');
     th.setAttribute('aria-sort', state.sort === key ? (state.dir === 'asc' ? 'ascending' : 'descending') : 'none');
+    th.setAttribute('role', 'button');
+    th.setAttribute('aria-label', label + ' — ترتيب');
     th.tabIndex = 0;
     th.appendChild(document.createTextNode(label + ' '));
     th.appendChild(h('span', 'dtable__sort', state.sort === key ? (state.dir === 'asc' ? '▲' : '▼') : '⇅'));
@@ -249,10 +255,12 @@
       var tdBtn = document.createElement('td');
       var btn = h('button', 'dtable__toggle', _expanded[r.id] ? '−' : '+'); btn.type = 'button';
       btn.setAttribute('aria-label', _expanded[r.id] ? 'إخفاء التفاصيل' : 'عرض التفاصيل');
+      btn.setAttribute('aria-expanded', String(!!_expanded[r.id]));
+      btn.setAttribute('aria-controls', 'det-' + r.id);
       tdBtn.appendChild(btn); tr.appendChild(tdBtn);
       tbody.appendChild(tr);
 
-      var det = h('tr', 'dtable__detail');
+      var det = h('tr', 'dtable__detail'); det.id = 'det-' + r.id;
       var dtd = document.createElement('td'); dtd.colSpan = 5;
       var inner = h('div', 'dtable__detail-inner');
       inner.appendChild(h('p', 'dtable__detail-desc', r.desc));
@@ -270,6 +278,7 @@
         det.hidden = !_expanded[r.id];
         btn.textContent = _expanded[r.id] ? '−' : '+';
         btn.setAttribute('aria-label', _expanded[r.id] ? 'إخفاء التفاصيل' : 'عرض التفاصيل');
+        btn.setAttribute('aria-expanded', String(_expanded[r.id]));
         tr.classList.toggle('is-open', _expanded[r.id]);
       }
       btn.addEventListener('click', function (e) { e.stopPropagation(); toggle(); });
@@ -358,7 +367,7 @@
     setActive('[data-range]', 'data-range', state.range);
     renderControls(); renderAll();
   }
-  function setActive(sel, attr, val) { $$(sel).forEach(function (b) { b.classList.toggle('is-active', b.getAttribute(attr) === val); }); }
+  function setActive(sel, attr, val) { $$(sel).forEach(function (b) { var on = b.getAttribute(attr) === val; b.classList.toggle('is-active', on); b.setAttribute('aria-pressed', String(on)); }); }
 
   function bind() {
     // عدّاد الأيام
@@ -378,7 +387,7 @@
 
     // بحث
     var search = $('[data-search]');
-    if (search) { var t = null; search.addEventListener('input', function () { clearTimeout(t); t = setTimeout(function () { state.q = search.value; state.shown = PER; renderControls(); renderExplorer(); }, 200); }); }
+    if (search) { var t = null; search.addEventListener('input', function () { clearTimeout(t); t = setTimeout(function () { state.q = search.value.trim(); state.shown = PER; renderControls(); renderExplorer(); }, 200); }); }
 
     var more = $('[data-loadmore]'); if (more) more.addEventListener('click', function () { state.shown += PER; renderExplorer(); });
     var reset = $('[data-reset]'); if (reset) reset.addEventListener('click', resetAll);

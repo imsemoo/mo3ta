@@ -16,11 +16,13 @@
 index.html            ← الصفحة الرئيسية (لوحة الإحصائيات) — HTML دلالي، صفر استايل inline
 articles.html         ← صفحة «التقارير» (الأرشيف) — تشارك style.css/main.js + articles.js
 single_article.html   ← صفحة التقرير المفرد (قراءة) — تشارك style.css/main.js + single.js
+daily_mo3ta.html      ← صفحة «منذ 7 أكتوبر» (رصد يومي) — تشارك style.css/main.js + daily.js
 assets/
   ├─ css/style.css    ← كل الاستايل (متغيّرات السمة + الأنميشن + كل المكوّنات لكل الصفحات)
   ├─ js/main.js       ← منطق الهوم + سلوك الموقع المشترك (السمة/الاتجاه/الـreveal/الـlightbox)
   ├─ js/articles.js   ← منطق صفحة الأرشيف (تصفية/بحث/فرز/ترقيم التقارير)
   ├─ js/single.js     ← صفحة التقرير المفرد (شريط تقدّم القراءة + فهرس متتبّع + مشاركة)
+  ├─ js/daily.js      ← صفحة الرصد اليومي (عدّاد الأيام + مستكشف أحداث جدول/بطاقات + فرز/بحث/تصدير CSV)
   ├─ img/logo.webp    ← اللوجو (WebP، شفاف)
   ├─ img/reports/     ← أغلفة التقارير (WebP)
   ├─ data/            ← حدود المحافظات (palestine-governorates.js — GeoJSON كـ window global)

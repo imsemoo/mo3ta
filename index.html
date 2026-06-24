@@ -15,6 +15,8 @@
 </head>
 <body>
 
+  <a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+
   <!-- ===================== الرأس ===================== -->
   <header class="site-header" data-st>
     <a class="brand" href="index.html" aria-label="مُعطى — الصفحة الرئيسية">
@@ -40,7 +42,7 @@
     </div>
   </header>
 
-  <main class="container">
+  <main class="container" id="main" tabindex="-1">
 
     <!-- ===================== البطل ===================== -->
     <section class="hero">
@@ -486,7 +488,7 @@
   </footer>
 
   <!-- ===================== Lightbox للمرئيات ===================== -->
-  <div class="lightbox" data-lightbox hidden>
+  <div class="lightbox" data-lightbox role="dialog" aria-modal="true" aria-label="عارض الصور" hidden>
     <div class="lightbox__backdrop" data-lightbox-close></div>
     <button class="lightbox__close" type="button" data-lightbox-close aria-label="إغلاق">✕</button>
     <button class="lightbox__nav lightbox__nav--prev" type="button" data-lightbox-prev aria-label="السابق">›</button>

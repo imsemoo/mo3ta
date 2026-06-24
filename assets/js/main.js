@@ -1115,14 +1115,21 @@
     var img = $('[data-lightbox-img]'); if (img) { img.src = v.img; img.alt = v.caption; }
     var cap = $('[data-lightbox-caption]'); if (cap) cap.textContent = v.caption;
   }
+  var _lbOpener = null;
   function openLightbox(i) {
     _lbIndex = i; updateLightbox();
-    var lb = $('[data-lightbox]'); if (lb) lb.hidden = false;
+    var lb = $('[data-lightbox]'); if (!lb) return;
+    _lbOpener = document.activeElement;
+    lb.hidden = false;
     document.body.classList.add('lb-open');
+    var closeBtn = lb.querySelector('.lightbox__close');
+    if (closeBtn && closeBtn.focus) closeBtn.focus();
   }
   function closeLightbox() {
     var lb = $('[data-lightbox]'); if (lb) lb.hidden = true;
     document.body.classList.remove('lb-open');
+    if (_lbOpener && _lbOpener.focus) _lbOpener.focus();
+    _lbOpener = null;
   }
   function lbStep(delta) {
     _lbIndex = (_lbIndex + delta + DATA.VISUALS.length) % DATA.VISUALS.length;
@@ -1282,9 +1289,19 @@
     var lbNext = $('[data-lightbox-next]'); if (lbNext) lbNext.addEventListener('click', function () { lbStep(1); });
     document.addEventListener('keydown', function (e) {
       var lb = $('[data-lightbox]'); if (!lb || lb.hidden) return;
-      if (e.key === 'Escape') closeLightbox();
-      else if (e.key === 'ArrowRight') lbStep(-1);
-      else if (e.key === 'ArrowLeft') lbStep(1);
+      if (e.key === 'Escape') { closeLightbox(); return; }
+      if (e.key === 'ArrowRight') { lbStep(-1); return; }
+      if (e.key === 'ArrowLeft') { lbStep(1); return; }
+      if (e.key === 'Tab') {
+        var f = Array.prototype.filter.call(
+          lb.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])'),
+          function (el) { return !el.disabled && el.offsetParent !== null; }
+        );
+        if (!f.length) return;
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
     });
 
     // شريط التحديثات: إيقاف/تشغيل

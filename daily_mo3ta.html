@@ -14,6 +14,8 @@
 </head>
 <body>
 
+  <a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+
   <!-- ===================== الرأس ===================== -->
   <header class="site-header" data-st>
     <a class="brand" href="index.html" aria-label="مُعطى — الصفحة الرئيسية">
@@ -37,7 +39,7 @@
     </div>
   </header>
 
-  <main class="container">
+  <main class="container" id="main" tabindex="-1">
 
     <nav class="breadcrumb" aria-label="مسار التنقّل">
       <a href="index.html">الرئيسية</a>
@@ -105,9 +107,9 @@
         <div class="control-field">
           <span class="control-field__label">النطاق الزمني</span>
           <div class="seg seg--soft" role="group" aria-label="النطاق الزمني">
-            <button class="seg__btn is-active" type="button" data-range="all">الكل</button>
-            <button class="seg__btn" type="button" data-range="30">آخر 30 يوماً</button>
-            <button class="seg__btn" type="button" data-range="7">آخر 7 أيام</button>
+            <button class="seg__btn is-active" type="button" data-range="all" aria-pressed="true">الكل</button>
+            <button class="seg__btn" type="button" data-range="30" aria-pressed="false">آخر 30 يوماً</button>
+            <button class="seg__btn" type="button" data-range="7" aria-pressed="false">آخر 7 أيام</button>
           </div>
         </div>
       </div>
@@ -131,8 +133,8 @@
               <input class="archive-search__input" type="search" data-search placeholder="ابحث في الأحداث…" aria-label="بحث في الأحداث">
             </span>
             <div class="seg seg--soft" role="group" aria-label="نمط العرض">
-              <button class="seg__btn is-active" type="button" data-view="table">جدول</button>
-              <button class="seg__btn" type="button" data-view="cards">بطاقات</button>
+              <button class="seg__btn is-active" type="button" data-view="table" aria-pressed="true">جدول</button>
+              <button class="seg__btn" type="button" data-view="cards" aria-pressed="false">بطاقات</button>
             </div>
             <button class="btn btn--soft" type="button" data-export aria-label="تصدير CSV">⬇ CSV</button>
           </div>
