@@ -1389,6 +1389,7 @@
     DATA: DATA, fmt: fmt, rng: rng, theme: theme,
     mapVals: mapVals, geoStyle: geoStyle, govIndexForName: govIndexForName,
     initMap: initMap, zoomToGov: zoomToGov, refreshMap: refreshMap,
-    setMapMetric: function (m) { state.mapMetric = m; }
+    openLightbox: openLightbox,
+    fitAll: function () { if (_map) _map.fitBounds([[31.18, 34.15], [32.62, 35.62]], { padding: [12, 12] }); }
   };
 })();

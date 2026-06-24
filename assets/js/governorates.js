@@ -36,18 +36,18 @@
   // ===== بطاقة محافظة =====
   function buildCard(i) {
     var g = GOV[i];
-    var card = h('a', 'gov-card' + (g.gaza ? ' gov-card--gaza' : ''));
+    var card = h('a', 'govx-card' + (g.gaza ? ' govx-card--gaza' : ''));
     card.href = 'city_town_info.html?gov=' + i;
     card.setAttribute('data-st', '');
     card.setAttribute('aria-label', g.n + ' — المرتبة ' + rankOf[i] + ' وطنياً — ' + fmt(g.v) + ' حدثاً موثّقاً — استعراض الملف');
 
-    card.appendChild(h('span', 'gov-card__rank', '#' + rankOf[i]));
-    card.appendChild(h('span', 'gov-card__name', g.n));
-    card.appendChild(h('span', 'gov-card__region', regionLabelFor(i)));
+    card.appendChild(h('span', 'govx-card__rank', '#' + rankOf[i]));
+    card.appendChild(h('span', 'govx-card__name', g.n));
+    card.appendChild(h('span', 'govx-card__region', regionLabelFor(i)));
 
-    var value = h('span', 'gov-card__value num', fmt(g.v));
+    var value = h('span', 'govx-card__value num', fmt(g.v));
     card.appendChild(value);
-    card.appendChild(h('span', 'gov-card__metric-label', 'حدثاً موثّقاً'));
+    card.appendChild(h('span', 'govx-card__metric-label', 'حدثاً موثّقاً'));
 
     var track = h('div', 'bar-track'); track.setAttribute('aria-hidden', 'true');
     var fill = h('div', 'bar-fill bar-fill--tone');
@@ -55,9 +55,9 @@
     fill.style.setProperty('--tone', g.gaza ? 'var(--red)' : 'var(--accent)');
     track.appendChild(fill); card.appendChild(track);
 
-    var cta = h('span', 'gov-card__cta');
+    var cta = h('span', 'govx-card__cta');
     cta.appendChild(document.createTextNode('استعراض الملف'));
-    var arrow = h('span', 'gov-card__arrow', '‹'); arrow.setAttribute('aria-hidden', 'true');
+    var arrow = h('span', 'govx-card__arrow', '‹'); arrow.setAttribute('aria-hidden', 'true');
     cta.appendChild(arrow);
     card.appendChild(cta);
     return card;

@@ -73,23 +73,23 @@
   /* ===== بطاقة محافظة (تُعاد استخدامها في «محافظات أخرى») ===== */
   function buildCard(i) {
     var gg = GOV[i];
-    var card = h('a', 'gov-card' + (gg.gaza ? ' gov-card--gaza' : ''));
+    var card = h('a', 'govx-card' + (gg.gaza ? ' govx-card--gaza' : ''));
     card.href = 'city_town_info.html?gov=' + i;
     card.setAttribute('data-st', '');
     card.setAttribute('aria-label', gg.n + ' — المرتبة ' + rankOf[i] + ' وطنياً — ' + fmt(gg.v) + ' حدثاً موثّقاً — استعراض الملف');
-    card.appendChild(h('span', 'gov-card__rank', '#' + rankOf[i]));
-    card.appendChild(h('span', 'gov-card__name', gg.n));
-    card.appendChild(h('span', 'gov-card__region', regionOf(i).label));
-    card.appendChild(h('span', 'gov-card__value num', fmt(gg.v)));
-    card.appendChild(h('span', 'gov-card__metric-label', 'حدثاً موثّقاً'));
+    card.appendChild(h('span', 'govx-card__rank', '#' + rankOf[i]));
+    card.appendChild(h('span', 'govx-card__name', gg.n));
+    card.appendChild(h('span', 'govx-card__region', regionOf(i).label));
+    card.appendChild(h('span', 'govx-card__value num', fmt(gg.v)));
+    card.appendChild(h('span', 'govx-card__metric-label', 'حدثاً موثّقاً'));
     var track = h('div', 'bar-track'); track.setAttribute('aria-hidden', 'true');
     var fill = h('div', 'bar-fill bar-fill--tone');
     fill.style.setProperty('--w', (maxV ? gg.v / maxV * 100 : 0) + '%');
     fill.style.setProperty('--tone', gg.gaza ? 'var(--red)' : 'var(--accent)');
     track.appendChild(fill); card.appendChild(track);
-    var cta = h('span', 'gov-card__cta');
+    var cta = h('span', 'govx-card__cta');
     cta.appendChild(document.createTextNode('استعراض الملف'));
-    var arrow = h('span', 'gov-card__arrow', '‹'); arrow.setAttribute('aria-hidden', 'true');
+    var arrow = h('span', 'govx-card__arrow', '‹'); arrow.setAttribute('aria-hidden', 'true');
     cta.appendChild(arrow); card.appendChild(cta);
     return card;
   }
@@ -126,10 +126,10 @@
       clear(box);
       var detained = Math.round(g.v * 0.012 * (0.7 + rng(IDX) * 0.7));
       var defs = [
-        { label: 'شهداء',   n: metricVal('martyrs'), tone: 'casualties' },
-        { label: 'جرحى',    n: metricVal('injured'), tone: 'accent' },
-        { label: 'معتقلون', n: detained,             tone: 'violations' },
-        { label: 'انتهاكات', n: metricVal('v'),       tone: 'violations' }
+        { label: 'شهداء (تقديري)',   n: metricVal('martyrs'), tone: 'casualties' },
+        { label: 'جرحى (تقديري)',    n: metricVal('injured'), tone: 'accent' },
+        { label: 'معتقلون (تقديري)', n: detained,             tone: 'violations' },
+        { label: 'انتهاكات (تقديري)', n: metricVal('v'),       tone: 'violations' }
       ];
       defs.forEach(function (d) {
         var c = h('div', 'counter');
@@ -214,12 +214,11 @@
       { t: 'تظاهرة', d: 'خرجت تظاهرة مندّدة بانتهاكات الاحتلال في {g}.' }
     ]
   };
-  var SOURCES = ['وكالة وفا', 'شبكة قدس', 'مراسلون ميدانيون', 'مصادر محلية', 'الهلال الأحمر'];
   var TONE_OF = { violations: 'violations', qualitative: 'resistance', popular: 'accent' };
   var BADGE_OF = { violations: 'rbadge--violations', qualitative: 'rbadge--resistance', popular: 'rbadge--accent' };
 
   function renderFeed() {
-    var sub = slot('feed-sub'); if (sub) sub.textContent = 'وقائع ميدانية مُوثّقة في محافظة ' + g.n;
+    var sub = slot('feed-sub'); if (sub) sub.textContent = 'أمثلة توضيحية تعكس أنماط الوقائع الميدانية في محافظة ' + g.n;
     var box = slot('feed'); if (!box) return; clear(box);
     var seq = ['violations', 'popular', 'violations', 'qualitative', 'violations', 'popular', 'violations', 'violations'];
     var now = new Date();
@@ -233,7 +232,6 @@
       item.appendChild(badge);
       item.appendChild(h('span', 'gov-feed__date num', fmtDate(date)));
       item.appendChild(h('p', 'gov-feed__desc', ty.d.replace('{g}', g.n).replace('{n}', String(n))));
-      item.appendChild(h('span', 'gov-feed__source', 'المصدر: ' + SOURCES[(k + IDX) % SOURCES.length]));
       box.appendChild(item);
     });
   }
