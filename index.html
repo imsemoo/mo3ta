@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-mode="light" data-dir="editorial">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1f2147">
+  <meta name="description" content="لوحة الإحصائيات والمؤشّرات الفلسطينية — رصدٌ دقيق وموثّق للعمليّات والانتهاكات والشهداء والجرحى عبر كل المحافظات الفلسطينية، من مركز معلومات فلسطين «مُعطى».">
+  <title>لوحة مُعطى — مركز معلومات فلسطين</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- ===================== الرأس ===================== -->
+  <header class="site-header" data-st>
+    <a class="brand" href="#" aria-label="مُعطى — الصفحة الرئيسية">
+      <img class="brand__logo" src="assets/img/logo.webp" alt="" width="160" height="46">
+    </a>
+
+    <nav class="main-nav" aria-label="التنقّل الرئيسي">
+      <a class="main-nav__link is-active" href="#" aria-current="page">الرئيسية</a>
+      <a class="main-nav__link" href="#">منذ 7 أكتوبر</a>
+      <a class="main-nav__link" href="#">التقارير</a>
+      <a class="main-nav__link" href="#">الرواية المصوّرة</a>
+      <a class="main-nav__link" href="#">المحافظات</a>
+      <a class="main-nav__link" href="#">من نحن</a>
+    </nav>
+
+    <div class="header-controls">
+      <div class="seg" role="group" aria-label="الاتجاه التحريري">
+        <button class="seg__btn" type="button" data-dir-set="conservative" title="محافظ">محافظ</button>
+        <button class="seg__btn is-active" type="button" data-dir-set="editorial" title="تحريري">تحريري</button>
+        <button class="seg__btn" type="button" data-dir-set="bold" title="جريء">جريء</button>
+      </div>
+      <button class="theme-toggle" type="button" data-theme-toggle title="تبديل السمة" aria-label="تبديل السمة"><span class="theme-toggle__icon" aria-hidden="true">☾</span></button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ===================== البطل ===================== -->
+    <section class="hero">
+      <div class="hero__main">
+        <div class="hero__intro">
+          <p class="live-badge rv">
+            <span class="live-badge__dot" aria-hidden="true"></span>
+            <span>بيانات حيّة · آخر تحديث 23 يونيو 2026</span>
+          </p>
+          <h1 class="hero__title rv">لوحة <span class="accent">الإحصائيات</span> والمؤشّرات الفلسطينية</h1>
+          <p class="hero__lead rv">رصدٌ دقيق وموثّق للعمليّات والانتهاكات والشهداء والجرحى عبر كل المحافظات والقرى الفلسطينية، مع مقارنات تاريخية وفلاتر متقدّمة بالاعتماد على بيانات حقيقية محدّثة باستمرار.</p>
+        </div>
+
+        <div class="hero__visual rv">
+          <div class="ring">
+            <div class="ring__chart" data-render="hero-ring" aria-hidden="true"></div>
+            <div class="ring__center">
+              <span class="ring__label">إجمالي السجلّات</span>
+              <span class="ring__value num" data-count="12480">0</span>
+              <span class="ring__sub">سجلّ موثّق</span>
+            </div>
+            <div class="ring__badge ring__badge--top" data-st>
+              <span class="ring__badge-label">معدّل التحقق</span>
+              <span class="ring__badge-value">98.6%</span>
+            </div>
+            <div class="ring__badge ring__badge--bottom" data-st>
+              <span class="ring__badge-label">هذا الأسبوع</span>
+              <span class="ring__badge-value">+128</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__figures rv" data-render="hero"></div>
+    </section>
+
+    <!-- ===================== شريط الفلاتر ===================== -->
+    <section class="section rv">
+      <div class="filter-bar" data-st>
+        <span class="filter-bar__legend"><span aria-hidden="true">⚙</span> تخصيص العرض</span>
+        <span class="filter-bar__sep" aria-hidden="true"></span>
+        <div class="filter-bar__controls" data-render="filters"></div>
+        <div class="filter-bar__actions">
+          <button class="btn btn--primary" type="button" data-filter-apply>تطبيق</button>
+          <button class="btn btn--ghost" type="button" data-filter-reset>إعادة الضبط</button>
+        </div>
+        <p class="filter-bar__status" data-filter-status role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- ===================== مؤشّرات الأداء ===================== -->
+    <section class="section">
+      <h2 class="section__title rv">مؤشرات الأداء الرئيسية</h2>
+      <p class="section__sub rv">على مدى <strong>3,096</strong> يوماً (102 شهراً) · بمتوسط <strong>140.3</strong> حدثاً يومياً</p>
+      <div class="kpi-grid rv" data-render="kpis-lead"></div>
+      <div class="kpi-grid kpi-grid--sub rv" data-render="kpis-sub"></div>
+    </section>
+
+    <!-- ===================== الخريطة الديموغرافية ===================== -->
+    <section class="section rv">
+      <h2 class="section__title">الخريطة الديموغرافية لفلسطين</h2>
+      <p class="section__sub">انقر على أي محافظة لتقريبها وعرض تفاصيلها · بدّل المقياس لتغيير تلوين المحافظات حسب الكثافة</p>
+
+      <div class="chip-row" role="group" aria-label="مقياس الخريطة">
+        <button class="chip is-active" type="button" data-map-metric="all">الكل</button>
+        <button class="chip" type="button" data-map-metric="q">نوعية</button>
+        <button class="chip" type="button" data-map-metric="p">شعبية</button>
+        <button class="chip" type="button" data-map-metric="v">انتهاكات</button>
+        <button class="chip" type="button" data-map-metric="martyrs">شهداء</button>
+        <button class="chip" type="button" data-map-metric="injured">جرحى</button>
+        <button class="chip" type="button" data-map-metric="crimes">جرائم</button>
+      </div>
+
+      <div class="map-layout">
+        <div class="map-panel" data-st>
+          <div class="map-leaflet" data-map role="application" aria-label="خريطة تفاعلية لتوزّع الأحداث على المحافظات الفلسطينية — يمكن استخدام القائمة الجانبية كبديل نصّي"></div>
+        </div>
+        <div class="map-side">
+          <p class="map-side__title">ترتيب المحافظات حسب المقياس</p>
+          <div class="rank-list" data-render="map-rank"></div>
+        </div>
+      </div>
+
+      <div class="map-legend">
+        <span class="map-legend__label">كثافة المقياس</span>
+        <span>أقل</span>
+        <span class="map-legend__scale" aria-hidden="true"></span>
+        <span>أكثر</span>
+        <span class="map-legend__sep" aria-hidden="true"></span>
+        <span class="map-legend__key"><span class="map-legend__chip map-legend__chip--wb"></span> الضفة الغربية</span>
+        <span class="map-legend__key"><span class="map-legend__chip map-legend__chip--gaza"></span> قطاع غزة</span>
+      </div>
+    </section>
+
+    <!-- ===================== الاتجاه الشهري ===================== -->
+    <section class="section rv">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">الاتجاه الشهري للأحداث</h2>
+          <p class="section__sub">102 شهراً من البيانات · الخطّان المتقطّعان: ذروة مايو 2021 وأكتوبر 2023</p>
+        </div>
+        <div class="seg seg--soft" role="group" aria-label="نوع المخطط">
+          <button class="seg__btn is-active" type="button" data-trend="area">مساحي</button>
+          <button class="seg__btn" type="button" data-trend="line">خطّي</button>
+          <button class="seg__btn" type="button" data-trend="curve">منحنى</button>
+          <button class="seg__btn" type="button" data-trend="bars">أعمدة</button>
+          <button class="seg__btn" type="button" data-trend="stacked">مكدّس</button>
+        </div>
+      </div>
+      <div class="chart-panel" data-st data-render="trend"></div>
+    </section>
+
+    <!-- ===================== حصاد المقاومة والانتهاكات ===================== -->
+    <section class="section rv">
+      <h2 class="section__title">حصاد المقاومة والانتهاكات</h2>
+      <p class="section__sub">تحليل شامل ومقارن للأحداث الميدانية — <strong>434,505</strong> حدثاً عبر <strong>3,096</strong> يوماً</p>
+
+      <div class="split-2">
+        <div class="panel ops-card" data-st>
+          <p class="panel__title">سجل العمليات حسب الفئة</p>
+          <p class="panel__sub">اختر الفئة لعرض تفاصيل العمليات ضمنها</p>
+          <div class="ops-tabs" role="group" aria-label="فئة العمليات" data-render="ops-tabs"></div>
+          <div class="bar-list" data-render="ops"></div>
+        </div>
+
+        <div class="panel gov-card" data-st>
+          <p class="panel__title">أكثر المحافظات نشاطاً</p>
+          <p class="panel__sub">أعلى 5 محافظات بحسب إجمالي الأحداث</p>
+          <div class="gov-rank" data-render="top-gov5"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== تحليلات إحصائية ===================== -->
+    <section class="section rv">
+      <h2 class="section__title">تحليلات إحصائية</h2>
+      <p class="section__sub">ثلاث زوايا للنظر إلى توزيع الأحداث</p>
+
+      <div class="ana-top">
+        <div class="panel" data-st>
+          <p class="panel__title">نسب الفئات من الإجمالي</p>
+          <div class="donut-wrap" data-render="donut"></div>
+          <div class="legend">
+            <div class="legend__item"><span class="legend__swatch legend__swatch--red"></span> انتهاكات الاحتلال <span class="legend__value">85.3٪</span></div>
+            <div class="legend__item"><span class="legend__swatch legend__swatch--accent"></span> مقاومة شعبية <span class="legend__value">12.8٪</span></div>
+            <div class="legend__item"><span class="legend__swatch legend__swatch--olive"></span> مقاومة نوعية <span class="legend__value">1.9٪</span></div>
+          </div>
+        </div>
+
+        <div class="panel" data-st>
+          <p class="panel__title">أكثر العمليات شيوعاً</p>
+          <div class="bar-list" data-render="common"></div>
+        </div>
+      </div>
+
+      <div class="panel" data-st>
+        <p class="panel__title">تفصيل أنواع انتهاكات الاحتلال</p>
+        <div class="ana-grid2" data-render="violations"></div>
+      </div>
+    </section>
+
+    <!-- ===================== الضحايا والإصابات ===================== -->
+    <section class="section section--feature rv" data-st>
+      <h2 class="section__title">الضحايا والإصابات</h2>
+      <p class="section__sub">تحليل مقارن للضحايا الفلسطينيين والإسرائيليين — <strong>40,950</strong> ضحية إجمالاً خلال الفترة</p>
+
+      <div class="stat-cards">
+        <div class="stat-card">
+          <p class="stat-card__label">ضحايا فلسطينيون</p>
+          <p class="stat-card__value num">38,357</p>
+          <p class="stat-card__note">1,581 شهيداً · 36,776 جريحاً</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-card__label">ضحايا إسرائيليون</p>
+          <p class="stat-card__value stat-card__value--muted num">2,593</p>
+          <p class="stat-card__note">154 قتيلاً · 2,439 جريحاً</p>
+        </div>
+      </div>
+
+      <p class="subhead">مقارنة مرئية للضحايا</p>
+      <div class="bar-list bar-list--gap" data-render="victim-bars"></div>
+
+      <div class="ratio-cards" data-render="victim-ratios"></div>
+    </section>
+
+    <!-- ===================== الخريطة الحرارية ===================== -->
+    <section class="section rv">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">خريطة حرارية: المدن × الأشهر</h2>
+          <p class="section__sub">أكثر 12 محافظة نشاطاً عبر الأشهر — كثافة اللون تعكس عدد الأحداث</p>
+        </div>
+        <div class="chip-row" role="group" aria-label="فئة الخريطة الحرارية">
+          <button class="chip chip--sm is-active" type="button" data-heat-cat="all">الكل</button>
+          <button class="chip chip--sm" type="button" data-heat-cat="q">نوعية</button>
+          <button class="chip chip--sm" type="button" data-heat-cat="p">شعبية</button>
+          <button class="chip chip--sm" type="button" data-heat-cat="v">انتهاكات</button>
+          <button class="chip chip--sm" type="button" data-heat-cat="crimes">جرائم</button>
+        </div>
+      </div>
+      <div class="chart-panel chart-panel--scroll" data-st>
+        <div data-render="heat"></div>
+        <div class="heat-legend">
+          <span>أقل</span>
+          <div class="heat-legend__scale" aria-hidden="true"></div>
+          <span>أكثر</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== نمط أيام الأسبوع ===================== -->
+    <section class="section rv">
+      <h2 class="section__title">نمط أيام الأسبوع والذروة الزمنية</h2>
+      <p class="section__sub">أيّ أيام الأسبوع تحمل أكثر الأحداث</p>
+
+      <div class="week-layout">
+        <div class="week-chart" data-st>
+          <div class="week-plot">
+            <div class="week-avg" data-week-avg><span class="week-avg__label">المتوسط</span></div>
+            <div class="week-bars" data-render="week"></div>
+          </div>
+          <div class="week-days" data-render="week-days"></div>
+        </div>
+        <div class="week-side">
+          <div class="mini-stat" data-st>
+            <p class="mini-stat__label">أكثر الأيام نشاطاً</p>
+            <p class="mini-stat__value">الثلاثاء</p>
+            <p class="mini-stat__note">16٪ من الأحداث</p>
+          </div>
+          <div class="mini-stat" data-st>
+            <p class="mini-stat__label">أقل الأيام نشاطاً</p>
+            <p class="mini-stat__value">السبت</p>
+            <p class="mini-stat__note mini-stat__note--muted">31,136 حدثاً</p>
+          </div>
+          <div class="mini-stat" data-st>
+            <p class="mini-stat__label">الذروة التاريخية</p>
+            <p class="mini-stat__value mini-stat__value--sm">14 مايو 2021</p>
+            <p class="mini-stat__note mini-stat__note--red">556 حدثاً في يوم واحد</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== أعلى 10 محافظات ===================== -->
+    <section class="section rv">
+      <h2 class="section__title">أعلى 10 محافظات</h2>
+      <p class="section__sub">بحسب إجمالي الأحداث الموثّقة عبر كامل الفترة</p>
+      <div class="top-grid" data-render="top10"></div>
+    </section>
+
+    <!-- ===================== مقارنة بفترة تاريخية ===================== -->
+    <section class="section section--dark rv" data-st>
+      <h2 class="section__title">مقارنة بفترة تاريخية</h2>
+      <p class="section__sub">حصّة الأحداث الموثّقة منذ «طوفان الأقصى» مقارنةً بكامل الفترة قبله</p>
+      <div class="hist-layout">
+        <div>
+          <p class="hist-big"><span data-render="hist-pct">0</span>٪</p>
+          <p class="hist-desc">من إجمالي الأحداث الموثّقة وقعت خلال أقل من 16٪ من المدّة الزمنية — منذ 7 أكتوبر 2023.</p>
+        </div>
+        <div class="hist-bars">
+          <div class="hist-bar">
+            <div class="hist-bar__head"><span>منذ طوفان الأقصى</span><strong class="num" data-render="hist-since">0</strong></div>
+            <div class="hist-track"><div class="hist-fill" data-hist-since-bar></div></div>
+          </div>
+          <div class="hist-bar hist-bar--muted">
+            <div class="hist-bar__head"><span>قبل طوفان الأقصى (2018 — 2023)</span><strong class="num" data-render="hist-before">0</strong></div>
+            <div class="hist-track"><div class="hist-fill hist-fill--muted" data-hist-before-bar></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== الخط الزمني ===================== -->
+    <section class="section rv">
+      <h2 class="section__title">الخط الزمني للأحداث</h2>
+      <div class="timeline" data-render="timeline"></div>
+    </section>
+
+    <!-- ===================== آخر التقارير ===================== -->
+    <section class="section rv">
+      <div class="section__head">
+        <h2 class="section__title">آخر التقارير</h2>
+        <a class="link-more" href="#">كل التقارير ←</a>
+      </div>
+
+      <article class="feature-article">
+        <img class="thumb" src="assets/img/reports/report-1.webp" alt="" width="760" height="475" loading="lazy" decoding="async">
+        <div>
+          <span class="eyebrow">تقرير دوري · 2 أكتوبر 2025</span>
+          <h3 class="feature-article__title">16 شهيداً و248 جريحاً في 7,514 انتهاكاً إسرائيلياً في الضفة والقدس خلال سبتمبر 2025</h3>
+          <p class="feature-article__excerpt">رصد مركز معلومات فلسطين «معطى» استمرار قوات الاحتلال الإسرائيلي والمستوطنين في ارتكاب سلسلة واسعة من الانتهاكات بحق الفلسطينيين وممتلكاتهم خلال الشهر.</p>
+          <a class="link-more" href="#">اقرأ التقرير كاملاً ←</a>
+        </div>
+      </article>
+
+      <div class="article-grid" data-render="articles"></div>
+    </section>
+
+    <!-- ===================== التقويم + تقارير مختارة ===================== -->
+    <section class="section rv">
+      <h2 class="visually-hidden">التقويم وتقارير مختارة</h2>
+      <div class="cal-layout">
+        <div class="calendar" data-st>
+          <div class="calendar__head">
+            <button class="calendar__nav" type="button" aria-label="الشهر التالي">‹</button>
+            <div class="calendar__title-wrap">
+              <div class="calendar__eyebrow">حدث في مثل هذا اليوم</div>
+              <div class="calendar__month">يونيو 2026</div>
+            </div>
+            <button class="calendar__nav" type="button" aria-label="الشهر السابق">›</button>
+          </div>
+          <div class="calendar__grid" data-render="calendar-dows"></div>
+          <div data-render="calendar"></div>
+          <div class="calendar__legend">
+            <span class="calendar__legend-item"><span class="calendar__legend-swatch calendar__legend-swatch--marked"></span> يحتوي أحداثاً</span>
+            <span class="calendar__legend-item"><span class="calendar__legend-swatch calendar__legend-swatch--today"></span> اليوم</span>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="subhead">تقارير مختارة</h3>
+          <div class="report-list" data-render="reports"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== التذييل ===================== -->
+  <footer class="site-footer" data-st>
+    <div class="site-footer__top">
+      <div class="footer-brand">
+        <img class="footer-brand__logo" src="assets/img/logo.webp" alt="مُعطى — مركز معلومات فلسطين" width="188" height="54">
+        <p class="footer-brand__text">نوثّق ونحلّل كل ما يتعلّق بالقضية الفلسطينية باحترافية وموضوعية، ونقدّم تقارير دورية حول الواقع الفلسطيني ومواجهة الاحتلال.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col__title">روابط سريعة</div>
+        <nav class="footer-links" aria-label="روابط سريعة">
+          <a href="#">الرئيسية</a>
+          <a href="#">من نحن</a>
+          <a href="#">التقارير</a>
+          <a href="#">منذ 7 أكتوبر</a>
+        </nav>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col__title">روابط موصى بها</div>
+        <nav class="footer-links" aria-label="روابط موصى بها">
+          <a href="#">القرى الفلسطينية</a>
+          <a href="#">مرصد شيرين</a>
+          <a href="#">الرواية المصوّرة</a>
+        </nav>
+      </div>
+      <div class="footer-news">
+        <div class="footer-col__title">النشرة البريدية</div>
+        <p class="footer-news__text">اشترك لتصلك أبرز التقارير والتحديثات.</p>
+        <form class="footer-news__form" onsubmit="return false">
+          <input class="footer-news__input" type="email" placeholder="بريدك الإلكتروني" aria-label="بريدك الإلكتروني">
+          <button class="footer-news__btn" type="submit">اشترك</button>
+        </form>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <div class="site-footer__bottom-inner">
+        <span>© 2026 مُعطى — مركز معلومات فلسطين. جميع الحقوق محفوظة.</span>
+        <nav class="site-footer__legal" aria-label="روابط قانونية">
+          <a href="#">سياسة الخصوصية</a>
+          <a href="#">الشروط والأحكام</a>
+          <a href="#">تواصل معنا</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/vendor/leaflet/leaflet.js" defer></script>
+  <script src="assets/data/palestine-governorates.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

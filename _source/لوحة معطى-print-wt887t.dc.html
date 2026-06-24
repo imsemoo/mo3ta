@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style data-omelette-print-defaults>
+@media print {
+  @page { margin: 0.5in; }
+  h1, h2, h3, h4, h5, h6 { break-after: avoid; }
+  figure, table, pre, blockquote, img, svg, tr, [class~="card" i] { break-inside: avoid; }
+  img, svg { max-width: 100%; }
+  p { orphans: 3; widows: 3; }
+}
+</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--accent, #b4532a); color: #fff; }
+  @keyframes m3-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes m3-fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes m3-pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+  @keyframes m3-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  @media (prefers-reduced-motion: no-preference) {
+    .rv { animation: m3-up .7s cubic-bezier(.16,.84,.44,1) both; }
+  }
+  [data-st] { transition: background .25s ease, color .25s ease, border-color .25s ease, transform .25s ease, box-shadow .25s ease; }
+  @media (max-width: 860px) {
+    main [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+    main .keep7 { grid-template-columns: repeat(7, 1fr) !important; }
+    main .kpis { grid-template-columns: repeat(2, 1fr) !important; }
+    footer [style*="grid-template-columns"] { grid-template-columns: 1fr 1fr !important; }
+    header nav { display: none !important; }
+    header { gap: 12px !important; }
+  }
+  @media (max-width: 520px) {
+    main .kpis { grid-template-columns: 1fr !important; }
+    footer [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+    header img { height: 38px !important; }
+  }
+</style>
+</helmet>
+<div dir="rtl" style="{{ rootStyle }}">
+
+  <header style="position:sticky; top:0; z-index:50; display:flex; align-items:center; gap:24px; padding:14px clamp(20px,5vw,72px); background:var(--bar,rgba(244,239,230,.82)); backdrop-filter:blur(18px); border-bottom:1px solid var(--border,#e0d7c6);" data-st>
+    <a href="#" style="margin-inline-end:auto; display:flex; align-items:center;">
+      <img src="assets/logo.png" alt="مُعطى — مركز معلومات فلسطين" style="height:46px; width:auto; display:block; filter:var(--logo-filter,none);">
+    </a>
+    <nav style="display:flex; align-items:center; gap:26px; font-size:14.5px; font-weight:500;">
+      <a href="#" style="color:var(--ink,#211c16); text-decoration:none; padding-bottom:2px; border-bottom:2px solid var(--accent,#b4532a);">الرئيسية</a>
+      <a href="#" style="color:var(--muted,#6f6657); text-decoration:none;" data-st>منذ 7 أكتوبر</a>
+      <a href="#" style="color:var(--muted,#6f6657); text-decoration:none;" data-st>التقارير</a>
+      <a href="#" style="color:var(--muted,#6f6657); text-decoration:none;" data-st>الرواية المصوّرة</a>
+      <a href="#" style="color:var(--muted,#6f6657); text-decoration:none;" data-st>المحافظات</a>
+      <a href="#" style="color:var(--muted,#6f6657); text-decoration:none;" data-st>من نحن</a>
+    </nav>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <div style="display:flex; padding:3px; gap:2px; background:var(--surface-2,#efe8da); border-radius:10px; border:1px solid var(--border,#e0d7c6);">
+        <sc-for list="{{ directions }}" as="d" hint-placeholder-count="3">
+          <button onClick="{{ d.set }}" title="{{ d.label }}" style="{{ d.style }}" data-st>{{ d.label }}</button>
+        </sc-for>
+      </div>
+      <button onClick="{{ toggleMode }}" title="تبديل السمة" style="width:38px; height:38px; border-radius:10px; border:1px solid var(--border,#e0d7c6); background:var(--surface,#fbf8f1); color:var(--ink,#211c16); cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center;" data-st>{{ modeIcon }}</button>
+    </div>
+  </header>
+
+  <main style="max-width:1180px; margin:0 auto; padding:0 clamp(20px,5vw,72px);">
+
+    <section style="padding:clamp(48px,8vw,96px) 0 clamp(36px,5vw,56px);">
+      <div class="rv" style="display:flex; align-items:center; gap:10px; margin-bottom:22px;">
+        <span style="width:7px; height:7px; border-radius:50%; background:#cf3a3a; animation:m3-pulse 1.8s infinite;"></span>
+        <span style="font-size:12.5px; font-weight:600; letter-spacing:.04em; color:var(--muted,#6f6657);">بيانات حيّة · آخر تحديث 23 يونيو 2026</span>
+      </div>
+      <h1 class="rv" style="margin:0; font-size:clamp(34px,5.4vw,60px); line-height:1.12; font-weight:700; letter-spacing:-.01em; color:var(--ink,#211c16); max-width:16ch; text-wrap:balance;">لوحة <span style="color:var(--accent,#b4532a);">الإحصائيات</span> والمؤشّرات الفلسطينية</h1>
+      <p class="rv" style="margin:24px 0 0; font-size:clamp(16px,2vw,19px); line-height:1.7; color:var(--muted,#6f6657); max-width:62ch;">رصدٌ دقيق وموثّق للعمليّات والانتهاكات والشهداء والجرحى عبر كل المحافظات والقرى الفلسطينية، مع مقارنات تاريخية وفلاتر متقدّمة بالاعتماد على بيانات حقيقية محدّثة باستمرار.</p>
+
+      <div class="rv" style="display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(20px,4vw,56px); margin-top:clamp(40px,6vw,64px); padding-top:clamp(32px,4vw,44px); border-top:1px solid var(--border,#e0d7c6);">
+        <sc-for list="{{ heroFigures }}" as="f" hint-placeholder-count="3">
+          <div>
+            <div style="font-size:clamp(36px,6vw,64px); font-weight:700; line-height:1; letter-spacing:-.02em; color:{{ f.color }}; font-variant-numeric:tabular-nums;">{{ f.display }}</div>
+            <div style="margin-top:12px; font-size:14.5px; font-weight:600; color:var(--ink,#211c16);">{{ f.label }}</div>
+            <div style="margin-top:3px; font-size:12.5px; color:var(--muted,#6f6657);">{{ f.note }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section class="rv" style="margin-bottom:clamp(40px,6vw,72px);">
+      <div style="display:flex; flex-wrap:wrap; align-items:center; gap:14px; padding:14px 18px; background:var(--surface,#fbf8f1); border:1px solid var(--border,#e0d7c6); border-radius:16px;" data-st>
+        <span style="font-size:13px; font-weight:600; color:var(--muted,#6f6657); display:flex; align-items:center; gap:7px;"><span style="font-size:15px;">⚙</span> تخصيص العرض</span>
+        <span style="width:1px; height:20px; background:var(--border,#e0d7c6);"></span>
+        <sc-for list="{{ filters }}" as="fl" hint-placeholder-count="4">
+          <div style="display:flex; align-items:center; gap:7px; font-size:13px; color:var(--ink,#211c16);">
+            <span style="color:var(--muted,#6f6657);">{{ fl.label }}</span>
+            <span style="font-weight:600; padding:4px 11px; background:var(--surface-2,#efe8da); border-radius:8px; border:1px solid var(--border,#e0d7c6);">{{ fl.value }}</span>
+          </div>
+        </sc-for>
+        <button style="margin-inline-start:auto; font-size:13px; font-weight:600; color:#fff; background:var(--accent,#b4532a); border:none; padding:9px 20px; border-radius:9px; cursor:pointer;" data-st>تطبيق</button>
+        <button style="font-size:13px; font-weight:500; color:var(--muted,#6f6657); background:none; border:none; cursor:pointer;">إعادة الضبط</button>
+      </div>
+    </section>
+
+    <section style="margin-bottom:clamp(56px,8vw,96px);">
+      <div class="rv" style="display:flex; align-items:baseline; gap:14px; margin-bottom:8px;">
+        <h2 style="margin:0; font-size:clamp(22px,3vw,30px); font-weight:700; color:var(--ink,#211c16); letter-spacing:-.01em;">مؤشرات الأداء الرئيسية</h2>
+      </div>
+      <p class="rv" style="margin:0 0 28px; font-size:14px; color:var(--muted,#6f6657);">على مدى <strong style="color:var(--ink,#211c16); font-weight:600;">3,096</strong> يوماً (102 شهراً) · بمتوسط <strong style="color:var(--ink,#211c16); font-weight:600;">140.3</strong> حدثاً يومياً</p>
+
+      <div class="rv kpis" style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:14px;">
+        <sc-for list="{{ kpisLead }}" as="k" hint-placeholder-count="4">
+          <div style="padding:22px; background:var(--surface,#fbf8f1); border:1px solid var(--border,#e0d7c6); border-radius:18px; position:relative; overflow:hidden;" data-st onMouseEnter="{{ k.hov }}" onMouseLeave="{{ k.out }}">
+            <div style="display:flex; align-items:center; gap:9px; margin-bottom:14px;">
+              <span style="width:30px; height:30px; border-radius:9px; background:{{ k.tint }}; display:flex; align-items:center; justify-content:center; color:{{ k.color }}; font-size:15px;">{{ k.icon }}</span>
+              <span style="font-size:13.5px; font-weight:600; color:var(--ink,#211c16);">{{ k.label }}</span>
+            </div>
+            <div style="font-size:34px; font-weight:700; line-height:1; letter-spacing:-.02em; color:var(--ink,#211c16); font-variant-numeric:tabular-nums;">{{ k.display }}</div>
+            <div style="margin-top:10px;">{{ k.spark }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div class="rv kpis" style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px;">
+        <sc-for list="{{ kpisSub }}" as="k" hint-placeholder-count="4">
+          <div style="padding:16px 18px; background:var(--surface,#fbf8f1); border:1px solid var(--border,#e0d7c6); border-radius:14px; display:flex; align-items:center; justify-content:space-between; gap:10px;" data-st>
+            <div>
+              <div style="font-size:12.5px; color:var(--muted,#6f6657); font-weight:500;">{{ k.label }}</div>
+              <div style="font-size:23px; font-weight:700; color:var(--ink,#211c16); font-variant-numeric:tabular-nums; line-height:1.2;">{{ k.display }}</div>
+            </div>
+            <span style="color:{{ k.color }};">{{ k.icon }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section class="rv" style="margin-bottom:clamp(56px,8vw,104px);">
+      <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:6px;">
+        <h2 style="margin:0; font-size:clamp(22px,3vw,30px); font-weight:700; color:var(--ink,#211c16); letter-spacing:-.01em;">الخريطة الديموغرافية لفلسطين</h2>
+      </div>
+      <p style="margin:0 0 28px; font-size:14px; color:var(--muted,#6f6657);">انقر على أي محافظة لعرض تفاصيلها · بدّل المقياس لتغيير حجم وتلوين النقاط</p>
+
+      <div style="display:flex; flex-wrap:wrap; gap:9px; margin-bottom:22px;">
+        <sc-for list="{{ mapMetrics }}" as="mm" hint-placeholder-count="7">
+          <button onClick="{{ mm.set }}" style="{{ mm.active ? 'border:none; cursor:pointer; font-family:inherit; font-size:13px; font-weight:600; padding:8px 18px; border-radius:999px; background:var(--accent,#b4532a); color:#fff;' : 'border:1px solid var(--border,#e0d7c6); cursor:pointer; font-family:inherit; font-size:13px; font-weight:500; padding:8px 18px; border-radius:999px; background:var(--surface,#fbf8f1); color:var(--muted,#6f6657);' }}" data-st>{{ mm.label }}</button>
+        </sc-for>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1.15fr 0.85fr; gap:clamp(20px,3vw,40px); align-items:stretch;">
+        <div style="position:relative; background:var(--surface,#fbf8f1); border:1px solid var(--border,#e0d7c6); border-radius:22px; padding:18px; aspect-ratio:300/420; max-height:520px;" data-st>
+          {{ mapSvg }}
+          <sc-if value="{{ mapTip.show }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; left:{{ mapTip.left }}; top:{{ mapTip.top }}; transform:translate(-50%,-130%); background:var(--ink,#211c16); color:var(--bg,#f4efe6); padding:8px 13px; border-radius:10px; font-size:12.5px; pointer-events:none; white-space:nowrap; box-shadow:0 8px 24px rgba(0,0,0,.22); z-index:5;">
+              <div style="font-weight:700; margin-bottom:2px;">{{ mapTip.name }}</div>
+              <div style="opacity:.85;">{{ mapTip.label }}: <strong>{{ mapTip.value }}</strong></div>
+            </div>
+          </sc-if>
+        </div>
+        <div style="display:flex; flex-direction:column;">
+          <div style="font-size:13px; font-weight:600; color:var(--muted,#6f6657); margin-bottom:14px;">ترتيب المحافظات حسب المقياس</div>
+          <div style="display:flex; flex-direction:column; gap:13px;">
+            <sc-for list="{{ mapRanked }}" as="r" hint-placeholder-count="8">
+              <div onMouseEnter="{{ r.set }}" onMouseLeave="{{ r.clear }}" style="{{ r.active ? 'cursor:default; padding:3px 6px; margin:-3px -6px; border-radius:8px; background:var(--surface-2,#efe8da);' : 'cursor:default;' }}" data-st>
+                <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:5px;">
+                  <span style="font-size:13.5px; font-weight:500; color:var(--ink,#211c16);">{{ r.n }}</span>
+                  <span style="font-size:13px; font-weight:700; color:var(--ink,#211c16); font-variant-numeric:tabular-nums;">{{ r.v }}</span>
+                </div>
+                <div style="height:6px; border-radius:99px; background:var(--surface-2,#efe8da); overflow:hidden;">
+                  <div style="height:100%; width:{{ r.w }}; background:{{ r.color }}; border-radius:99px; transition:width .5s cubic-bezier(.2,.7,.3,1);"></div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rv" style="margin-bottom:clamp(56px,8vw,104px);">
+      <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:16px; margin-bottom:24px;">
+        <div>
+          <h2 style="margin:0 0 6px; font-size:clamp(22px,3vw,30px); font-weight:700; color:var(--ink,#211c16); letter-spacing:-.01em;">الاتجاه الشهري للأحداث</h2>
+          <p style="margin:0; font-size:14px; color:var(--muted,#6f6657);">102 شهراً من البيانات · الخطّان المتقطّعان: ذروة مايو 2021 وأكتوبر 2023</p>
+        </div>
+        <div style="display:flex; padding:3px; gap:2px; background:var(--surface-2,#efe8da); border-radius:11px; border:1px solid var(--border,#e0d7c6);">
+          <sc-for list="{{ trendTypes }}" as="tt" hint-placeholder-count="5">
+            <button onClick="{{ tt.set }}" style="{{ tt.active ? 'border:none; cursor:pointer; font-family:inherit; font-size:12.5px; font-weight:600; padding:7px 13px; border-radius:8px; background:var(--surface,#fbf8f1); color:var(--ink,#211c16); box-shadow:0 1px 3px rgba(0,0,0,.07);' : 'border:none; cursor:pointer; font-family:inherit; font-size:12.5px; font-weight:500; padding:7px 13px; border-radius:8px; background:transparent; color:var(--muted,#6f6657);' }}" data-st>{{ tt.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="background:var(--surface,#fbf8f1); border:1px solid var(--border,#e0d7c6); border-radius:22px; padding:24px clamp(16px,2vw,28px);" data-st>
+        {{ trendSvg }}
+      </div>
+    </section>
+
+    <section class="rv" style="margin-bottom:clamp(56px,8vw,104px);">
+      <h2 style="margin:0 0 6px; font-size:clamp(22px,3vw,30px); font-weight:700; color:var(--ink,#211c16); letter-spacing:-.01em;">حصاد المقاومة والانتهاكات</h2>
+      <p style="margin:0 0 30px; font-size:14px; color:var(--muted,#6f6657);">تحليل شامل ومقارن للأحداث الميدانية — <strong style="color:var(--ink,#211c16); font-weight:600;">434,505</strong> حدثاً عبر <strong style="color:var(--ink,#211c16); font-weight:600;">3,096</strong> يوماً</p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:clamp(20px,3vw,40px); align-items:start;">
+        <div>
+          <div style="font-size:15px; font-weight:700; color:var(--ink,#211c16); margin-bottom:4px;">سجل العمليات حسب الفئة</div>
+          <div style="font-size:13px; color:var(--muted,#6f6657); margin-bottom:18px;">اختر الفئة لعرض تفاصيل العمليات ضمنها</div>
+          <div style="display:flex; gap:8px; margin-bottom:22px; flex-wrap:wrap;">
+            <sc-for list="{{ opTabs }}" as="ot" hint-placeholder-count="3">
+              <button onClick="{{ ot.set }}" style="{{ ot.active ? 'border:none; cursor:pointer; font-family:inherit; font-size:13px; font-weight:600; padding:9px 16px; border-radius:10px; background:var(--accent,#b4532a); color:#fff;' : 'border:1px solid var(--border,#e0d7c6); cursor:pointer; font-family:inherit; font-size:13px; font-weight:500; padding:9px 16px; border-radius:10px; background:var(--surface,#fbf8f1); color:var(--muted,#6f6657);' }}" data-st>{{ ot.label }} · {{ ot.count }}</button>
+            </sc-for>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:18px;">
+            <sc-for list="{{ opItems }}" as="op" hint-placeholder-count="4">
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:7px;">
+                  <span style="font-size:14px; font-weight:500; color:var(--ink,#211c16);">{{ op.n }}</span>
+                  <span style="font-size:16px; font-weight:700; color:var(--ink,#211c16); font-variant-numeric:tabular-nums;">{{ op.v }}</span>
+                </div>
+                <div style="height:9px; border-radius:99px; background:var(--surface-2,#efe8da); overflow:hidden;">
+                  <div style="height:100%; width:{{ op.w }}; background:var(--accent,#b4532a); border-radius:99px; transition:width .55s cubic-bezier(.2,.7,.3,1);"></div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="background:var(--surface,#fbf8f1); border:1px solid var(--border,#e0d7c6); border-radius:22px; padding:clamp(20px,2.4vw,30px);" data-st>
+          <div style="font-size:15px; font-weight:700; color:var(--ink,#211c16); margin-bottom:4px;">أكثر المحافظات نشاطاً</div>
+          <div style="font-size:13px; color:var(--muted,#6f6657); margin-bottom:22px;">أعلى 5 محافظات بحسب إجمالي الأحداث</div>
+          <div style="display:flex; flex-direction:column; gap:20px;">
+            <sc-for list="{{ topGov5 }}" as="g" hint-placeholder-count="5">
+              <div style="display:flex; align-items:center; gap:14px;">
+                <span style="flex:none; width:26px; height:26px; border-radius:8px; background:var(--surface-2,#efe8da); color:var(--muted,#6f6657); font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center;">{{ g.rank }}</span>
+                <div style="flex:1;">
+                  <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;">
+                    <span style="font-size:14px; font-weight:600; color:var(--ink,#211c16);">{{ g.n }}</span>
+                    <span style="font-size:14px; font-weight:700; color:var(--ink,#211c16); font-variant-numeric:tabular-nums;">{{ g.v }}</span>
+                  </div>
+                  <div style="height:7px; border-radius:99px; background:var(--surface-2,#efe8da); overflow:hidden;">
+                    <div style="height:100%; width:{{ g.w }}; background:var(--accent,#b4532a); border-radius:99px; transition:width .55s cubic-bezier(.2,.7,.3,1);"></div>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rv" style="margin-bottom:clamp(56px,8vw,104px);">
+      <h2 style="margin:0 0 6px; font-size:clamp(22px,3vw,30px); font-weight:700; color:var(--ink,#211c16); letter-spacing:-.01em;">تحليلات إحصائية</h2>
+      <p style="margin:0 0 30px; font-size:14px; color:var(--muted,#6f6657);">ثلاث زوايا للنظر إلى توزيع الأحداث</p>
+
+      <div style="display:grid; grid-template-columns:340px 1fr; gap:clamp(20px,3vw,40px); align-items:start; margin-bottom:clamp(20px,3vw,40px);">
+        <div style="background:var(--surface,#fbf8f1); border:1px solid var(--border,#e0d7c6); border-radius:22px; padding:28px;" data-st>
+          <div style="font-size:15px; font-weight:700; color:var(--ink,#211c16); margin-bottom:18px;">نسب الفئات من الإجمالي</div>
+          <div style="max-width:220px; margin:0 auto;">{{ anaDonut }}</div>
+          <div style="display:flex; flex-direction:column; gap:11px; margin-top:22px;">
+            <div style="display:flex; align-items:center; gap:9px; font-size:13px; color:var(--ink,#211c16);"><span style="width:11px; height:11px; border-radius:3px; background:var(--red,#bb3b2e);"></span> انتهاكات الاحتلال <span style="margin-inline-start:auto; font-weight:700;">85.3٪</span></div>
+            <div style="display:flex; align-items:center; gap:9px; font-size:13px; color:var(--ink,#211c16);"><span style="width:11px; height:11px; border-radius:3px; background:var(--accent,#b4532a);"></span> مقاومة شعبية <span style="margin-inline-start:auto; font-weight:700;">12.8٪</span></div>
+            <div style="display:flex; align-items:center; gap:9px; font-size:13px; color:var(--ink,#211c16);"><span style="width:11px; height:11px; border-radius:3px; background:var(--olive,#7d7a3c);"></span> مقاومة نوعية <span style="margin-inline-start:auto; font-weight:700;">1.9٪</span></div>
+          </div>
+        </div>
+
+        <div style="background:var(--surface,#fbf8f1); border:1px solid var(--border,#e0d7c6); border-radius:22px; padding:28px;" data-st>
+          <div style="font-size:15px; font-weight:700; color:var(--ink,#211c16); margin-bottom:22px;">أكثر العمليات شيوعاً</div>
+          <div style="display:flex; flex-direction:column; gap:16px;">
+            <sc-for list="{{ anaCommon }}" as="c" hint-placeholder-count="8">
+              <div style="display:flex; align-items:center; gap:14px;">
+                <span style="flex:none; width:108px; font-size:13px; color:var(--ink,#211c16); text-align:start;">{{ c.n }}</span>
+                <div style="flex:1; height:8px; border-radius:99px; background:var(--surface-2,#efe8da); overflow:hidden;">
+                  <div style="height:100%; width:{{ c.w }}; background:var(--accent,#b4532a); border-radius:99px; transition:width .55s cubic-bezier(.2,.7,.3,1);"></div>
+                </div>
+                <span style="flex:none; width:58px; text-align:end; font-size:13.5px; font-weight:700; color:var(--ink,#211c16); font-variant-numeric:tabular-nums;">{{ c.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface,#fbf8f1); border:1px solid var(--border,#e0d7c6); border-radius:22px; padding:28px;" data-st>
+        <div style="font-size:15px; font-weight:700; color:var(--ink,#211c16); margin-bottom:22px;">تفصيل أنواع انتهاكات الاحتلال</div>
+        <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:16px 40px;">
+          <sc-for list="{{ anaViol }}" as="vv" hint-placeholder-count="8">
+            <div style="display:flex; align-items:center; gap:14px;">
+              <span style="flex:none; width:120px; font-size:13px; color:var(--ink,#211c16); text-align:start;">{{ vv.n }}</span>
+              <div style="flex:1; height:8px; border-radius:99px; background:var(--surface-2,#efe8da); overflow:hidden;">
+                <div style="height:100%; width:{{ vv.w }}; background:var(--red,#bb3b2e); opacity:{{ vv.op }}; border-radius:99px; transition:width .55s cubic-bezier(.2,.7,.3,1);"></div>
+              </div>
+              <span style="flex:none; width:58px; text-align:end; font-size:13.5px; font-weight:700; color:var(--ink,#211c16); font-variant-numeric:tabular-nums;">{{ vv.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section class="rv" style="margin-bottom:clamp(56px,8vw,104px); padding:clamp(36px,5vw,56px) clamp(28px,4vw,48px); background:var(--surface,#fbf8f1); border:1px solid var(--border,#e0d7c6); border-radius:28px;" data-st>
+      <h2 style="margin:0 0 6px; font-size:clamp(22px,3vw,30px); font-weight:700; color:var(--ink,#211c16); letter-spacing:-.01em;">الضحايا والإصابات</h2>
+      <p style="margin:0 0 32px; font-size:14px; color:var(--muted,#6f6657);">تحليل مقارن للضحايا الفلسطينيين والإسرائيليين — <strong style="color:var(--ink,#211c16); font-weight:600;">40,950</strong> ضحية إجمالاً خلال الفترة</p>
+
+      <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-bottom:40px;">
+        <div style="padding:26px 28px; border-radius:18px; background:var(--bg,#f4efe6); border:1px solid var(--border,#e0d7c6);">
+          <div style="font-size:13.5px; color:var(--muted,#6f6657); font-weight:600; margin-bottom:10px;">ضحايا فلسطينيون</div>
+          <div style="font-size:clamp(40px,5vw,56px); font-weight:700; line-height:1; color:var(--red,#bb3b2e); font-variant-numeric:tabular-nums;">38,357</div>
+          <div style="margin-top:12px; font-size:13px; color:var(--muted,#6f6657);">1,581 شهيداً · 36,776 جريحاً</div>
+        </div>
+        <div style="padding:26px 28px; border-radius:18px; background:var(--bg,#f4efe6); border:1px solid var(--border,#e0d7c6);">
+          <div style="font-size:13.5px; color:var(--muted,#6f6657); font-weight:600; margin-bottom:10px;">ضحايا إسرائيليون</div>
+          <div style="font-size:clamp(40px,5vw,56px); font-weight:700; line-height:1; color:var(--muted,#6f6657); font-variant-numeric:tabular-nums;">2,593</div>
+          <div style="margin-top:12px; font-size:13px; color:var(--muted,#6f6657);">154 قتيلاً · 2,439 جريحاً</div>
+        </div>
+      </div>
+
+      <div style="font-size:15px; font-weight:700; color:var(--ink,#211c16); margin-bottom:20px;">مقارنة مرئية للضحايا</div>
+      <div style="display:flex; flex-direction:column; gap:18px; margin-bottom:40px;">
+        <sc-for list="{{ vicBars }}" as="vb" hint-placeholder-count="4">
+          <div style="display:flex; align-items:center; gap:16px;">
+            <span style="flex:none; width:128px; font-size:13.5px; color:var(--ink,#211c16); text-align:start;">{{ vb.label }}</span>
+            <div style="flex:1; height:13px; border-radius:99px; background:var(--surface-2,#efe8da); overflow:hidden;">
+              <div style="height:100%; width:{{ vb.w }}; background:{{ vb.color }}; border-radius:99px; transition:width .6s cubic-bezier(.2,.7,.3,1);"></div>
+            </div>
+            <span style="flex:none; width:64px; text-align:end; font-size:15px; font-weight:700; color:var(--ink,#211c16); font-variant-numeric:tabular-nums;">{{ vb.v }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+        <sc-for list="{{ vicRatios }}" as="rt" hint-placeholder-count="3">
+          <div style="padding:24px; border-radius:18px; background:var(--bg,#f4efe6); border:1px solid var(--border,#e0d7c6);">
+            <div style="font-size:clamp(32px,4vw,42px); font-weight:700; line-height:1; color:var(--red,#bb3b2e); letter-spacing:-.02em;">{{ rt.k }}</div>
+            <div style="margin-top:12px; font-size:13.5px; line-height:1.5; color:var(--muted,#6f6657);">{{ rt.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section class="rv" style="margin-bottom:clamp(56px,8vw,104px);">
+      <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:16px; margin-bottom:24px;">
+        <div>
+          <h2 style="margin:0 0 6px; font-size:clamp(22px,3vw,30px); font-weight:700; color:var(--ink,#211c16); letter-spacing:-.01em;">خريطة حرارية: المدن × الأشهر</h2>
+          <p style="margin:0; font-size:14px; color:var(--muted,#6f6657);">أكثر 12 محافظة نشاطاً عبر الأشهر — كثافة اللون تعكس عدد الأحداث</p>
+        </div>
+        <div style="display:flex; gap:7px; flex-wrap:wrap;">
+          <sc-for list="{{ heatCats }}" as="hc" hint-placeholder-count="5">
+            <button onClick="{{ hc.set }}" style="{{ hc.active ? 'border:none; cursor:pointer; font-family:inherit; font-size:12.5px; font-weight:600; padding:7px 14px; border-radius:999px; background:var(--accent,#b4532a); color:#fff;' : 'border:1px solid var(--border,#e0d7c6); cursor:pointer; font-family:inherit; font-size:12.5px; font-weight:500; padding:7px 14px; border-radius:999px; background:var(--surface,#fbf8f1); color:var(--muted,#6f6657);' }}" data-st>{{ hc.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="background:var(--surface,#fbf8f1); border:1px solid var(--border,#e0d7c6); border-radius:22px; padding:24px; overflow-x:auto;" data-st>
+        {{ heatSvg }}
+        <div style="display:flex; align-items:center; gap:10px; margin-top:18px; font-size:11.5px; color:var(--muted,#6f6657);">
+          <span>أقل</span>
+          <div style="flex:1; max-width:200px; height:8px; border-radius:99px; background:linear-gradient(90deg, color-mix(in srgb, var(--accent,#b4532a) 8%, transparent), var(--accent,#b4532a));"></div>
+          <span>أكثر</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="rv" style="margin-bottom:clamp(56px,8vw,104px);">
+      <h2 style="margin:0 0 6px; font-size:clamp(22px,3vw,30px); font-weight:700; color:var(--ink,#211c16); letter-spacing:-.01em;">نمط أيام الأسبوع والذروة الزمنية</h2>
+      <p style="margin:0 0 30px; font-size:14px; color:var(--muted,#6f6657);">أيّ أيام الأسبوع تحمل أكثر الأحداث</p>
+
+      <div style="display:grid; grid-template-columns:1fr 300px; gap:clamp(20px,3vw,40px); align-items:stretch;">
+        <div style="background:var(--surface,#fbf8f1); border:1px solid var(--border,#e0d7c6); border-radius:22px; padding:28px 26px 20px;" data-st>
+          <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:12px; height:200px;">
+            <sc-for list="{{ week }}" as="w" hint-placeholder-count="7">
+              <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:10px; height:100%; justify-content:flex-end;">
+                <span style="font-size:12px; font-weight:700; color:var(--ink,#211c16); font-variant-numeric:tabular-nums;">{{ w.v }}</span>
+                <div style="width:100%; max-width:46px; height:{{ w.w }}; border-radius:8px 8px 0 0; background:{{ w.top ? 'var(--accent,#b4532a)' : 'var(--surface-2,#efe8da)' }}; transition:height .6s cubic-bezier(.2,.7,.3,1);"></div>
+                <span style="font-size:12px; color:var(--muted,#6f6657);">{{ w.d }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div style="flex:1; padding:24px; border-radius:18px; background:var(--surface,#fbf8f1); border:1px solid var(--border,#e0d7c6); display:flex; flex-direction:column; justify-content:center;" data-st>
+            <div style="font-size:13px; color:var(--muted,#6f6657); margin-bottom:8px;">أكثر يوم نشاطاً</div>
+            <div style="font-size:26px; font-weight:700; color:var(--ink,#211c16);">الثلاثاء</div>
+            <div style="font-size:13px; color:var(--accent,#b4532a); font-weight:600; margin-top:4px;">16٪ من الأحداث</div>
+          </div>
+          <div style="flex:1; padding:24px; border-radius:18px; background:var(--surface,#fbf8f1); border:1px solid var(--border,#e0d7c6); display:flex; flex-direction:column; justify-content:center;" data-st>
+            <div style="font-size:13px; color:var(--muted,#6f6657); margin-bottom:8px;">الذروة التاريخية</div>
+            <div style="font-size:22px; font-weight:700; color:var(--ink,#211c16);">14 مايو 2021</div>
+            <div style="font-size:13px; color:var(--red,#bb3b2e); font-weight:600; margin-top:4px;">556 حدثاً في يوم واحد</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rv" style="margin-bottom:clamp(56px,8vw,104px);">
+      <h2 style="margin:0 0 6px; font-size:clamp(22px,3vw,30px); font-weight:700; color:var(--ink,#211c16); letter-spacing:-.01em;">أعلى 10 محافظات</h2>
+      <p style="margin:0 0 30px; font-size:14px; color:var(--muted,#6f6657);">بحسب إجمالي الأحداث الموثّقة عبر كامل الفترة</p>
+      <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:12px 32px;">
+        <sc-for list="{{ top10 }}" as="c" hint-placeholder-count="10">
+          <div style="display:flex; align-items:center; gap:16px; padding:15px 18px; border-radius:14px; background:{{ c.lead ? 'var(--surface,#fbf8f1)' : 'transparent' }}; border:1px solid {{ c.lead ? 'var(--border,#e0d7c6)' : 'transparent' }};" data-st>
+            <span style="flex:none; min-width:30px; font-size:16px; font-weight:700; color:var(--muted,#6f6657); text-align:center;">{{ c.medal }}</span>
+            <span style="flex:1; font-size:15px; font-weight:600; color:var(--ink,#211c16);">{{ c.n }}</span>
+            <span style="font-size:16px; font-weight:700; color:var(--ink,#211c16); font-variant-numeric:tabular-nums;">{{ c.v }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section class="rv" style="margin-bottom:clamp(56px,8vw,104px); padding:clamp(36px,5vw,56px) clamp(28px,4vw,48px); background:var(--ink,#211c16); border-radius:28px; color:var(--bg,#f4efe6);" data-st>
+      <h2 style="margin:0 0 6px; font-size:clamp(22px,3vw,30px); font-weight:700; letter-spacing:-.01em; color:#fff;">مقارنة بفترة تاريخية</h2>
+      <p style="margin:0 0 36px; font-size:14px; opacity:.7;">حصّة الأحداث الموثّقة منذ «طوفان الأقصى» مقارنةً بكامل الفترة قبله</p>
+      <div style="display:grid; grid-template-columns:0.8fr 1.2fr; gap:clamp(28px,4vw,56px); align-items:center;">
+        <div>
+          <div style="font-size:clamp(56px,9vw,96px); font-weight:700; line-height:.9; letter-spacing:-.03em; color:var(--accent,#d97a4f);">{{ histPct }}٪</div>
+          <div style="margin-top:18px; font-size:15px; line-height:1.6; opacity:.82;">من إجمالي الأحداث الموثّقة وقعت خلال أقل من 16٪ من المدّة الزمنية — منذ 7 أكتوبر 2023.</div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:24px;">
+          <div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:14px;"><span style="font-weight:600;">منذ طوفان الأقصى</span><span style="font-weight:700; font-variant-numeric:tabular-nums;">{{ histSince }}</span></div>
+            <div style="height:16px; border-radius:99px; background:rgba(255,255,255,.12); overflow:hidden;"><div style="height:100%; width:{{ histPct }}%; background:var(--accent,#d97a4f); border-radius:99px; transition:width .7s cubic-bezier(.2,.7,.3,1);"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:14px; opacity:.75;"><span style="font-weight:600;">قبل طوفان الأقصى (2018 — 2023)</span><span style="font-weight:700; font-variant-numeric:tabular-nums;">{{ histBefore }}</span></div>
+            <div style="height:16px; border-radius:99px; background:rgba(255,255,255,.12); overflow:hidden;"><div style="height:100%; width:42%; background:rgba(255,255,255,.5); border-radius:99px; transition:width .7s cubic-bezier(.2,.7,.3,1);"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rv" style="margin-bottom:clamp(56px,8vw,104px);">
+      <h2 style="margin:0 0 30px; font-size:clamp(22px,3vw,30px); font-weight:700; color:var(--ink,#211c16); letter-spacing:-.01em;">الخط الزمني للأحداث</h2>
+      <div style="position:relative; padding-inline-start:26px; border-inline-start:2px solid var(--border,#e0d7c6); display:flex; flex-direction:column; gap:30px;">
+        <sc-for list="{{ timeline }}" as="ev" hint-placeholder-count="4">
+          <div style="position:relative;">
+            <span style="position:absolute; inset-inline-start:-33px; top:4px; width:13px; height:13px; border-radius:50%; background:var(--accent,#b4532a); border:3px solid var(--bg,#f4efe6);"></span>
+            <div style="font-size:12.5px; font-weight:600; color:var(--accent,#b4532a); margin-bottom:6px;">{{ ev.d }}</div>
+            <div style="font-size:16px; font-weight:600; line-height:1.5; color:var(--ink,#211c16); max-width:74ch;">{{ ev.t }}</div>
+            <span style="display:inline-block; margin-top:9px; font-size:11.5px; font-weight:600; color:var(--muted,#6f6657); padding:3px 11px; border-radius:999px; background:var(--surface-2,#efe8da);">{{ ev.tag }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section class="rv" style="margin-bottom:clamp(56px,8vw,104px);">
+      <div style="display:flex; justify-content:space-between; align-items:baseline; gap:16px; margin-bottom:30px;">
+        <h2 style="margin:0; font-size:clamp(22px,3vw,30px); font-weight:700; color:var(--ink,#211c16); letter-spacing:-.01em;">آخر التقارير</h2>
+        <a href="#" style="font-size:13.5px; font-weight:600; color:var(--accent,#b4532a); text-decoration:none;">كل التقارير ←</a>
+      </div>
+
+      <article style="display:grid; grid-template-columns:1.1fr 1fr; gap:clamp(20px,3vw,40px); align-items:center; margin-bottom:40px; padding-bottom:40px; border-bottom:1px solid var(--border,#e0d7c6);">
+        <div style="aspect-ratio:16/10; border-radius:18px; background:linear-gradient(135deg, color-mix(in srgb, var(--accent,#b4532a) 22%, var(--surface,#fbf8f1)), var(--surface-2,#efe8da)); border:1px solid var(--border,#e0d7c6); display:flex; align-items:center; justify-content:center; color:var(--muted,#6f6657); font-size:13px;">صورة التقرير</div>
+        <div>
+          <span style="display:inline-block; font-size:11.5px; font-weight:700; color:var(--accent,#b4532a); letter-spacing:.04em; margin-bottom:14px;">تقرير دوري · 2 أكتوبر 2025</span>
+          <h3 style="margin:0 0 14px; font-size:clamp(20px,2.4vw,27px); line-height:1.35; font-weight:700; color:var(--ink,#211c16); text-wrap:pretty;">16 شهيداً و248 جريحاً في 7,514 انتهاكاً إسرائيلياً في الضفة والقدس خلال سبتمبر 2025</h3>
+          <p style="margin:0 0 18px; font-size:15px; line-height:1.7; color:var(--muted,#6f6657);">رصد مركز معلومات فلسطين «معطى» استمرار قوات الاحتلال الإسرائيلي والمستوطنين في ارتكاب سلسلة واسعة من الانتهاكات بحق الفلسطينيين وممتلكاتهم خلال الشهر.</p>
+          <a href="#" style="font-size:14px; font-weight:600; color:var(--accent,#b4532a); text-decoration:none;">اقرأ التقرير كاملاً ←</a>
+        </div>
+      </article>
+
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px;">
+        <sc-for list="{{ articles }}" as="a" hint-placeholder-count="3">
+          <a href="#" style="text-decoration:none; display:block;" data-st>
+            <div style="aspect-ratio:16/10; border-radius:14px; background:linear-gradient(135deg, var(--surface-2,#efe8da), var(--surface,#fbf8f1)); border:1px solid var(--border,#e0d7c6); margin-bottom:14px; display:flex; align-items:center; justify-content:center; color:var(--muted,#6f6657); font-size:12px;">صورة</div>
+            <span style="font-size:11px; font-weight:700; color:var(--accent,#b4532a); letter-spacing:.03em;">{{ a.tag }} · {{ a.d }}</span>
+            <h4 style="margin:8px 0 0; font-size:15.5px; line-height:1.5; font-weight:600; color:var(--ink,#211c16); text-wrap:pretty;">{{ a.t }}</h4>
+          </a>
+        </sc-for>
+      </div>
+    </section>
+
+    <section class="rv" style="margin-bottom:clamp(56px,8vw,104px);">
+      <div style="display:grid; grid-template-columns:360px 1fr; gap:clamp(20px,3vw,40px); align-items:start;">
+        <div style="background:var(--surface,#fbf8f1); border:1px solid var(--border,#e0d7c6); border-radius:22px; padding:26px;" data-st>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <button style="width:30px; height:30px; border-radius:8px; border:1px solid var(--border,#e0d7c6); background:var(--bg,#f4efe6); color:var(--muted,#6f6657); cursor:pointer;" data-st>›</button>
+            <div style="text-align:center;">
+              <div style="font-size:11px; color:var(--accent,#b4532a); font-weight:700; letter-spacing:.05em;">حدث في مثل هذا اليوم</div>
+              <div style="font-size:17px; font-weight:700; color:var(--ink,#211c16); margin-top:2px;">يونيو 2026</div>
+            </div>
+            <button style="width:30px; height:30px; border-radius:8px; border:1px solid var(--border,#e0d7c6); background:var(--bg,#f4efe6); color:var(--muted,#6f6657); cursor:pointer;" data-st>‹</button>
+          </div>
+          <div class="keep7" style="display:grid; grid-template-columns:repeat(7,1fr); gap:5px; margin-bottom:8px;">
+            <sc-for list="{{ dows }}" as="dw" hint-placeholder-count="7">
+              <div style="text-align:center; font-size:10.5px; font-weight:600; color:var(--muted,#6f6657);">{{ dw }}</div>
+            </sc-for>
+          </div>
+          <sc-for list="{{ cal }}" as="row" hint-placeholder-count="5">
+            <div class="keep7" style="display:grid; grid-template-columns:repeat(7,1fr); gap:5px; margin-bottom:5px;">
+              <sc-for list="{{ row }}" as="c" hint-placeholder-count="7">
+                <div style="aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:13px; border-radius:9px; font-variant-numeric:tabular-nums; background:{{ c.today ? 'var(--accent,#b4532a)' : (c.marked ? 'var(--surface-2,#efe8da)' : 'transparent') }}; color:{{ c.today ? '#fff' : (c.marked ? 'var(--ink,#211c16)' : 'var(--muted,#6f6657)') }}; font-weight:{{ c.marked ? '700' : '400' }}; cursor:{{ c.empty ? 'default' : 'pointer' }};" data-st>{{ c.day }}</div>
+              </sc-for>
+            </div>
+          </sc-for>
+          <div style="display:flex; gap:16px; margin-top:16px; font-size:11.5px; color:var(--muted,#6f6657);">
+            <span style="display:flex; align-items:center; gap:6px;"><span style="width:11px; height:11px; border-radius:3px; background:var(--surface-2,#efe8da);"></span> يحتوي أحداثاً</span>
+            <span style="display:flex; align-items:center; gap:6px;"><span style="width:11px; height:11px; border-radius:3px; background:var(--accent,#b4532a);"></span> اليوم</span>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:15px; font-weight:700; color:var(--ink,#211c16); margin-bottom:20px;">تقارير مختارة</div>
+          <div style="display:flex; flex-direction:column; gap:14px;">
+            <sc-for list="{{ reports }}" as="r" hint-placeholder-count="3">
+              <a href="#" style="display:flex; gap:18px; align-items:center; padding:16px; border-radius:16px; background:var(--surface,#fbf8f1); border:1px solid var(--border,#e0d7c6); text-decoration:none;" data-st>
+                <div style="flex:none; width:84px; height:64px; border-radius:11px; background:linear-gradient(135deg, var(--surface-2,#efe8da), color-mix(in srgb, var(--accent,#b4532a) 14%, var(--surface,#fbf8f1))); border:1px solid var(--border,#e0d7c6);"></div>
+                <div style="flex:1;">
+                  <h4 style="margin:0 0 6px; font-size:15px; line-height:1.45; font-weight:600; color:var(--ink,#211c16); text-wrap:pretty;">{{ r.t }}</h4>
+                  <span style="font-size:12px; color:var(--muted,#6f6657);">تقرير خاص · {{ r.d }}</span>
+                </div>
+              </a>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--SECTIONS-->
+
+  </main>
+
+  <footer style="background:var(--foot-bg,#201b15); color:var(--foot-ink,#ece4d6); margin-top:clamp(40px,6vw,80px);" data-st>
+    <div style="max-width:1180px; margin:0 auto; padding:clamp(48px,6vw,72px) clamp(20px,5vw,72px) 36px; display:grid; grid-template-columns:1.6fr 1fr 1fr 1.3fr; gap:clamp(28px,4vw,56px);">
+      <div>
+        <img src="assets/logo.png" alt="مُعطى — مركز معلومات فلسطين" style="height:54px; width:auto; display:block; margin-bottom:18px; filter:brightness(0) invert(1);">
+
+        <p style="margin:0; font-size:14px; line-height:1.7; color:var(--foot-mut,#9c9486); max-width:40ch;">نوثّق ونحلّل كل ما يتعلّق بالقضية الفلسطينية باحترافية وموضوعية، ونقدّم تقارير دورية حول الواقع الفلسطيني ومواجهة الاحتلال.</p>
+      </div>
+      <div>
+        <div style="font-size:13px; font-weight:700; margin-bottom:18px;">روابط سريعة</div>
+        <div style="display:flex; flex-direction:column; gap:12px; font-size:13.5px;">
+          <a href="#" style="color:var(--foot-mut,#9c9486); text-decoration:none;" data-st>الرئيسية</a>
+          <a href="#" style="color:var(--foot-mut,#9c9486); text-decoration:none;" data-st>من نحن</a>
+          <a href="#" style="color:var(--foot-mut,#9c9486); text-decoration:none;" data-st>التقارير</a>
+          <a href="#" style="color:var(--foot-mut,#9c9486); text-decoration:none;" data-st>منذ 7 أكتوبر</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px; font-weight:700; margin-bottom:18px;">روابط موصى بها</div>
+        <div style="display:flex; flex-direction:column; gap:12px; font-size:13.5px;">
+          <a href="#" style="color:var(--foot-mut,#9c9486); text-decoration:none;" data-st>القرى الفلسطينية</a>
+          <a href="#" style="color:var(--foot-mut,#9c9486); text-decoration:none;" data-st>مرصد شيرين</a>
+          <a href="#" style="color:var(--foot-mut,#9c9486); text-decoration:none;" data-st>الرواية المصوّرة</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px; font-weight:700; margin-bottom:14px;">النشرة البريدية</div>
+        <p style="margin:0 0 16px; font-size:13px; color:var(--foot-mut,#9c9486); line-height:1.6;">اشترك لتصلك أبرز التقارير والتحديثات.</p>
+        <div style="display:flex; gap:8px;">
+          <input placeholder="بريدك الإلكتروني" style="flex:1; min-width:0; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.14); border-radius:10px; padding:11px 14px; color:var(--foot-ink,#ece4d6); font-family:inherit; font-size:13px;">
+          <button style="flex:none; background:var(--accent,#b4532a); color:#fff; border:none; border-radius:10px; padding:0 20px; font-family:inherit; font-size:13.5px; font-weight:600; cursor:pointer;" data-st>اشترك</button>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.1);">
+      <div style="max-width:1180px; margin:0 auto; padding:22px clamp(20px,5vw,72px); display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; font-size:12.5px; color:var(--foot-mut,#9c9486);">
+        <span>© 2026 مُعطى — مركز معلومات فلسطين. جميع الحقوق محفوظة.</span>
+        <div style="display:flex; gap:22px;">
+          <a href="#" style="color:var(--foot-mut,#9c9486); text-decoration:none;" data-st>سياسة الخصوصية</a>
+          <a href="#" style="color:var(--foot-mut,#9c9486); text-decoration:none;" data-st>الشروط والأحكام</a>
+          <a href="#" style="color:var(--foot-mut,#9c9486); text-decoration:none;" data-st>تواصل معنا</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:900},&quot;initialMode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;'light' | 'dark'&quot;},&quot;direction&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;conservative&quot;,&quot;editorial&quot;,&quot;bold&quot;],&quot;default&quot;:&quot;editorial&quot;,&quot;tsType&quot;:&quot;'conservative' | 'editorial' | 'bold'&quot;}}">
+class Component extends DCLogic {
+  state = { mode: this.props.initialMode || 'light', dir: this.props.direction || 'editorial', t: 0, opCat: 'q', mapMetric: 'all', mapHover: null, trendType: 'area', heatCat: 'all', histPeriod: 'aqsa', monthHover: null };
+
+  // ---- real data from mo3ta.taktek.co ----
+  D = {
+    hero: [
+      { key:'martyrs', label:'شهداء فلسطينيون', target:1581, note:'منذ 1 يناير 2018', accent:true },
+      { key:'injured', label:'جرحى فلسطينيون', target:36776, note:'إصابات موثّقة', accent:false },
+      { key:'events', label:'إجمالي الأحداث', target:434505, note:'حدث موثّق · 102 شهر', accent:false },
+    ],
+    kpisLead: [
+      { label:'إجمالي الأحداث', target:434505, icon:'◆', tone:'ink' },
+      { label:'انتهاكات الاحتلال', target:370772, icon:'⚠', tone:'red' },
+      { label:'مقاومة شعبية', target:55516, icon:'✊', tone:'accent' },
+      { label:'مقاومة نوعية', target:8217, icon:'⊛', tone:'olive' },
+    ],
+    kpisSub: [
+      { label:'شهداء فلسطينيون', target:1581, tone:'red' },
+      { label:'جرحى فلسطينيون', target:36776, tone:'accent' },
+      { label:'قتلى إسرائيليون', target:154, tone:'muted' },
+      { label:'جرحى إسرائيليون', target:2439, tone:'muted' },
+    ],
+  };
+
+  themes() {
+    const accents = {
+      conservative: { l:'#2b2a6b', d:'#7e7dd6' },
+      editorial:    { l:'#1c80a8', d:'#3aa6cd' },
+      bold:         { l:'#1593c4', d:'#49b6df' },
+    };
+    const a = accents[this.state.dir] || accents.editorial;
+    if (this.state.mode === 'dark') {
+      return { mode:'dark', bg:'#13142a', surface:'#1d1f3c', surface2:'#2a2d50', ink:'#eef1f8', muted:'#9aa1bb', border:'#313663', accent:a.d, bar:'rgba(19,20,42,.82)', red:'#e36a59', olive:'#7170cf', footBg:'#0e0f20', footInk:'#e8ecf5', footMut:'#8c93b0', logoFilter:'brightness(0) invert(1)' };
+    }
+    return { mode:'light', bg:'#f3f5f8', surface:'#ffffff', surface2:'#e9edf3', ink:'#1f2147', muted:'#6b7186', border:'#dde3ec', accent:a.l, bar:'rgba(243,245,248,.85)', red:'#c23a2e', olive:'#3b3a86', footBg:'#1f2147', footInk:'#e8ecf5', footMut:'#98a0bb', logoFilter:'none' };
+  }
+
+  componentDidMount() {
+    const start = performance.now(), dur = 1300;
+    const tick = (now) => {
+      let p = Math.min(1, (now - start) / dur);
+      p = 1 - Math.pow(1 - p, 3);
+      this.setState({ t: p });
+      if (p < 1) this._raf = requestAnimationFrame(tick);
+    };
+    this._raf = requestAnimationFrame(tick);
+  }
+  componentWillUnmount() { if (this._raf) cancelAnimationFrame(this._raf); }
+
+  fmt(n) {
+    if (n >= 1000) return Math.round(n).toLocaleString('en-US');
+    return Math.round(n).toLocaleString('en-US');
+  }
+  cnt(target) { return this.fmt(target * this.state.t); }
+
+  spark(seed, color) {
+    const pts = [], n = 26;
+    let v = 30 + (seed % 7) * 4;
+    for (let i = 0; i < n; i++) {
+      v += Math.sin(i * 0.9 + seed) * 8 + (((i * (seed+3)) % 11) - 5);
+      if (i === 18) v += 38;
+      pts.push(Math.max(6, v));
+    }
+    const mx = Math.max(...pts), w = 120, h = 30;
+    const d = pts.map((p,i) => `${(i/(n-1))*w},${h - (p/mx)*h}`).join(' ');
+    return React.createElement('svg', { viewBox:`0 0 ${w} ${h}`, width:'100%', height:30, preserveAspectRatio:'none', style:{ display:'block', opacity:0.55 } },
+      React.createElement('polyline', { points:d, fill:'none', stroke:color, strokeWidth:1.6, strokeLinejoin:'round', strokeLinecap:'round' })
+    );
+  }
+
+  // ===== extended real data =====
+  GOV = [
+    { n:'نابلس', v:66547, x:188, y:150 },
+    { n:'جنين', v:57533, x:200, y:106 },
+    { n:'طولكرم', v:50740, x:150, y:126 },
+    { n:'الخليل', v:50543, x:176, y:286 },
+    { n:'رام الله والبيرة', v:49839, x:182, y:198 },
+    { n:'القدس', v:48633, x:188, y:226 },
+    { n:'بيت لحم', v:30798, x:182, y:250 },
+    { n:'قلقيلية', v:26422, x:150, y:158 },
+    { n:'سلفيت', v:16124, x:168, y:176 },
+    { n:'طوباس', v:15098, x:222, y:132 },
+    { n:'أريحا والأغوار', v:9120, x:230, y:214 },
+    { n:'قطاع غزة', v:41260, x:48, y:300, gaza:true },
+  ];
+  METRICS = [
+    { id:'all', label:'الكل', mult:1 },
+    { id:'q', label:'نوعية', mult:0.0189 },
+    { id:'p', label:'شعبية', mult:0.1278 },
+    { id:'v', label:'انتهاكات', mult:0.8533 },
+    { id:'martyrs', label:'شهداء', mult:0.0036 },
+    { id:'injured', label:'جرحى', mult:0.0847 },
+    { id:'crimes', label:'جرائم', mult:0.052 },
+  ];
+  OPS = {
+    q: { label:'مقاومة نوعية', items:[
+      { n:'إطلاق نار', v:4580 }, { n:'عبوات ناسفة', v:2127 }, { n:'عمليات طعن', v:266 }, { n:'عمليات دهس', v:139 } ] },
+    p: { label:'مقاومة شعبية', items:[
+      { n:'مواجهات', v:42068 }, { n:'صدّ مستوطنين', v:6558 }, { n:'تظاهرات', v:4196 }, { n:'زجاجات حارقة', v:2171 } ] },
+    v: { label:'انتهاكات الاحتلال', items:[
+      { n:'اقتحام', v:60758 }, { n:'اعتقال', v:54385 }, { n:'تضييقات الحواجز', v:48308 }, { n:'إغلاقات', v:12575 }, { n:'تدمير ممتلكات', v:10951 }, { n:'جريح', v:40614 }, { n:'شهيد', v:1670 }, { n:'إبعاد', v:1356 } ] },
+  };
+  WEEK = [
+    { d:'الأحد', v:35559 }, { d:'الإثنين', v:38644 }, { d:'الثلاثاء', v:40273 },
+    { d:'الأربعاء', v:37615 }, { d:'الخميس', v:34058 }, { d:'الجمعة', v:37514 }, { d:'السبت', v:31136 },
+  ];
+  CATSHARE = [
+    { n:'انتهاكات الاحتلال', v:370772, tone:'red' },
+    { n:'مقاومة شعبية', v:55516, tone:'accent' },
+    { n:'مقاومة نوعية', v:8217, tone:'olive' },
+  ];
+  ARTICLES = [
+    { t:'16 شهيداً و248 جريحاً في 7514 انتهاكاً إسرائيلياً في الضفة والقدس خلال شهر سبتمبر 2025', d:'2 أكتوبر 2025', tag:'تقرير دوري', big:true },
+    { t:'10 قتلى و51 جريحاً إسرائيلياً — عمليات نوعية تهزّ الاحتلال في الضفة والقدس خلال سبتمبر 2025', d:'1 أكتوبر 2025', tag:'تقرير دوري' },
+    { t:'7 شهداء و183 جريحاً في 6009 انتهاكاً إسرائيلياً في الضفة والقدس خلال أغسطس 2025', d:'2 سبتمبر 2025', tag:'تقرير دوري' },
+    { t:'7 جرحى إسرائيليين | 263 عملاً مقاوماً في الضفة الغربية خلال أغسطس 2025', d:'1 سبتمبر 2025', tag:'تقرير دوري' },
+  ];
+  REPORTS = [
+    { t:'تقرير خاص — الحواجز والبوابات الحديدية: تقطيعٌ لأوصال الضفة الغربية', d:'18 سبتمبر 2025' },
+    { t:'تقرير خاص: الشعارات التي ظهرت على منصّة تسليم الأسرى في صفقة التبادل الرابعة', d:'1 فبراير 2025' },
+    { t:'تقرير خاص: دلالات الرموز ونوعية السلاح الذي غنمته المقاومة في جباليا', d:'30 يناير 2025' },
+  ];
+  TIMELINE = [
+    { d:'2 أكتوبر 2025', t:'16 شهيداً و248 جريحاً في 7514 انتهاكاً إسرائيلياً في الضفة والقدس خلال سبتمبر 2025', tag:'تقرير دوري' },
+    { d:'1 أكتوبر 2025', t:'10 قتلى و51 جريحاً إسرائيلياً — عمليات نوعية تهزّ الاحتلال خلال سبتمبر 2025', tag:'تقرير دوري' },
+    { d:'2 سبتمبر 2025', t:'7 شهداء و183 جريحاً في 6009 انتهاكاً إسرائيلياً خلال شهر أغسطس 2025', tag:'تقرير دوري' },
+    { d:'1 سبتمبر 2025', t:'7 جرحى إسرائيليين و263 عملاً مقاوماً في الضفة الغربية خلال أغسطس 2025', tag:'تقرير دوري' },
+  ];
+
+  rng(s){ const x = Math.sin(s*12.9898)*43758.5453; return x - Math.floor(x); }
+
+  monthly() {
+    if (this._mo) return this._mo;
+    const n=102, q=[],p=[],v=[],tot=[],labels=[];
+    const may21=40, oct23=69;
+    for(let i=0;i<n;i++){
+      const yr=2018+Math.floor(i/12), mo=(i%12)+1;
+      labels.push(`${yr}-${String(mo).padStart(2,'0')}`);
+      let base=85+45*Math.sin(i*0.5+1)+this.rng(i+3)*40;
+      let mult=1;
+      if(i===may21) mult=4.0; else if(Math.abs(i-may21)===1) mult=1.9;
+      if(i>=oct23) mult=Math.max(mult, 2.6 - (i-oct23)*0.05);
+      if(i===oct23) mult=4.7;
+      const total=Math.max(28, Math.round(base*mult));
+      const vv=Math.round(total*(0.80+this.rng(i)*0.06));
+      const pp=Math.round(total*(0.12+this.rng(i+1)*0.05));
+      const qq=Math.max(1, total-vv-pp);
+      tot.push(total); v.push(vv); p.push(pp); q.push(qq);
+    }
+    return this._mo={ labels, q, p, v, tot };
+  }
+
+  // smooth path (catmull-rom -> bezier)
+  smooth(pts){
+    if(pts.length<2) return '';
+    let d=`M ${pts[0][0]},${pts[0][1]}`;
+    for(let i=0;i<pts.length-1;i++){
+      const p0=pts[i-1]||pts[i], p1=pts[i], p2=pts[i+1], p3=pts[i+2]||p2;
+      const c1x=p1[0]+(p2[0]-p0[0])/6, c1y=p1[1]+(p2[1]-p0[1])/6;
+      const c2x=p2[0]-(p3[0]-p1[0])/6, c2y=p2[1]-(p3[1]-p1[1])/6;
+      d+=` C ${c1x},${c1y} ${c2x},${c2y} ${p2[0]},${p2[1]}`;
+    }
+    return d;
+  }
+
+  lineChart(th){
+    const m=this.monthly(), n=m.tot.length, W=860, H=300, padB=34, padT=18, padX=8;
+    const type=this.state.trendType;
+    const iw=W-padX*2, ih=H-padB-padT;
+    const X=i=> padX + (i/(n-1))*iw;
+    const series = type==='stacked' ? [
+      { key:'v', color:th.red }, { key:'p', color:th.accent }, { key:'q', color:th.olive }
+    ] : [{ key:'tot', color:th.accent }];
+    let mx = type==='stacked' ? Math.max(...m.tot) : Math.max(...m[series[0].key]);
+    mx = mx*1.08;
+    const Y=val=> padT + ih - (val/mx)*ih;
+    const els=[];
+    // gridlines
+    for(let g=0; g<=3; g++){
+      const yy=padT+ (ih/3)*g;
+      els.push(React.createElement('line',{key:'g'+g,x1:padX,x2:W-padX,y1:yy,y2:yy,stroke:th.border,strokeWidth:1,opacity:.7}));
+      els.push(React.createElement('text',{key:'gt'+g,x:W-padX,y:yy-4,textAnchor:'end',fontSize:10,fill:th.muted},Math.round(mx*(1-g/3))));
+    }
+    if(type==='stacked'){
+      let acc=new Array(n).fill(0);
+      series.forEach((s,si)=>{
+        const top=m[s.key].map((val,i)=>{ acc[i]+=val; return [X(i), Y(acc[i])]; });
+        const bottomVals = m[s.key].map((val,i)=> acc[i]-val);
+        const bot=bottomVals.map((val,i)=>[X(i),Y(val)]).reverse();
+        const dd=this.smooth(top)+' L '+bot.map(pt=>pt[0]+','+pt[1]).join(' L ')+' Z';
+        els.push(React.createElement('path',{key:'st'+si,d:dd,fill:s.color,opacity:.85}));
+      });
+    } else {
+      const key=series[0].key, color=series[0].color;
+      const pts=m[key].map((val,i)=>[X(i),Y(val)]);
+      const lineD = (type==='line'||type==='area') ? 'M '+pts.map(pt=>pt[0]+','+pt[1]).join(' L ') : this.smooth(pts);
+      if(type==='area'||type==='curve'){
+        const areaD=lineD+` L ${X(n-1)},${padT+ih} L ${X(0)},${padT+ih} Z`;
+        els.push(React.createElement('defs',{key:'def'},React.createElement('linearGradient',{id:'mg',x1:0,y1:0,x2:0,y2:1},
+          React.createElement('stop',{offset:'0%',stopColor:color,stopOpacity:.32}),
+          React.createElement('stop',{offset:'100%',stopColor:color,stopOpacity:0}))));
+        els.push(React.createElement('path',{key:'ar',d:areaD,fill:'url(#mg)'}));
+      }
+      if(type==='bars'){
+        const bw=iw/n*0.62;
+        pts.forEach((pt,i)=> els.push(React.createElement('rect',{key:'b'+i,x:pt[0]-bw/2,y:pt[1],width:bw,height:padT+ih-pt[1],rx:1.5,fill:color,opacity:.85})));
+      } else {
+        els.push(React.createElement('path',{key:'ln',d:lineD,fill:'none',stroke:color,strokeWidth:2.2,strokeLinejoin:'round',strokeLinecap:'round'}));
+      }
+    }
+    // x labels (years)
+    for(let yr=0; yr<=8; yr++){
+      const i=Math.min(n-1, yr*12);
+      els.push(React.createElement('text',{key:'x'+yr,x:X(i),y:H-12,textAnchor:'middle',fontSize:10.5,fill:th.muted},2018+yr));
+    }
+    // peak markers
+    [40,69].forEach((pi,k)=>{
+      els.push(React.createElement('line',{key:'pk'+k,x1:X(pi),x2:X(pi),y1:padT,y2:padT+ih,stroke:th.red,strokeWidth:1,strokeDasharray:'3 3',opacity:.5}));
+    });
+    return React.createElement('svg',{viewBox:`0 0 ${W} ${H}`,width:'100%',style:{display:'block'}},els);
+  }
+
+  donut(th){
+    const segs=this.CATSHARE, tot=segs.reduce((a,s)=>a+s.v,0);
+    const R=78, r=50, cx=100, cy=100; let a0=-Math.PI/2; const els=[];
+    segs.forEach((s,i)=>{
+      const frac=s.v/tot, a1=a0+frac*Math.PI*2;
+      const lg=frac>0.5?1:0;
+      const x0=cx+R*Math.cos(a0), y0=cy+R*Math.sin(a0), x1=cx+R*Math.cos(a1), y1=cy+R*Math.sin(a1);
+      const xi1=cx+r*Math.cos(a1), yi1=cy+r*Math.sin(a1), xi0=cx+r*Math.cos(a0), yi0=cy+r*Math.sin(a0);
+      const d=`M ${x0},${y0} A ${R},${R} 0 ${lg} 1 ${x1},${y1} L ${xi1},${yi1} A ${r},${r} 0 ${lg} 0 ${xi0},${yi0} Z`;
+      els.push(React.createElement('path',{key:i,d,fill:this.toneColor(s.tone,th)}));
+      a0=a1;
+    });
+    els.push(React.createElement('text',{key:'c1',x:cx,y:cy-4,textAnchor:'middle',fontSize:21,fontWeight:700,fill:th.ink},'85.3٪'));
+    els.push(React.createElement('text',{key:'c2',x:cx,y:cy+14,textAnchor:'middle',fontSize:10,fill:th.muted},'انتهاكات'));
+    return React.createElement('svg',{viewBox:'0 0 200 200',width:'100%',height:200,style:{display:'block'}},els);
+  }
+
+  heatmapSvg(th){
+    const cities=this.GOV.filter(g=>!g.gaza).slice(0,12).map(g=>g.n);
+    const cols=40, cell=15, gap=2.5, lblW=84, W=lblW+cols*(cell+gap), H=cities.length*(cell+gap)+20;
+    const els=[]; const catSeed = {all:0,q:5,p:9,v:2,crimes:7}[this.state.heatCat]||0;
+    cities.forEach((c,ri)=>{
+      els.push(React.createElement('text',{key:'l'+ri,x:lblW-8,y:ri*(cell+gap)+cell-2.5,textAnchor:'end',fontSize:10.5,fill:th.muted},c));
+      for(let ci=0;ci<cols;ci++){
+        const intensity=this.rng(ri*100+ci+catSeed);
+        let spike = (ci>26 && ci<31) ? 0.5 : 0; if(ci===28) spike=0.7;
+        const val=Math.min(1, intensity*0.7+spike);
+        const op = 0.08 + val*0.92;
+        els.push(React.createElement('rect',{key:ri+'-'+ci, x:lblW+ci*(cell+gap), y:ri*(cell+gap), width:cell, height:cell, rx:2.5, fill:th.accent, opacity:op}));
+      }
+    });
+    return React.createElement('svg',{viewBox:`0 0 ${W} ${H}`,width:'100%',style:{display:'block'}},els);
+  }
+
+  mapSvg(th){
+    const metric=this.METRICS.find(m=>m.id===this.state.mapMetric)||this.METRICS[0];
+    const vals=this.GOV.map(g=> g.gaza && metric.id!=='all' ? Math.round(g.v*metric.mult*1.4) : Math.round(g.v*metric.mult*(0.7+this.rng(g.x+g.y)*0.7)));
+    const mx=Math.max(...vals);
+    const sil="M138,40 L150,38 L162,52 L158,70 L150,92 L160,110 L156,134 L168,150 L160,176 L172,196 L165,222 L176,246 L170,276 L182,300 L176,330 L150,360 L120,392 L96,360 L86,326 L78,300 L72,270 L80,250 L70,228 L84,206 L74,184 L92,164 L82,142 L100,122 L92,100 L110,82 L104,62 L122,50 Z";
+    const els=[];
+    els.push(React.createElement('path',{key:'sil',d:sil,fill:th.surface2,stroke:th.border,strokeWidth:1.5}));
+    this.GOV.forEach((g,i)=>{
+      const rad=7+Math.sqrt(vals[i]/mx)*20;
+      const hov=this.state.mapHover===i;
+      els.push(React.createElement('circle',{key:'c'+i,cx:g.x,cy:g.y,r:rad,
+        fill: g.gaza?th.red:th.accent, opacity: hov?0.95:0.62,
+        stroke: hov?(th.mode==='dark'?'#fff':th.ink):'transparent', strokeWidth:hov?1.5:0,
+        style:{cursor:'pointer',transition:'opacity .2s, r .2s'},
+        onMouseEnter:()=>this.setState({mapHover:i}), onMouseLeave:()=>this.setState({mapHover:null})}));
+    });
+    return React.createElement('svg',{viewBox:'0 0 300 420',width:'100%',style:{display:'block',maxHeight:480}},els);
+  }
+
+  toneColor(tone, th) {
+    return ({ ink:th.ink, red:th.red, accent:th.accent, olive:th.olive, muted:th.muted })[tone] || th.ink;
+  }
+  toneTint(tone, th) {
+    const c = this.toneColor(tone, th);
+    return this.state.mode === 'dark' ? 'rgba(255,255,255,.06)' : (c + '18');
+  }
+
+  renderVals() {
+    const th = this.themes();
+    const rootStyle = `--bg:${th.bg};--surface:${th.surface};--surface-2:${th.surface2};--ink:${th.ink};--muted:${th.muted};--border:${th.border};--accent:${th.accent};--bar:${th.bar};--red:${th.red};--olive:${th.olive};--foot-bg:${th.footBg};--foot-ink:${th.footInk};--foot-mut:${th.footMut};background:var(--bg);color:var(--ink);min-height:100vh;transition:background .3s ease,color .3s ease;`;
+
+    const dirs = [
+      { id:'conservative', label:'محافظ' },
+      { id:'editorial', label:'تحريري' },
+      { id:'bold', label:'جريء' },
+    ].map(d => ({
+      label: d.label,
+      set: () => this.setState({ dir: d.id }),
+      style: `border:none; cursor:pointer; font-family:inherit; font-size:12.5px; font-weight:600; padding:6px 12px; border-radius:8px; background:${this.state.dir===d.id?th.accent:'transparent'}; color:${this.state.dir===d.id?'#fff':th.muted};`,
+    }));
+
+    const heroFigures = this.D.hero.map(h => ({
+      display: this.cnt(h.target),
+      label: h.label,
+      note: h.note,
+      color: h.accent ? th.red : th.ink,
+    }));
+
+    const kpisLead = this.D.kpisLead.map((k,i) => ({
+      label:k.label, icon:k.icon, display:this.cnt(k.target),
+      color:this.toneColor(k.tone,th), tint:this.toneTint(k.tone,th),
+      spark:this.spark(i*5+3, this.toneColor(k.tone,th)),
+      hov:()=>{}, out:()=>{},
+    }));
+    const kpisSub = this.D.kpisSub.map(k => ({
+      label:k.label, display:this.cnt(k.target),
+      color:this.toneColor(k.tone,th), icon:'›',
+    }));
+
+    const filters = [
+      { label:'النطاق', value:'2018 → 2026' },
+      { label:'الجغرافيا', value:'الضفة · غزة · 48' },
+      { label:'المحافظات', value:'12 محافظة' },
+      { label:'النوع', value:'كل الأنواع' },
+    ];
+
+    return {
+      rootStyle,
+      directions: dirs,
+      toggleMode: () => this.setState({ mode: this.state.mode === 'light' ? 'dark' : 'light' }),
+      modeIcon: this.state.mode === 'light' ? '☾' : '☀',
+      heroFigures, kpisLead, kpisSub, filters,
+      ...this.sections(th),
+    };
+  }
+
+  sections(th) {
+    const metric=this.METRICS.find(m=>m.id===this.state.mapMetric)||this.METRICS[0];
+    const gvals=this.GOV.map(g=> g.gaza && metric.id!=='all' ? Math.round(g.v*metric.mult*1.4) : Math.round(g.v*metric.mult*(0.7+this.rng(g.x+g.y)*0.7)));
+    const gmx=Math.max(...gvals);
+    const mapMetrics=this.METRICS.map(m=>({ label:m.label, active:m.id===this.state.mapMetric, set:()=>this.setState({mapMetric:m.id}) }));
+    const idx=this.state.mapHover;
+    const hg=idx!=null?this.GOV[idx]:null;
+    const mapTip = hg ? { show:true, name:hg.n, value:this.fmt(gvals[idx]), label:metric.label, left:(hg.x/300*100)+'%', top:(hg.y/420*100)+'%' } : { show:false, name:'', value:'', label:'', left:'0', top:'0' };
+    const mapRanked=this.GOV.map((g,i)=>({ n:g.n, i, v:gvals[i] }))
+      .sort((a,b)=>b.v-a.v).slice(0,8)
+      .map(r=>({ n:r.n, v:this.fmt(r.v), w:(r.v/gmx*100)+'%', active:r.i===idx, set:()=>this.setState({mapHover:r.i}), clear:()=>this.setState({mapHover:null}), color: this.GOV[r.i].gaza?th.red:th.accent }));
+
+    const trendTypes=[['area','مساحي'],['line','خطّي'],['curve','منحنى'],['bars','أعمدة'],['stacked','مكدّس']]
+      .map(([id,label])=>({ label, active:this.state.trendType===id, set:()=>this.setState({trendType:id}) }));
+
+    const cat=this.OPS[this.state.opCat]||this.OPS.q;
+    const opMax=Math.max(...cat.items.map(x=>x.v));
+    const opTabs=Object.keys(this.OPS).map(k=>({ label:this.OPS[k].label, count:this.OPS[k].items.length, active:this.state.opCat===k, set:()=>this.setState({opCat:k}) }));
+    const opItems=cat.items.map(x=>({ n:x.n, v:this.fmt(x.v), w:(x.v/opMax*100)+'%' }));
+
+    const sortedGov=this.GOV.filter(g=>!g.gaza).sort((a,b)=>b.v-a.v);
+    const gov5max=sortedGov[0].v;
+    const topGov5=sortedGov.slice(0,5).map((g,i)=>({ rank:i+1, n:g.n, v:this.fmt(g.v), w:(g.v/gov5max*100)+'%' }));
+    const medals=['🥇','🥈','🥉'];
+    const top10=sortedGov.slice(0,10).map((g,i)=>({ rank:i+1, n:g.n, v:this.fmt(g.v), medal:i<3?medals[i]:('#'+(i+1)), lead:i<3 }));
+
+    const common=[...this.OPS.q.items,...this.OPS.p.items].sort((a,b)=>b.v-a.v).slice(0,8);
+    const cmax=Math.max(...common.map(x=>x.v));
+    const anaCommon=common.map(x=>({ n:x.n, v:this.fmt(x.v), w:(x.v/cmax*100)+'%' }));
+    const viol=[...this.OPS.v.items].sort((a,b)=>b.v-a.v);
+    const vmax=Math.max(...viol.map(x=>x.v));
+    const anaViol=viol.map((x,i)=>({ n:x.n, v:this.fmt(x.v), w:(x.v/vmax*100)+'%', op: (1-i*0.09).toFixed(2) }));
+
+    const vb=[
+      { label:'جرحى فلسطينيون', v:36776, color:th.accent },
+      { label:'جرحى إسرائيليون', v:2439, color:th.muted },
+      { label:'شهداء فلسطينيون', v:1581, color:th.red },
+      { label:'قتلى إسرائيليون', v:154, color:th.muted },
+    ];
+    const vbmax=Math.max(...vb.map(x=>x.v));
+    const vicBars=vb.map(x=>({ label:x.label, v:this.fmt(x.v), w:(x.v/vbmax*100)+'%', color:x.color }));
+    const vicRatios=[
+      { k:'10.3×', label:'شهيد فلسطيني مقابل كل قتيل إسرائيلي' },
+      { k:'15.1×', label:'جريح فلسطيني مقابل كل جريح إسرائيلي' },
+      { k:'94٪', label:'نسبة الضحايا الفلسطينيين من الإجمالي' },
+    ];
+
+    const weekMax=Math.max(...this.WEEK.map(w=>w.v));
+    const week=this.WEEK.map(w=>({ d:w.d, v:this.fmt(w.v), w:(w.v/weekMax*100)+'%', top:w.v===weekMax }));
+
+    const heatCats=[['all','الكل'],['q','نوعية'],['p','شعبية'],['v','انتهاكات'],['crimes','جرائم']]
+      .map(([id,label])=>({ label, active:this.state.heatCat===id, set:()=>this.setState({heatCat:id}) }));
+
+    // historical share derived from monthly model
+    const m=this.monthly(); const since=m.tot.slice(69).reduce((a,b)=>a+b,0), before=m.tot.slice(0,69).reduce((a,b)=>a+b,0);
+    const histPct=Math.round(since/(since+before)*100);
+
+    // on this day — June 2026
+    const cal=[]; let day=1; const firstDow=1; // Mon
+    const marked={3:true,9:true,14:true,17:true,23:true,28:true};
+    for(let w=0;w<5;w++){ const row=[]; for(let dow=0;dow<7;dow++){ if((w===0&&dow<firstDow)||day>30){ row.push({empty:true, day:''}); } else { row.push({day, marked:!!marked[day], today:day===23}); day++; } } cal.push(row); }
+
+    return {
+      mapSvg:this.mapSvg(th), mapMetrics, mapTip, mapRanked,
+      trendSvg:this.lineChart(th), trendTypes,
+      opTabs, opItems, opCatLabel:cat.label,
+      topGov5, top10,
+      anaDonut:this.donut(th), anaCommon, anaViol,
+      vicBars, vicRatios,
+      heatSvg:this.heatmapSvg(th), heatCats,
+      week,
+      histPct, histSince:this.fmt(since*4.1), histBefore:this.fmt(before*4.1),
+      cal, dows:['أحد','إثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'],
+      timeline:this.TIMELINE, articles:this.ARTICLES.slice(1), reports:this.REPORTS,
+    };
+  }
+}
+</script>
+<script>
+(async () => {
+  if (!document.title || !document.title.trim()) document.title = "لوحة معطى";
+  // Prepend so page-supplied @page / break rules (deck-stage's margin:0,
+  // author CSS) keep source-order precedence over the baseline.
+  const baseCss = document.createElement('style');
+  baseCss.textContent = "@media print {\n  figure, table { break-inside: avoid; }\n  *, *::before, *::after {\n    print-color-adjust: exact; -webkit-print-color-adjust: exact;\n    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;\n    animation-delay: -99s !important; animation-duration: .001s !important;\n    animation-iteration-count: 1 !important; animation-fill-mode: both !important;\n    animation-play-state: running !important; transition-duration: 0s !important;\n  }\n}";
+  document.head.prepend(baseCss);
+  if (document.readyState === 'loading') {
+    await new Promise((r) => document.addEventListener('DOMContentLoaded', r, { once: true }));
+  }
+  let ds = document.querySelector('deck-stage');
+  // whenDefined never resolves when nothing registers the element, so only
+  // await it when a <deck-stage> tag exists (and race a timeout regardless).
+  if (ds && !customElements.get('deck-stage')) {
+    try {
+      await Promise.race([
+        customElements.whenDefined('deck-stage'),
+        new Promise((r) => setTimeout(r, 3000)),
+      ]);
+    } catch (e) {}
+    ds = document.querySelector('deck-stage');
+  }
+  // dc-runtime assigns window.DCLogic at init and mounts into #dc-root on
+  // DOMContentLoaded; settle on that subtree so React has rendered before
+  // print(). Non-DC pages fall through to weighing body.
+  const isDc = !ds && 'DCLogic' in window;
+  const settleRoot = ds || (isDc ? document.getElementById('dc-root') : null) || document.body;
+  if (settleRoot) {
+    // Weigh only content children — skip script/style/template so inline
+    // Babel/CSS doesn't register as stable "content" before the framework
+    // has mounted anything.
+    const MEDIA = 'img,svg,canvas,video,picture,iframe,embed,object';
+    const weigh = () => {
+      let text = 0, media = 0;
+      for (const c of settleRoot.children) {
+        const t = c.tagName;
+        if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+        text += (c.textContent || '').trim().length;
+        media += c.querySelectorAll(MEDIA).length + (c.matches(MEDIA) ? 1 : 0);
+      }
+      return text + media * 100;
+    };
+    // "Non-zero and stable" alone is not sufficient to mean rendered: generic
+    // body can carry a static shell while async main content is pending, and
+    // #dc-root can carry the root DC's static text while child refs are still
+    // .sc-placeholder boxes. Gate generic on readyState 'complete', and never
+    // accept stability while a dc-runtime placeholder is present.
+    const isGeneric = settleRoot === document.body;
+    const deadline = Date.now() + 15000;
+    let last = -1, stable = 0;
+    while (Date.now() < deadline) {
+      const n = weigh();
+      const ready =
+        (!isGeneric || document.readyState === 'complete') &&
+        !settleRoot.querySelector('.sc-placeholder');
+      if (n > 0 && n === last && ready) { if (++stable >= 2) break; } else { stable = 0; }
+      last = n;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+  }
+  // Reveal content gated on scroll or visibility before printing. Lazy <img>,
+  // IntersectionObserver fade-ins, and collapsed <details> don't render while
+  // off-screen, so a long page would print with them blank or closed. Open
+  // every <details>, force native-lazy images eager, and scroll the document
+  // through its full height to trip lazy-load + IO; then wait (bounded) for the
+  // newly-triggered images. Inert for deck-stage (slides aren't scroll-gated).
+  try {
+    for (const d of document.querySelectorAll('details')) d.open = true;
+    for (const img of document.querySelectorAll('img[loading="lazy"]'))
+      img.loading = 'eager';
+    const scroller = document.scrollingElement || document.documentElement;
+    const full = Math.max(scroller.scrollHeight, document.body.scrollHeight);
+    const step = window.innerHeight || 800;
+    for (let y = 0; y <= full; y += step) {
+      window.scrollTo(0, y);
+      await new Promise((r) => requestAnimationFrame(r));
+    }
+    window.scrollTo(0, 0);
+    await Promise.race([
+      Promise.all(
+        [...document.images].map((img) =>
+          img.complete
+            ? null
+            : new Promise((res) => {
+                img.addEventListener('load', res, { once: true });
+                img.addEventListener('error', res, { once: true });
+              })
+        )
+      ),
+      new Promise((r) => setTimeout(r, 4000)),
+    ]);
+  } catch (e) {}
+  try { await document.fonts.ready; } catch (e) {}
+  // Jump every animation to its end state so print() never captures a slide
+  // mid-entrance. Ordering matters: the 0s-transition style must be live
+  // BEFORE data-deck-active is set so attribute-keyed transitions don't
+  // start a (now-0s) run from the pre-active base.
+  const st = document.createElement('style');
+  st.textContent = '*,*::before,*::after{animation-delay:-99s !important;animation-duration:.001s !important;animation-iteration-count:1 !important;animation-fill-mode:both !important;animation-play-state:running !important;transition-duration:0s !important}';
+  document.head.appendChild(st);
+  for (const d of document.querySelectorAll('deck-stage')) {
+    for (const c of d.children) {
+      const t = c.tagName;
+      if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+      c.setAttribute('data-deck-active', '');
+    }
+  }
+  // Re-append deck-stage's @page last so no author @page can add a margin and
+  // spill each full-bleed slide onto two sheets. Backstop for old copies.
+  if (ds) {
+    let pg = document.getElementById('deck-stage-print-page');
+    if (!pg) {
+      pg = document.createElement('style');
+      pg.textContent = '@page{size:' + (+ds.getAttribute('width') || 1920) +
+        'px ' + (+ds.getAttribute('height') || 1080) + 'px;margin:0}';
+    }
+    document.body.appendChild(pg);
+  }
+  try {
+    const sweep = () => {
+      for (const a of document.getAnimations()) {
+        try { a.finish(); } catch (e) {
+          try { a.currentTime = (a.effect && a.effect.getComputedTiming().duration) || 0; a.pause(); } catch (e2) {}
+        }
+      }
+    };
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+  } catch (e) {}
+  // Relax break-inside on oversized elements. An element taller than a
+  // printable page can't honor break-inside: avoid — browsers either overflow
+  // it or push it whole to the next page, leaving a blank gap, then break it
+  // anyway at an arbitrary point. After the final layout (content revealed,
+  // animations jumped), find elements taller than a page that still compute
+  // break-inside: avoid and reset them to auto, so the browser breaks them at
+  // their children's boundaries instead (children keep their own avoid). PAGE_PX
+  // is a conservative portrait estimate at 96 CSS px/in — Letter/A4 usable
+  // height minus our 0.5in margins — so only clearly-oversized elements are
+  // touched and under-page elements still stay whole. Skipped for decks, whose
+  // slides are sized to the page.
+  try {
+    if (!document.querySelector('deck-stage')) {
+      const PAGE_PX = 1024;
+      // Our print defaults add a real @page margin only when the source has
+      // no @page of its own; computed style can't tell us (it reports screen
+      // media), so read the injected rule directly.
+      const defaults = document.querySelector('style[data-omelette-print-defaults]');
+      const pageInset = /@page\s*\{[^}]*margin/.test(defaults ? defaults.textContent || '' : '');
+      const SEL = 'section,article,figure,table,pre,blockquote,[class~="card" i],[class~="page" i],[class~="sheet" i]';
+      for (const el of document.body.querySelectorAll(SEL)) {
+        if (el instanceof HTMLElement && el.offsetHeight > PAGE_PX) {
+          el.setAttribute('data-om-oversized', '');
+          // Fake-paged docs simulate sheets with over-tall break-after:page
+          // boxes; honoring the break spills half-blank pages and ends a
+          // colored box mid-sheet. Flow them, and (only when we own the page
+          // inset) drop the redundant padding/background via the rule below.
+          const cs = getComputedStyle(el);
+          if (cs.breakAfter === 'page' || cs.pageBreakAfter === 'always') {
+            el.setAttribute('data-om-fakepage', '');
+          }
+        }
+      }
+      const ost = document.createElement('style');
+      ost.textContent = '@media print{' +
+        '[data-om-oversized]{break-inside:auto !important;page-break-inside:auto !important}' +
+        '[data-om-fakepage]{break-after:auto !important;page-break-after:auto !important}' +
+        (pageInset ? '[data-om-fakepage]{padding:0 !important;background:none !important}' : '') +
+        '}';
+      document.head.appendChild(ost);
+    }
+  } catch (e) {}
+  // macOS Preview renders Skia-PDF Luminosity soft-masks as opaque grey boxes;
+  // swap the CSS that triggers them for Preview-safe forms.
+  try {
+    for (const el of document.body.querySelectorAll('*')) {
+      const cs = getComputedStyle(el);
+
+      if (cs.boxShadow !== 'none' && cs.filter === 'none') {
+        const outs = [], kept = [];
+        for (const s of cs.boxShadow.split(/,(?![^(]*[)])/)) {
+          const t = s.trim();
+          const m = t.match(/^(rgba?[(][^)]+[)]) (-?[0-9.]+px) (-?[0-9.]+px) ([0-9.]+px) -?[0-9.]+px$/);
+          if (m && parseFloat(m[4]) > 0) outs.push('drop-shadow(' + m[2] + ' ' + m[3] + ' ' + m[4] + ' ' + m[1] + ')');
+          else kept.push(t);
+        }
+        if (outs.length) {
+          el.style.setProperty('filter', outs.join(' '), 'important');
+          el.style.setProperty('box-shadow', kept.join(', ') || 'none', 'important');
+        }
+      }
+
+      const mask = cs.maskImage && cs.maskImage !== 'none' ? cs.maskImage : cs.webkitMaskImage;
+      if (mask && mask !== 'none' && cs.filter === 'none') el.style.setProperty('filter', 'opacity(1)', 'important');
+    }
+  } catch (e) {}
+  setTimeout(() => { try { window.print(); } catch (e) {} }, 200);
+})();
+</script>
+</body>
+</html>
