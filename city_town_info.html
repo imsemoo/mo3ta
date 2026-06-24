@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-mode="light" data-dir="editorial">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1f2147">
+  <meta name="description" content="ملف محافظة نابلس — الموقع والجغرافيا وكثافة الأحداث الموثّقة وأبرز الوقائع الميدانية، من مركز معلومات فلسطين «مُعطى».">
+  <title>محافظة نابلس — مُعطى</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+
+  <!-- ===================== الرأس ===================== -->
+  <header class="site-header" data-st>
+    <a class="brand" href="index.html" aria-label="مُعطى — الصفحة الرئيسية">
+      <img class="brand__logo" src="assets/img/logo.webp" alt="" width="160" height="46">
+    </a>
+    <nav class="main-nav" aria-label="التنقّل الرئيسي">
+      <a class="main-nav__link" href="index.html">الرئيسية</a>
+      <a class="main-nav__link" href="daily_mo3ta.html">منذ 7 أكتوبر</a>
+      <a class="main-nav__link" href="articles.html">التقارير</a>
+      <a class="main-nav__link" href="#">الرواية المصوّرة</a>
+      <a class="main-nav__link is-active" href="governorates.html" aria-current="page">المحافظات</a>
+      <a class="main-nav__link" href="#">من نحن</a>
+    </nav>
+    <div class="header-controls">
+      <div class="seg" role="group" aria-label="الاتجاه التحريري">
+        <button class="seg__btn" type="button" data-dir-set="conservative" title="محافظ">محافظ</button>
+        <button class="seg__btn is-active" type="button" data-dir-set="editorial" title="تحريري">تحريري</button>
+        <button class="seg__btn" type="button" data-dir-set="bold" title="جريء">جريء</button>
+      </div>
+      <button class="theme-toggle" type="button" data-theme-toggle title="تبديل السمة" aria-label="تبديل السمة"><span class="theme-toggle__icon" aria-hidden="true">☾</span></button>
+    </div>
+  </header>
+
+  <main class="container" id="main" tabindex="-1">
+
+    <nav class="breadcrumb" aria-label="مسار التنقّل">
+      <a href="index.html">الرئيسية</a>
+      <span class="breadcrumb__sep" aria-hidden="true">›</span>
+      <a href="governorates.html">المحافظات</a>
+      <span class="breadcrumb__sep" aria-hidden="true">›</span>
+      <span class="breadcrumb__current" data-render="crumb">نابلس</span>
+    </nav>
+
+    <!-- بطاقة المحافظة (الهيرو) -->
+    <section class="gov-hero rv" data-st>
+      <p class="gov-hero__eyebrow"><span aria-hidden="true">◆</span> محافظة فلسطينية</p>
+      <h1 class="gov-hero__title" data-render="hero-name">نابلس</h1>
+      <div class="gov-hero__meta">
+        <span class="gov-hero__chip" data-render="hero-region">الضفة الغربية</span>
+        <span class="gov-hero__chip" data-render="hero-rank">المرتبة #1 وطنياً حسب كثافة الأحداث</span>
+        <span class="gov-hero__chip" data-render="hero-coords">32.221°N، 35.261°E</span>
+      </div>
+      <div class="gov-hero__kpis" data-render="hero-kpis"></div>
+    </section>
+
+    <!-- مؤشّرات تمثيليّة -->
+    <section class="section rv">
+      <h2 class="section__title">مؤشّرات تمثيليّة</h2>
+      <p class="section__sub">أرقامٌ مشتقّة لأغراض العرض — لا تمثّل إحصاءات مؤكّدة لكل محافظة على حدة.</p>
+      <div class="counters" data-render="statband"></div>
+      <p class="gov-note" data-render="statband-note"></p>
+    </section>
+
+    <!-- خريطة المحافظة -->
+    <section class="section rv">
+      <h2 class="section__title">خريطة المحافظة</h2>
+      <p class="section__sub" data-render="map-sub">حدود محافظة نابلس وموقعها ضمن فلسطين · كثافة التلوين تعكس حجم الأحداث الموثّقة.</p>
+      <div class="map-layout">
+        <div class="map-panel" data-st>
+          <div class="map-leaflet" data-map role="application" aria-label="خريطة محافظة نابلس ضمن خريطة فلسطين التفاعلية — استخدم القائمة الجانبية كبديل نصّي"></div>
+        </div>
+        <div class="map-side">
+          <p class="map-side__title">محافظات أخرى</p>
+          <div class="rank-list" data-render="other-govs"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- الجغرافيا والسكّان -->
+    <section class="section rv">
+      <div class="panel" data-st>
+        <p class="panel__title">الجغرافيا والسكّان</p>
+        <p class="panel__sub">بيانات تعريفية عامة</p>
+        <div class="gov-facts" data-render="facts"></div>
+      </div>
+    </section>
+
+    <!-- أبرز الأحداث الموثّقة -->
+    <section class="section rv">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">أبرز الأحداث الموثّقة</h2>
+          <p class="section__sub" data-render="feed-sub">وقائع ميدانية مُوثّقة في محافظة نابلس</p>
+        </div>
+      </div>
+      <div class="gov-feed" data-render="feed"></div>
+      <p class="gov-note">أمثلة توضيحية على نمط الوقائع الميدانية في المحافظة.</p>
+    </section>
+
+    <!-- محافظات أخرى -->
+    <section class="section rv">
+      <h2 class="section__title">محافظات أخرى</h2>
+      <div class="gov-related" data-render="related"></div>
+    </section>
+
+  </main>
+
+  <!-- ===================== بانر النشرة البريدية ===================== -->
+  <section class="news-band rv" data-st>
+    <div class="news-band__inner">
+      <div class="news-band__intro">
+        <h2 class="news-band__title">ابقَ على اطّلاع بالتوثيق</h2>
+        <p class="news-band__text">اشترك لتصلك أبرز التقارير الدورية والتحديثات الموثّقة أولاً بأول.</p>
+      </div>
+      <form class="news-band__form" onsubmit="return false">
+        <label class="visually-hidden" for="news-band-email">بريدك الإلكتروني</label>
+        <input class="news-band__input" id="news-band-email" type="email" placeholder="بريدك الإلكتروني" autocomplete="email">
+        <button class="btn btn--primary news-band__btn" type="submit">اشترك الآن</button>
+      </form>
+      <div class="news-band__links">
+        <a class="news-band__chip" href="#">القرى الفلسطينية ↗</a>
+        <a class="news-band__chip" href="#">مرصد شيرين ↗</a>
+        <a class="news-band__chip" href="#">الرواية المصوّرة ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== التذييل ===================== -->
+  <footer class="site-footer" data-st>
+    <div class="site-footer__top">
+      <div class="footer-brand">
+        <img class="footer-brand__logo" src="assets/img/logo.webp" alt="مُعطى — مركز معلومات فلسطين" width="188" height="54">
+        <p class="footer-brand__text">نوثّق ونحلّل كل ما يتعلّق بالقضية الفلسطينية باحترافية وموضوعية، ونقدّم تقارير دورية حول الواقع الفلسطيني ومواجهة الاحتلال.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col__title">روابط سريعة</div>
+        <nav class="footer-links" aria-label="روابط سريعة">
+          <a href="index.html">الرئيسية</a>
+          <a href="#">من نحن</a>
+          <a href="articles.html">التقارير</a>
+          <a href="daily_mo3ta.html">منذ 7 أكتوبر</a>
+        </nav>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col__title">روابط موصى بها</div>
+        <nav class="footer-links" aria-label="روابط موصى بها">
+          <a href="#">القرى الفلسطينية</a>
+          <a href="#">مرصد شيرين</a>
+          <a href="#">الرواية المصوّرة</a>
+        </nav>
+      </div>
+      <div class="footer-news">
+        <div class="footer-col__title">النشرة البريدية</div>
+        <p class="footer-news__text">اشترك لتصلك أبرز التقارير والتحديثات.</p>
+        <form class="footer-news__form" onsubmit="return false">
+          <input class="footer-news__input" type="email" placeholder="بريدك الإلكتروني" aria-label="بريدك الإلكتروني">
+          <button class="footer-news__btn" type="submit">اشترك</button>
+        </form>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <div class="site-footer__bottom-inner">
+        <span>© 2026 مُعطى — مركز معلومات فلسطين. جميع الحقوق محفوظة.</span>
+        <nav class="site-footer__legal" aria-label="روابط قانونية">
+          <a href="#">سياسة الخصوصية</a>
+          <a href="#">الشروط والأحكام</a>
+          <a href="#">تواصل معنا</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/vendor/leaflet/leaflet.js" defer></script>
+  <script src="assets/data/palestine-governorates.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/governorate.js" defer></script>
+</body>
+</html>
