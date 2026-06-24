@@ -1382,4 +1382,13 @@
   } else {
     init();
   }
+
+  // واجهة صغيرة للقراءة فقط لإعادة الاستخدام في صفحات المحافظات (governorates.js / governorate.js)
+  // لا تؤثّر على الصفحات الحالية (تتجاهل window.M3).
+  window.M3 = {
+    DATA: DATA, fmt: fmt, rng: rng, theme: theme,
+    mapVals: mapVals, geoStyle: geoStyle, govIndexForName: govIndexForName,
+    initMap: initMap, zoomToGov: zoomToGov, refreshMap: refreshMap,
+    setMapMetric: function (m) { state.mapMetric = m; }
+  };
 })();

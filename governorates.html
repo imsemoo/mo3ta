@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#1f2147">
-  <meta name="description" content="أرشيف التقارير والدراسات الموثّقة — تقارير دورية وخاصة حول الانتهاكات والمقاومة والواقع الفلسطيني، من مركز معلومات فلسطين «مُعطى».">
-  <title>التقارير والدراسات — مُعطى</title>
+  <meta name="description" content="دليل المحافظات الفلسطينية الاثنتي عشرة عبر الضفة الغربية والقدس وقطاع غزة — رصدٌ موثّق لكثافة الأحداث في كل محافظة، من مركز معلومات فلسطين «مُعطى».">
+  <title>المحافظات الفلسطينية — مُعطى</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,16 +21,14 @@
     <a class="brand" href="index.html" aria-label="مُعطى — الصفحة الرئيسية">
       <img class="brand__logo" src="assets/img/logo.webp" alt="" width="160" height="46">
     </a>
-
     <nav class="main-nav" aria-label="التنقّل الرئيسي">
       <a class="main-nav__link" href="index.html">الرئيسية</a>
       <a class="main-nav__link" href="daily_mo3ta.html">منذ 7 أكتوبر</a>
-      <a class="main-nav__link is-active" href="articles.html" aria-current="page">التقارير</a>
+      <a class="main-nav__link" href="articles.html">التقارير</a>
       <a class="main-nav__link" href="#">الرواية المصوّرة</a>
-      <a class="main-nav__link" href="governorates.html">المحافظات</a>
+      <a class="main-nav__link is-active" href="governorates.html" aria-current="page">المحافظات</a>
       <a class="main-nav__link" href="#">من نحن</a>
     </nav>
-
     <div class="header-controls">
       <div class="seg" role="group" aria-label="الاتجاه التحريري">
         <button class="seg__btn" type="button" data-dir-set="conservative" title="محافظ">محافظ</button>
@@ -46,57 +44,45 @@
     <nav class="breadcrumb" aria-label="مسار التنقّل">
       <a href="index.html">الرئيسية</a>
       <span class="breadcrumb__sep" aria-hidden="true">›</span>
-      <span class="breadcrumb__current">التقارير</span>
+      <span class="breadcrumb__current">المحافظات</span>
     </nav>
 
     <header class="page-head rv">
       <div>
-        <h1 class="page-head__title">التقارير والدراسات</h1>
-        <p class="page-head__sub">أرشيف موثّق للتقارير الدورية والخاصة والدراسات حول الانتهاكات والمقاومة والواقع الفلسطيني.</p>
+        <h1 class="page-head__title">المحافظات الفلسطينية</h1>
+        <p class="page-head__sub">اثنتا عشرة محافظةً تمتدّ من شمال الضفة الغربية إلى القدس وقطاع غزة — لكلٍّ منها سجلٌّ موثّق من الأحداث الميدانية. اختر محافظةً لاستعراض ملفّها.</p>
       </div>
-      <span class="page-head__count"><strong class="num">14</strong> تقريراً</span>
+      <span class="page-head__count"><strong class="num" data-count="12">0</strong> محافظة</span>
     </header>
 
-    <section class="rv" data-render="featured" aria-label="التقرير المميّز"></section>
+    <section class="trust rv" data-render="summary" aria-label="ملخّص عام"></section>
 
-    <div class="chip-row rv" role="group" aria-label="فئات التقارير" data-render="cats"></div>
+    <section class="gov-region rv" id="region-wb" aria-labelledby="rh-wb">
+      <header class="gov-region__head">
+        <h2 class="gov-region__title" id="rh-wb">الضفة الغربية</h2>
+        <p class="gov-region__sub">عشر محافظات</p>
+        <span class="gov-region__total num" data-render="region-total-wb"></span>
+      </header>
+      <div class="gov-grid" data-render="region-wb"></div>
+    </section>
 
-    <div class="archive-toolbar rv" data-st>
-      <span class="archive-search">
-        <span class="archive-search__icon" aria-hidden="true">🔍</span>
-        <input class="archive-search__input" type="search" data-search placeholder="ابحث في عناوين التقارير…" aria-label="بحث في التقارير">
-      </span>
-      <div class="seg seg--soft" role="group" aria-label="الترتيب">
-        <button class="seg__btn is-active" type="button" data-sort="newest" aria-pressed="true">الأحدث</button>
-        <button class="seg__btn" type="button" data-sort="read" aria-pressed="false">الأكثر قراءة</button>
-      </div>
-      <button class="btn btn--ghost" type="button" data-reset>إعادة الضبط</button>
-      <span class="archive-toolbar__count" data-render="count" role="status" aria-live="polite"></span>
-    </div>
+    <section class="gov-region rv" id="region-jeru" aria-labelledby="rh-jeru">
+      <header class="gov-region__head">
+        <h2 class="gov-region__title" id="rh-jeru">القدس</h2>
+        <p class="gov-region__sub">محافظة القدس</p>
+        <span class="gov-region__total num" data-render="region-total-jeru"></span>
+      </header>
+      <div class="gov-grid" data-render="region-jeru"></div>
+    </section>
 
-    <div class="archive-layout rv">
-      <div class="archive-main">
-        <div class="rgrid" data-render="grid"></div>
-        <div class="archive-more">
-          <button class="btn btn--soft" type="button" data-loadmore>تحميل المزيد ↓</button>
-        </div>
-      </div>
-
-      <aside class="archive-aside">
-        <div class="panel" data-st>
-          <p class="panel__title">الأكثر قراءة</p>
-          <div class="popular-list" data-render="popular"></div>
-        </div>
-        <div class="panel" data-st>
-          <p class="panel__title">وسوم شائعة</p>
-          <div class="tag-cloud" data-render="tags"></div>
-        </div>
-        <a class="aside-cta" href="index.html" data-st>
-          <span class="aside-cta__title">لوحة الإحصائيات الكاملة</span>
-          <span class="aside-cta__text">استكشف البيانات والخرائط والمؤشّرات التفاعلية ←</span>
-        </a>
-      </aside>
-    </div>
+    <section class="gov-region rv" id="region-gaza" aria-labelledby="rh-gaza">
+      <header class="gov-region__head">
+        <h2 class="gov-region__title" id="rh-gaza">قطاع غزة</h2>
+        <p class="gov-region__sub">القطاع المحاصَر</p>
+        <span class="gov-region__total num" data-render="region-total-gaza"></span>
+      </header>
+      <div class="gov-grid" data-render="region-gaza"></div>
+    </section>
 
   </main>
 
@@ -166,6 +152,6 @@
   </footer>
 
   <script src="assets/js/main.js" defer></script>
-  <script src="assets/js/articles.js" defer></script>
+  <script src="assets/js/governorates.js" defer></script>
 </body>
 </html>
