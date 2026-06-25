@@ -545,6 +545,133 @@ h1, h2, h3, h4 { margin: 0; }
 }
 
 /* --------------------------------------------------------------------------
+   6ب. البطل — إعادة بناء: خريطة فلسطين الحيّة + محتوى + شريط مؤشّرات
+   (نفس الألوان/الخط/الهوية — تحسين بصري للبطل فقط)
+   -------------------------------------------------------------------------- */
+/* خلفية بحثية خفيفة جداً: شبكة + قناع نصف قطري (فوق التطريز ::before والتوهّج) */
+.hero::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: .3;
+  -webkit-mask-image: radial-gradient(115% 75% at 28% 8%, #000 0%, transparent 62%);
+  mask-image: radial-gradient(115% 75% at 28% 8%, #000 0%, transparent 62%);
+}
+:root[data-mode="dark"] .hero::after { opacity: .16; }
+
+/* طبقة زخرفة بحثية خفيفة جداً (رادار + خطوط ربط + جزيئات) — SVG من JS، خلف المحتوى */
+.hero__bg { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.hero__bg svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero__bg-ring { animation: hero-bg-pan 22s linear infinite; transform-box: view-box; transform-origin: center; }
+@keyframes hero-bg-pan { 0% { opacity: .5; } 50% { opacity: 1; } 100% { opacity: .5; } }
+.hero__bg-particle { animation: hero-bg-twinkle 6s var(--ease) infinite; animation-delay: var(--bgd, 0s); }
+@keyframes hero-bg-twinkle { 0%, 100% { opacity: .4; } 50% { opacity: 1; } }
+
+/* مسافة تنفّس إضافية بين الهيرو وأوّل قسم بعده */
+.hero + .ticker { margin-block-start: clamp(20px, 3vw, 32px); }
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;   /* المحتوى يمين · الخريطة يسار (مساحة أكبر للخريطة) */
+  gap: clamp(28px, 4vw, 60px);
+  align-items: center;
+  margin-block-end: clamp(28px, 4vw, 48px);
+}
+.hero__content { min-width: 0; }
+
+.hero__eyebrow {
+  display: inline-flex; align-items: center; flex-wrap: wrap; gap: 9px;
+  margin: 0 0 22px; padding: 7px 8px 7px 15px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 999px; box-shadow: var(--shadow-sm);
+  font-size: 12.5px; font-weight: 600; color: var(--muted); letter-spacing: 0;
+}
+.hero__eyebrow-ic {
+  display: inline-grid; place-items: center; width: 18px; height: 18px;
+  border-radius: 50%; background: var(--accent); color: var(--on-accent);
+  font-size: 10px; font-weight: 800;
+}
+.hero__eyebrow-dot { width: 3px; height: 3px; border-radius: 50%; background: color-mix(in srgb, var(--muted) 55%, transparent); }
+
+.hero__cta { display: flex; flex-wrap: wrap; gap: 14px; margin-block-start: clamp(26px, 3vw, 34px); }
+.hero__btn { padding: 15px 32px; font-size: 15px; border-radius: 13px; }
+/* الزرّ الأساسي أوضح: ظلّ accent ألطف + رفعة عند المرور */
+.hero__cta .btn--primary { box-shadow: var(--shadow-md), 0 8px 22px color-mix(in srgb, var(--accent) 26%, transparent); }
+.hero__cta .btn--primary:hover { box-shadow: var(--shadow-lg), 0 10px 26px color-mix(in srgb, var(--accent) 32%, transparent); transform: translateY(-2px); }
+/* الزرّ الثانوي = حدّ (outline) شفّاف */
+.btn--outline { background: transparent; color: var(--accent); border: 1.5px solid color-mix(in srgb, var(--accent) 55%, var(--border)); }
+.btn--outline:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 7%, transparent); color: var(--accent); }
+
+/* المنطقة البصرية = حاوية الخريطة + البطاقات الطافية */
+.hero__visual { position: relative; display: block; min-width: 0; aspect-ratio: 1 / 1; width: 100%; max-width: 620px; margin-inline: auto; }
+.hero-map { position: absolute; inset: 0; display: grid; place-items: center; }
+.hero-map__svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 20px 46px color-mix(in srgb, var(--accent) 32%, transparent)); }
+.hero-map__gov { transition: fill-opacity var(--t-fast) var(--ease); }
+.hero-map__svg:hover .hero-map__gov { fill-opacity: .12; }
+.hero-map__svg .hero-map__gov:hover { fill-opacity: .58; }
+.hero-map__pulse { transform-box: fill-box; transform-origin: center; animation: hero-pulse 2.6s var(--ease-out) infinite; }
+@keyframes hero-pulse { 0% { transform: scale(.5); opacity: .85; } 70% { transform: scale(2.8); opacity: 0; } 100% { opacity: 0; } }
+.hero-map__hot { transform-box: fill-box; transform-origin: center; animation: hero-hot 4.5s var(--ease) infinite; }
+@keyframes hero-hot { 0%, 100% { opacity: .75; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
+.hero-map__marker { pointer-events: none; }
+
+/* البطاقات الطافية */
+.hero-fc {
+  position: absolute; z-index: 2; display: flex; flex-direction: column; gap: 3px;
+  padding: 12px 15px; min-width: 124px;
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  -webkit-backdrop-filter: blur(9px); backdrop-filter: blur(9px);
+  border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
+  animation: hero-float 6.5s var(--ease) infinite;
+}
+.hero-fc--update { inset-block-start: 2%; inset-inline-start: -5%; }
+.hero-fc--wb { inset-block-start: 33%; inset-inline-start: -8%; animation-delay: -1.6s; }
+.hero-fc--jeru { inset-block-start: 60%; inset-inline-start: -4%; animation-delay: -3.2s; }
+.hero-fc--gaza { inset-block-end: 3%; inset-inline-end: 0; animation-delay: -4.8s; }
+@keyframes hero-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+.hero-fc__head { display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 600; color: var(--muted); }
+.hero-fc__ic { color: var(--accent); font-size: 12px; }
+.hero-fc__ic--live { width: 8px; height: 8px; border-radius: 50%; background: var(--casualties); animation: m3-pulse 1.8s infinite; }
+.hero-fc__big { font-size: 21px; font-weight: 800; color: var(--ink); line-height: 1.1; letter-spacing: -.01em; }
+.hero-fc__sub { font-size: 11px; color: var(--muted); }
+
+/* وسيلة إيضاح الخريطة */
+.hero-maplegend {
+  position: absolute; inset-block-end: 5%; inset-inline: 0; margin-inline: auto; width: max-content; z-index: 2;
+  display: flex; flex-direction: column; gap: 5px; align-items: center;
+  padding: 9px 16px; background: color-mix(in srgb, var(--surface) 80%, transparent);
+  -webkit-backdrop-filter: blur(9px); backdrop-filter: blur(9px);
+  border: 1px solid var(--border); border-radius: 999px; box-shadow: var(--shadow-md);
+}
+.hero-maplegend__label { font-size: 10.5px; font-weight: 600; color: var(--muted); }
+.hero-maplegend__row { display: flex; align-items: center; gap: 8px; font-size: 9.5px; color: var(--muted); }
+.hero-maplegend__scale { width: 84px; height: 6px; border-radius: 99px; background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 18%, transparent), var(--accent), var(--casualties)); }
+
+/* شريط المؤشّرات السريعة */
+.hero-kpis {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
+  padding: clamp(14px, 1.6vw, 20px);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-2xl); box-shadow: var(--shadow-sm);
+}
+.hero-kpi {
+  display: flex; align-items: center; gap: 11px; padding: 12px 13px;
+  border-radius: var(--radius-lg); text-decoration: none; color: inherit; border: 1px solid transparent;
+  transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.hero-kpi:hover { background: var(--bg); border-color: var(--border); transform: translateY(-2px); }
+.hero-kpi:focus-visible { outline: none; box-shadow: var(--ring-strong); }
+.hero-kpi__icon { flex: none; width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; font-size: 16px; color: var(--tone, var(--accent)); background: color-mix(in srgb, var(--tone, var(--accent)) 14%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tone, var(--accent)) 30%, transparent); }
+.hero-kpi__body { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.hero-kpi__value { font-size: clamp(18px, 1.5vw, 22px); font-weight: 800; color: var(--ink); line-height: 1.05; }
+.hero-kpi__label { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.hero-kpi__meta { display: flex; align-items: center; gap: 5px; margin-top: 2px; font-size: 10.5px; }
+.hero-kpi__verified { color: var(--accent); font-weight: 700; }
+.hero-kpi__since { color: var(--muted); }
+
+/* --------------------------------------------------------------------------
    7. شريط الفلاتر (Filter bar)
    -------------------------------------------------------------------------- */
 .filter-bar {
@@ -2253,7 +2380,7 @@ body.lb-open { overflow: hidden; }
 .section__title { font-size: clamp(23px, 3.1vw, 32px); line-height: var(--lh-head); font-weight: var(--weight-display); letter-spacing: 0; text-wrap: balance; }
 .section__sub { font-size: 15px; line-height: var(--lh-snug); max-width: 64ch; }
 .panel__title { font-size: 16px; line-height: var(--lh-head); letter-spacing: 0; }
-.hero__title { font-size: clamp(36px, 5.6vw, 62px); line-height: var(--lh-tight); font-weight: var(--weight-display); letter-spacing: 0; }
+.hero__title { font-size: clamp(40px, 6.2vw, 68px); line-height: 1.08; font-weight: var(--weight-display); letter-spacing: 0; max-width: 15ch; }
 .page-head__title { font-size: clamp(28px, 4vw, 44px); line-height: var(--lh-head); font-weight: var(--weight-display); letter-spacing: 0; text-wrap: balance; }
 
 /* تأكيد الأرقام (lining tabular) + تباعد طفيف للتسميات */
@@ -2368,7 +2495,7 @@ body { overflow-x: clip; }
    23. الاستجابة (Responsive)
    -------------------------------------------------------------------------- */
 @media (max-width: 980px) {
-  .hero__main,
+  .hero__inner,
   .map-layout,
   .ana-top,
   .week-layout,
@@ -2378,7 +2505,9 @@ body { overflow-x: clip; }
   .split-2 { grid-template-columns: 1fr; }
   .section--map .map-layout { grid-template-columns: 1fr; }
   .article-grid { grid-template-columns: repeat(2, 1fr); }
-  .hero__main { gap: clamp(32px, 8vw, 48px); }
+  .hero__inner { gap: clamp(32px, 8vw, 48px); }
+  .hero__visual { max-width: 520px; }
+  .hero-kpis { grid-template-columns: repeat(3, 1fr); }
   .news-band__inner { grid-template-columns: 1fr; }
   .gallery { grid-template-columns: repeat(3, 1fr); }
   .archive-layout, .feature-report { grid-template-columns: 1fr; }
@@ -2407,6 +2536,17 @@ body { overflow-x: clip; }
   .control-bar { position: static; }
 }
 
+/* البطل على الشاشات الصغيرة: البطاقات تنزل تحت الخريطة كشبكة (تبقى ظاهرة + الخريطة بارزة + بلا تجاوز أفقي) */
+@media (max-width: 720px) {
+  .hero__visual { aspect-ratio: auto; max-width: 480px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .hero-map { position: relative; inset: auto; grid-column: 1 / -1; aspect-ratio: 1 / 1; }
+  .hero-fc {
+    position: static; inset: auto; min-width: 0; animation: none;
+    box-shadow: var(--shadow-sm); padding: 11px 13px;
+  }
+  .hero-maplegend { position: static; inset: auto; grid-column: 1 / -1; margin-inline: auto; margin-block-start: 2px; }
+}
+
 @media (max-width: 560px) {
   .kpi-grid,
   .stat-cards,
@@ -2422,6 +2562,7 @@ body { overflow-x: clip; }
   .trust__link { margin-inline-start: 0; }
   .news-band__form { flex-direction: column; }
   .hero__figures { grid-template-columns: 1fr; gap: 24px; }
+  .hero-kpis { grid-template-columns: repeat(2, 1fr); }
   .band { --band-pad: var(--band-pad-sm); }
   .brand__logo { height: 38px; }
   .site-footer__top { grid-template-columns: 1fr; }

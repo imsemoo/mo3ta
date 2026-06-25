@@ -46,37 +46,61 @@
 
     <!-- ===================== البطل ===================== -->
     <section class="hero">
-      <div class="hero__main">
-        <div class="hero__intro">
-          <p class="live-badge rv">
-            <span class="live-badge__dot" aria-hidden="true"></span>
-            <span>بيانات حيّة · آخر تحديث 23 يونيو 2026</span>
+      <div class="hero__bg" data-render="hero-bg" aria-hidden="true"></div>
+      <div class="hero__inner">
+
+        <!-- المحتوى (يمين) -->
+        <div class="hero__content">
+          <p class="hero__eyebrow rv">
+            <span class="hero__eyebrow-ic" aria-hidden="true">✓</span>
+            <span>بيانات موثّقة</span>
+            <span class="hero__eyebrow-dot" aria-hidden="true"></span>
+            <span>مصادر موثوقة</span>
+            <span class="hero__eyebrow-dot" aria-hidden="true"></span>
+            <span>تحليل دقيق</span>
           </p>
           <h1 class="hero__title rv">لوحة <span class="accent">الإحصائيات</span> والمؤشّرات الفلسطينية</h1>
-          <p class="hero__lead rv">رصدٌ دقيق وموثّق للعمليّات والانتهاكات والشهداء والجرحى عبر كل المحافظات والقرى الفلسطينية، مع مقارنات تاريخية وفلاتر متقدّمة بالاعتماد على بيانات حقيقية محدّثة باستمرار.</p>
+          <p class="hero__lead rv">نوثّق ونحلّل وننشر إحصاءات وخرائط وتقارير موثوقة عن الواقع في فلسطين، لنقدّم صورة دقيقة تساعد في الفهم وصنع القرار.</p>
+          <div class="hero__cta rv">
+            <a class="btn btn--primary hero__btn" href="#board">استكشف البيانات</a>
+            <a class="btn btn--outline hero__btn" href="articles.html">أحدث التقارير</a>
+          </div>
         </div>
 
+        <!-- الخريطة الحيّة (يسار) -->
         <div class="hero__visual rv">
-          <div class="ring">
-            <div class="ring__chart" data-render="hero-ring" aria-hidden="true"></div>
-            <div class="ring__center">
-              <span class="ring__label">إجمالي السجلّات</span>
-              <span class="ring__value num" data-count="12480">0</span>
-              <span class="ring__sub">سجلّ موثّق</span>
-            </div>
-            <div class="ring__badge ring__badge--top" data-st>
-              <span class="ring__badge-label">معدّل التحقق</span>
-              <span class="ring__badge-value">98.6%</span>
-            </div>
-            <div class="ring__badge ring__badge--bottom" data-st>
-              <span class="ring__badge-label">هذا الأسبوع</span>
-              <span class="ring__badge-value">+128</span>
-            </div>
+          <div class="hero-map" data-render="hero-map" aria-hidden="true"></div>
+
+          <div class="hero-fc hero-fc--update" data-st>
+            <span class="hero-fc__head"><span class="hero-fc__ic" aria-hidden="true">◷</span> النطاق الزمني</span>
+            <span class="hero-fc__big">102 شهر</span>
+            <span class="hero-fc__sub">منذ يناير 2018</span>
+          </div>
+          <div class="hero-fc hero-fc--wb" data-st>
+            <span class="hero-fc__head"><span class="hero-fc__ic" aria-hidden="true">⬡</span> الضفة الغربية</span>
+            <span class="hero-fc__big num" data-hero-wb data-count="0">0</span>
+            <span class="hero-fc__sub">حدث موثّق</span>
+          </div>
+          <div class="hero-fc hero-fc--jeru" data-st>
+            <span class="hero-fc__head"><span class="hero-fc__ic" aria-hidden="true">◈</span> القدس</span>
+            <span class="hero-fc__big num" data-hero-jeru data-count="0">0</span>
+            <span class="hero-fc__sub">حدث موثّق</span>
+          </div>
+          <div class="hero-fc hero-fc--gaza" data-st>
+            <span class="hero-fc__head"><span class="hero-fc__ic hero-fc__ic--live" aria-hidden="true"></span> قطاع غزة</span>
+            <span class="hero-fc__big num" data-hero-gaza data-count="0">0</span>
+            <span class="hero-fc__sub">حدث موثّق</span>
+          </div>
+
+          <div class="hero-maplegend" aria-hidden="true">
+            <span class="hero-maplegend__label">مستوى الأحداث</span>
+            <span class="hero-maplegend__row"><span>منخفض</span><span class="hero-maplegend__scale"></span><span>مرتفع</span></span>
           </div>
         </div>
       </div>
 
-      <div class="hero__figures rv" data-render="hero"></div>
+      <!-- شريط المؤشّرات السريعة -->
+      <div class="hero-kpis rv" data-render="hero-kpis" aria-label="مؤشّرات سريعة موثّقة"></div>
     </section>
 
     <!-- ===================== شريط التحديثات الحيّة ===================== -->
