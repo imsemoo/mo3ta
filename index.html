@@ -104,17 +104,8 @@
       <p class="hero-kpis-note rv"><span class="hero-kpis-note__ic" aria-hidden="true">✓</span> مؤشّرات موثّقة · إجمالي تراكمي منذ يناير 2018</p>
     </section>
 
-    <!-- ===================== شريط التحديثات الحيّة ===================== -->
-    <section class="ticker rv" aria-label="آخر التحديثات الموثّقة" data-st>
-      <span class="ticker__badge"><span class="ticker__pulse" aria-hidden="true"></span> آخر التحديثات</span>
-      <div class="ticker__viewport">
-        <div class="ticker__track" data-render="ticker"></div>
-      </div>
-      <button class="ticker__toggle" type="button" data-ticker-toggle aria-label="إيقاف/تشغيل الشريط">⏸</button>
-    </section>
-
     <!-- ===================== شريط الفلاتر ===================== -->
-    <section class="section rv">
+    <section class="section section--controls rv">
       <div class="filter-bar" data-st>
         <span class="filter-bar__legend"><span aria-hidden="true">⚙</span> تخصيص العرض</span>
         <span class="filter-bar__sep" aria-hidden="true"></span>
@@ -133,6 +124,15 @@
       <p class="section__sub rv">على مدى <strong>3,096</strong> يوماً (102 شهراً) · بمتوسط <strong>140.3</strong> حدثاً يومياً</p>
       <div class="kpi-grid rv" data-render="kpis-lead"></div>
       <div class="kpi-grid kpi-grid--sub rv" data-render="kpis-sub"></div>
+    </section>
+
+    <!-- ===================== شريط التحديثات الحيّة (مساند بعد المؤشّرات) ===================== -->
+    <section class="ticker rv" aria-label="آخر التحديثات الموثّقة" data-st>
+      <span class="ticker__badge"><span class="ticker__pulse" aria-hidden="true"></span> آخر التحديثات</span>
+      <div class="ticker__viewport">
+        <div class="ticker__track" data-render="ticker"></div>
+      </div>
+      <button class="ticker__toggle" type="button" data-ticker-toggle aria-label="إيقاف/تشغيل الشريط">⏸</button>
     </section>
 
     <!-- ===================== الخريطة الديموغرافية ===================== -->
