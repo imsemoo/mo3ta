@@ -988,7 +988,7 @@ h1, h2, h3, h4 { margin: 0; }
   display: grid;
   grid-template-columns: 1fr 300px;
   gap: clamp(20px, 3vw, 40px);
-  align-items: stretch;
+  align-items: start;
 }
 .week-chart {
   background: var(--surface);
@@ -998,7 +998,7 @@ h1, h2, h3, h4 { margin: 0; }
   display: flex;
   flex-direction: column;
 }
-.week-plot { position: relative; height: clamp(220px, 24vw, 260px); }
+.week-plot { position: relative; height: clamp(240px, 26vw, 300px); }
 .week-bars {
   position: absolute;
   inset: 0;
@@ -1052,8 +1052,8 @@ h1, h2, h3, h4 { margin: 0; }
 
 .week-side { display: flex; flex-direction: column; gap: 16px; }
 .mini-stat {
-  flex: 1;
-  padding: 24px;
+  flex: 0 0 auto;
+  padding: 20px 22px;
   border-radius: var(--radius-lg);
   background: var(--surface);
   border: 1px solid var(--border);
@@ -1061,10 +1061,10 @@ h1, h2, h3, h4 { margin: 0; }
   flex-direction: column;
   justify-content: center;
 }
-.mini-stat__label { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
-.mini-stat__value { font-size: 26px; font-weight: 700; color: var(--ink); }
+.mini-stat__label { font-size: 13px; color: var(--muted); margin: 0 0 8px; }
+.mini-stat__value { font-size: 26px; font-weight: 700; color: var(--ink); margin: 0; line-height: 1.1; }
 .mini-stat__value--sm { font-size: 22px; }
-.mini-stat__note { font-size: 13px; font-weight: 600; margin-top: 4px; color: var(--accent); }
+.mini-stat__note { font-size: 13px; font-weight: 600; margin: 6px 0 0; color: var(--accent); }
 .mini-stat__note--red { color: var(--red); }
 .mini-stat__note--muted { color: var(--muted); }
 
