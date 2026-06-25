@@ -9,7 +9,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -111,7 +111,7 @@
     </section>
 
     <!-- ===================== الخريطة الديموغرافية ===================== -->
-    <section class="section rv">
+    <section class="section section--map rv">
       <h2 class="section__title">الخريطة الديموغرافية لفلسطين</h2>
       <p class="section__sub">انقر على أي محافظة لتقريبها وعرض تفاصيلها · بدّل المقياس لتغيير تلوين المحافظات حسب الكثافة</p>
 
@@ -165,7 +165,7 @@
     </section>
 
     <!-- ===================== حصاد المقاومة والانتهاكات ===================== -->
-    <section class="section rv">
+    <section class="section band band--tint rv">
       <h2 class="section__title">حصاد المقاومة والانتهاكات</h2>
       <p class="section__sub">تحليل شامل ومقارن للأحداث الميدانية — <strong>434,505</strong> حدثاً عبر <strong>3,096</strong> يوماً</p>
 
@@ -195,9 +195,9 @@
           <p class="panel__title">نسب الفئات من الإجمالي</p>
           <div class="donut-wrap" data-render="donut"></div>
           <div class="legend">
-            <div class="legend__item"><span class="legend__swatch legend__swatch--red"></span> انتهاكات الاحتلال <span class="legend__value">85.3٪</span></div>
-            <div class="legend__item"><span class="legend__swatch legend__swatch--accent"></span> مقاومة شعبية <span class="legend__value">12.8٪</span></div>
-            <div class="legend__item"><span class="legend__swatch legend__swatch--olive"></span> مقاومة نوعية <span class="legend__value">1.9٪</span></div>
+            <div class="legend__item"><span class="legend__swatch legend__swatch--violations"></span> انتهاكات الاحتلال <span class="legend__value">85.3٪</span></div>
+            <div class="legend__item"><span class="legend__swatch legend__swatch--resistance"></span> مقاومة شعبية <span class="legend__value">12.8٪</span></div>
+            <div class="legend__item"><span class="legend__swatch legend__swatch--resistance legend__swatch--soft"></span> مقاومة نوعية <span class="legend__value">1.9٪</span></div>
           </div>
         </div>
 
@@ -214,7 +214,7 @@
     </section>
 
     <!-- ===================== الضحايا والإصابات ===================== -->
-    <section class="section section--feature rv" data-st>
+    <section class="section band band--surface section--lead rv" data-st>
       <h2 class="section__title">الضحايا والإصابات</h2>
       <p class="section__sub">تحليل مقارن للضحايا الفلسطينيين والإسرائيليين — <strong>40,950</strong> ضحية إجمالاً خلال الفترة</p>
 
@@ -303,7 +303,7 @@
     </section>
 
     <!-- ===================== مقارنة بفترة تاريخية ===================== -->
-    <section class="section section--dark rv" data-st>
+    <section class="section band band--dark section--lead rv" data-st>
       <h2 class="section__title">مقارنة بفترة تاريخية</h2>
       <p class="section__sub">حصّة الأحداث الموثّقة منذ «طوفان الأقصى» مقارنةً بكامل الفترة قبله</p>
       <div class="hist-layout">
@@ -331,7 +331,7 @@
     </section>
 
     <!-- ===================== آخر التقارير ===================== -->
-    <section class="section rv">
+    <section class="section band band--tint rv">
       <div class="section__head">
         <h2 class="section__title">آخر التقارير</h2>
         <a class="link-more" href="articles.html">كل التقارير ←</a>

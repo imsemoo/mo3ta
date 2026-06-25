@@ -94,7 +94,9 @@
     var totalEl = slot('region-total-' + r.k);
     if (totalEl) {
       var sum = r.idx.reduce(function (s, i) { return s + (GOV[i] ? GOV[i].v : 0); }, 0);
-      totalEl.textContent = fmt(sum) + ' حدثاً موثّقاً';
+      clear(totalEl);
+      totalEl.appendChild(h('span', 'num', fmt(sum)));
+      totalEl.appendChild(document.createTextNode(' حدثاً موثّقاً'));
     }
   }
 

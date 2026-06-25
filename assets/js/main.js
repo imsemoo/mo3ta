@@ -29,16 +29,16 @@
       { key: 'events',  label: 'إجمالي الأحداث', target: 434505, note: 'حدث موثّق · 102 شهر',   accent: false }
     ],
     kpisLead: [
-      { label: 'إجمالي الأحداث',    target: 434505, icon: '◆', tone: 'ink'    },
-      { label: 'انتهاكات الاحتلال', target: 370772, icon: '⚠', tone: 'red'    },
-      { label: 'مقاومة شعبية',      target: 55516,  icon: '✊', tone: 'accent' },
-      { label: 'مقاومة نوعية',      target: 8217,   icon: '⊛', tone: 'olive'  }
+      { label: 'إجمالي الأحداث',    target: 434505, icon: '◆', tone: 'ink'        },
+      { label: 'انتهاكات الاحتلال', target: 370772, icon: '⚠', tone: 'violations' },
+      { label: 'مقاومة شعبية',      target: 55516,  icon: '✊', tone: 'resistance' },
+      { label: 'مقاومة نوعية',      target: 8217,   icon: '⊛', tone: 'resistance' }
     ],
     kpisSub: [
-      { label: 'شهداء فلسطينيون', target: 1581,  tone: 'red'    },
-      { label: 'جرحى فلسطينيون', target: 36776, tone: 'accent' },
-      { label: 'قتلى إسرائيليون', target: 154,   tone: 'muted'  },
-      { label: 'جرحى إسرائيليون', target: 2439,  tone: 'muted'  }
+      { label: 'شهداء فلسطينيون', target: 1581,  tone: 'casualties' },
+      { label: 'جرحى فلسطينيون', target: 36776, tone: 'casualties' },
+      { label: 'قتلى إسرائيليون', target: 154,   tone: 'israeli'    },
+      { label: 'جرحى إسرائيليون', target: 2439,  tone: 'israeli'    }
     ],
     GOV: [
       { n: 'نابلس',            v: 66547, x: 188, y: 150, lat: 32.221, lng: 35.261 },
@@ -77,15 +77,15 @@
       { d: 'الأربعاء', v: 37615 }, { d: 'الخميس', v: 34058 }, { d: 'الجمعة', v: 37514 }, { d: 'السبت', v: 31136 }
     ],
     CATSHARE: [
-      { n: 'انتهاكات الاحتلال', v: 370772, tone: 'red'    },
-      { n: 'مقاومة شعبية',      v: 55516,  tone: 'accent' },
-      { n: 'مقاومة نوعية',      v: 8217,   tone: 'olive'  }
+      { n: 'انتهاكات الاحتلال', v: 370772, tone: 'violations' },
+      { n: 'مقاومة شعبية',      v: 55516,  tone: 'resistance' },
+      { n: 'مقاومة نوعية',      v: 8217,   tone: 'resistance', soft: true }
     ],
     VICTIM_BARS: [
-      { label: 'جرحى فلسطينيون',  v: 36776, tone: 'accent' },
-      { label: 'جرحى إسرائيليون', v: 2439,  tone: 'muted'  },
-      { label: 'شهداء فلسطينيون', v: 1581,  tone: 'red'    },
-      { label: 'قتلى إسرائيليون', v: 154,   tone: 'muted'  }
+      { label: 'جرحى فلسطينيون',  v: 36776, tone: 'casualties' },
+      { label: 'جرحى إسرائيليون', v: 2439,  tone: 'israeli'    },
+      { label: 'شهداء فلسطينيون', v: 1581,  tone: 'casualties' },
+      { label: 'قتلى إسرائيليون', v: 154,   tone: 'israeli'    }
     ],
     VICTIM_RATIOS: [
       { k: '10.3×', label: 'شهيد فلسطيني مقابل كل قتيل إسرائيلي' },
@@ -212,7 +212,11 @@
   // لون من متغيّرات السمة (المصدر الوحيد للحقيقة = CSS)
   function tc(name) { return getComputedStyle(root).getPropertyValue('--' + name).trim(); }
   function tone(key, th) {
-    var map = { ink: th.ink, red: th.red, accent: th.accent, olive: th.olive, muted: th.muted };
+    var map = {
+      ink: th.ink, red: th.red, accent: th.accent, olive: th.olive, muted: th.muted,
+      casualties: th.casualties, resistance: th.resistance, violations: th.violations,
+      israeli: th.israeli, crimes: th.crimes
+    };
     return map[key] || th.ink;
   }
   function theme() {
@@ -220,7 +224,9 @@
       mode: root.getAttribute('data-mode') || 'light',
       bg: tc('bg'), surface: tc('surface'), surface2: tc('surface-2'),
       ink: tc('ink'), muted: tc('muted'), border: tc('border'),
-      accent: tc('accent'), red: tc('red'), olive: tc('olive')
+      accent: tc('accent'), red: tc('red'), olive: tc('olive'),
+      casualties: tc('casualties'), resistance: tc('resistance'),
+      violations: tc('violations'), israeli: tc('israeli'), crimes: tc('crimes')
     };
   }
 
@@ -409,7 +415,7 @@
       var xi1 = cx + r * Math.cos(a1), yi1 = cy + r * Math.sin(a1), xi0 = cx + r * Math.cos(a0), yi0 = cy + r * Math.sin(a0);
       var d = 'M ' + x0 + ',' + y0 + ' A ' + R + ',' + R + ' 0 ' + lg + ' 1 ' + x1 + ',' + y1 +
               ' L ' + xi1 + ',' + yi1 + ' A ' + r + ',' + r + ' 0 ' + lg + ' 0 ' + xi0 + ',' + yi0 + ' Z';
-      els.push(svg('path', { d: d, fill: tone(s.tone, th) }));
+      els.push(svg('path', { d: d, fill: tone(s.tone, th), opacity: s.soft ? 0.5 : 1 }));
       a0 = a1;
     });
     els.push(svg('text', { x: cx, y: cy - 4, 'text-anchor': 'middle', 'font-size': 21, 'font-weight': 700, fill: th.ink }, '85.3٪'));

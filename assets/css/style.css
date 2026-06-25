@@ -48,6 +48,41 @@
   --ease: cubic-bezier(.2, .7, .3, 1);
   --ease-out: cubic-bezier(.16, .84, .44, 1);
   --t-fast: .25s;
+  --t-med: .4s;
+
+  /* سلّم الظلال (فاتح): طبقتان = تماس ضيّق + محيط ناعم، مائل للحبر لا أسود */
+  --shadow-xs: 0 1px 2px rgba(20, 22, 50, .05);
+  --shadow-sm: 0 1px 2px rgba(20, 22, 50, .05), 0 2px 5px rgba(20, 22, 50, .05);
+  --shadow-md: 0 2px 4px rgba(20, 22, 50, .05), 0 8px 18px rgba(20, 22, 50, .07);
+  --shadow-lg: 0 4px 8px rgba(20, 22, 50, .06), 0 18px 40px rgba(20, 22, 50, .10);
+  --shadow-xl: 0 8px 16px rgba(20, 22, 50, .07), 0 30px 70px rgba(20, 22, 50, .13);
+
+  /* حلقات تركيز/حافة — مصدر واحد */
+  --ring: 0 0 0 3px var(--accent-soft);
+  --ring-strong: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent);
+  --ring-edge: inset 0 0 0 1px var(--border);
+  --ring-accent: inset 0 0 0 1px color-mix(in srgb, var(--accent) 38%, var(--border));
+
+  /* مقياس مسافات 8px */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 40px; --space-8: 48px;
+  --space-9: 56px; --space-10: 72px; --space-11: 96px;
+
+  /* إيقاع رأسي للأقسام والأشرطة */
+  --section-gap: clamp(56px, 8vw, 104px);
+  --band-pad: clamp(56px, 7vw, 100px);
+  --band-pad-sm: clamp(40px, 5vw, 64px);
+
+  /* مقياس الطباعة (مضبوط للعربية) */
+  --lh-tight: 1.14;  --lh-head: 1.22;  --lh-snug: 1.45;  --lh-body: 1.7;
+  --tracking-eyebrow: .08em;   /* للحروف اللاتينية/الفواصل فقط — لا تُطبَّق على العربية */
+  --weight-display: 800;
+
+  /* تلميح سطح للأشرطة (مشتق من ألوان موجودة) */
+  --surface-tint: var(--surface-2);
+
+  /* توهّج البطل */
+  --hero-glow: radial-gradient(120% 90% at 82% 6%, var(--accent-soft) 0%, transparent 58%);
 }
 
 /* اللون المميّز حسب الاتجاه التحريري — الوضع الفاتح */
@@ -80,6 +115,15 @@
   --casualties: #e36a59;
   --israeli:    #9aa1bb;
   --crimes:     #c2925e;
+
+  /* ظلال داكنة أعمق/أوسع — أسود صريح بألفا أعلى */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, .30);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .30), 0 2px 6px rgba(0, 0, 0, .28);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, .34), 0 10px 24px rgba(0, 0, 0, .40);
+  --shadow-lg: 0 4px 10px rgba(0, 0, 0, .40), 0 22px 50px rgba(0, 0, 0, .50);
+  --shadow-xl: 0 8px 20px rgba(0, 0, 0, .45), 0 36px 80px rgba(0, 0, 0, .58);
+  --ring-strong: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+  --ring-accent: inset 0 0 0 1px color-mix(in srgb, var(--accent) 42%, var(--border));
 }
 :root[data-mode="dark"][data-dir="conservative"] { --accent: #8b8af0; --accent-soft: rgba(139, 138, 240, .16); }
 :root[data-mode="dark"][data-dir="editorial"]    { --accent: #3aa6cd; --accent-soft: rgba(58, 166, 205, .16); }
@@ -101,7 +145,9 @@ body {
   font-family: 'IBM Plex Sans Arabic', system-ui, -apple-system, sans-serif;
   background: var(--bg);
   color: var(--ink);
-  line-height: 1.6;
+  font-size: 16.5px;
+  line-height: var(--lh-body);
+  letter-spacing: 0;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -189,7 +235,7 @@ h1, h2, h3, h4 { margin: 0; }
   padding: 0 var(--gutter);
 }
 
-.section { margin-bottom: clamp(56px, 8vw, 104px); }
+.section { margin-bottom: var(--section-gap); }
 
 .section__head {
   display: flex;
@@ -892,9 +938,9 @@ h1, h2, h3, h4 { margin: 0; }
   color: var(--ink);
 }
 .legend__swatch { width: 11px; height: 11px; border-radius: 3px; }
-.legend__swatch--red { background: var(--red); }
-.legend__swatch--accent { background: var(--accent); }
-.legend__swatch--olive { background: var(--olive); }
+.legend__swatch--violations { background: var(--violations); }
+.legend__swatch--resistance { background: var(--resistance); }
+.legend__swatch--soft { opacity: .5; }
 .legend__value { margin-inline-start: auto; font-weight: 700; }
 
 .ana-grid2 {
@@ -2193,6 +2239,126 @@ body.lb-open { overflow: hidden; }
 .cta-band__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-block-start: 4px; }
 
 /* --------------------------------------------------------------------------
+   26. تطوير التصميم — رفع تحريري/بحثي (الأساس P0)
+   سلّم طباعة + ظلال متدرّجة + 3 طبقات بطاقات + حلقات تركيز موحّدة
+   (لا ألوان جديدة؛ توكنز فقط؛ خصائص منطقية RTL؛ AA في الوضعين)
+   -------------------------------------------------------------------------- */
+/* سلّم الطباعة (مضبوط للعربية — بلا تباعد سالب على العناوين العربية) */
+.section__title { font-size: clamp(23px, 3.1vw, 32px); line-height: var(--lh-head); font-weight: var(--weight-display); letter-spacing: 0; text-wrap: balance; }
+.section__sub { font-size: 15px; line-height: var(--lh-snug); max-width: 64ch; }
+.panel__title { font-size: 16px; line-height: var(--lh-head); letter-spacing: 0; }
+.hero__title { font-size: clamp(36px, 5.6vw, 62px); line-height: var(--lh-tight); font-weight: var(--weight-display); letter-spacing: 0; }
+.page-head__title { font-size: clamp(28px, 4vw, 44px); line-height: var(--lh-head); font-weight: var(--weight-display); letter-spacing: 0; text-wrap: balance; }
+
+/* تأكيد الأرقام (lining tabular) + تباعد طفيف للتسميات */
+.num, .kpi-card__value, .counter__value, .ratio-card__value, .stat-card__value,
+.mini-stat__value, .trust__value, .figure__value, .kpi-stat__value {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+.num { letter-spacing: -.01em; }
+.kpi-card__value { font-weight: var(--weight-display); }
+.counter__label, .ratio-card__label, .stat-card__label, .mini-stat__label,
+.kpi-stat__label, .trust__label, .kpi-card__label { letter-spacing: .02em; }
+
+/* انتقالات ناعمة موحّدة للبطاقات */
+.kpi-card, .panel, .chart-panel, .stat-card, .ratio-card, .mini-stat, .counter,
+.rcard, .govx-card, .pillar, .feature-report, .map-side, .week-chart, .calendar, .day-panel {
+  transition: background var(--t-med) var(--ease), border-color var(--t-fast) var(--ease),
+              box-shadow var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+
+/* طبقة أ — بطاقات مميّزة (ارتفاع ساكن) */
+.panel { box-shadow: var(--shadow-sm); }
+.panel:hover { box-shadow: var(--shadow-md); }
+.chart-panel { box-shadow: var(--shadow-xs); }
+.chart-panel:hover { box-shadow: var(--shadow-sm); }
+.feature-report { box-shadow: var(--shadow-sm); }
+.feature-report:hover { border-color: transparent; box-shadow: var(--shadow-lg), var(--ring-accent); }
+
+/* طبقة ب — بطاقات تفاعلية قياسية (xs ساكن → lg + حلقة عند المرور) */
+.rcard, .govx-card, .pillar, .counter, .mini-stat, .kpi-card { box-shadow: var(--shadow-xs); }
+.rcard:hover, .govx-card:hover, .pillar:hover {
+  transform: translateY(-4px); border-color: transparent;
+  box-shadow: var(--shadow-lg), var(--ring-accent);
+}
+.kpi-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+/* طبقة ج — بلاطات مدمجة/متداخلة (بلا ظلّ؛ نصف قطر أصغر) */
+.stat-card, .ratio-card { border-radius: var(--radius); }
+
+/* حلقات تركيز موحّدة على الأسطح التفاعلية */
+.btn:focus-visible, .chip:focus-visible, .seg__btn:focus-visible, .ops-tab:focus-visible,
+.tag-chip:focus-visible, .filter-token:focus-visible, .calendar__nav:focus-visible,
+.calendar__cell:focus-visible, .pager__item:focus-visible, .archive-search__input:focus-visible,
+.nv-rail__dot:focus-visible {
+  outline: none; box-shadow: var(--ring-strong);
+}
+.btn--primary:focus-visible { box-shadow: var(--ring-strong); }
+
+/* --------------------------------------------------------------------------
+   27. تطوير التصميم — إيقاع الأقسام + الهيرو + الخريطة + المكوّنات (P1/P2)
+   -------------------------------------------------------------------------- */
+/* منع تمرير أفقي ناتج عن الأشرطة كاملة العرض (clip لا يكسر التثبيت sticky) */
+body { overflow-x: clip; }
+
+/* أشرطة الإيقاع كاملة العرض — المحتوى يبقى محاذياً لعرض الصفحة */
+.band {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  padding-block: var(--band-pad);
+  padding-inline: max(var(--gutter), calc((100vw - var(--maxw)) / 2 + var(--gutter)));
+}
+.section.band { margin-block: 0; }   /* الشريط يملك إيقاعه عبر padding-block (لا تُلمَس margin-inline كاملة العرض) */
+.section:has(+ .section.band) { margin-bottom: 0; } /* يلاصق الشريط القسم السابق بلا فجوة شفافة مزدوجة */
+.band--tint    { background: var(--surface-tint); border-block: 1px solid var(--border); }
+.band--surface { background: var(--surface); border-block: 1px solid var(--border); }
+.band--dark {
+  position: relative;
+  background: linear-gradient(135deg, #262a5c 0%, #181a38 100%);
+  color: #eef1f8; border-block: 1px solid rgba(255, 255, 255, .08);
+}
+.band--dark .section__title { color: #fff; }
+.band--dark .section__sub { color: rgba(255, 255, 255, .70); }
+.band--dark::before {
+  content: ""; position: absolute; inset-inline: 0; inset-block-start: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent-bright), transparent); opacity: .55;
+}
+
+/* طبقات العناوين — مميّز (lead) مقابل مساند (support) */
+.section--lead .section__title { font-size: clamp(30px, 4.2vw, 46px); line-height: var(--lh-tight); }
+.section--lead .section__sub { font-size: clamp(15px, 1.6vw, 17px); max-width: 54ch; }
+.section--support .section__title { font-size: clamp(18px, 2.2vw, 22px); }
+
+/* الخريطة كبلوك أساسي يتنفّس */
+.section--map { padding: clamp(22px, 3vw, 38px); background: color-mix(in srgb, var(--accent) 3%, var(--bg)); border: 1px solid var(--border); border-radius: var(--radius-2xl); }
+:root[data-mode="dark"] .section--map { background: color-mix(in srgb, var(--accent) 7%, var(--surface)); }
+.section--map .map-layout { grid-template-columns: 1.55fr .8fr; }
+.section--map .map-panel { border-radius: var(--radius-2xl); height: clamp(460px, 54vw, 620px); box-shadow: var(--shadow-md); }
+.section--map .map-panel::after { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .04); }
+:root[data-mode="dark"] .section--map .map-panel::after { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .05); }
+.section--map .map-side { padding: 20px 18px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-xs); }
+
+/* الهيرو: خلفية كاملة العرض (توهّج + تطريز تمتدّ لحواف الشاشة) والمحتوى يبقى محاذياً للصفحة */
+.hero {
+  background: var(--hero-glow); background-repeat: no-repeat;
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  padding-inline: max(var(--gutter), calc((100vw - var(--maxw)) / 2 + var(--gutter)));
+}
+.ring__badge { box-shadow: var(--shadow-lg); }
+.figure--accent .figure__value { color: var(--casualties); }
+
+/* تلميع المكوّنات */
+.btn { transition: box-shadow var(--t-fast) var(--ease), transform var(--t-fast) var(--ease), background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn--primary { box-shadow: var(--shadow-xs); }
+.btn--primary:hover { box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+.btn:active { transform: translateY(1px); }
+.chip.is-active { box-shadow: var(--shadow-xs); }
+.pager__item { box-shadow: var(--shadow-xs); transition: box-shadow var(--t-fast) var(--ease), transform var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.pager__item:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+/* --------------------------------------------------------------------------
    23. الاستجابة (Responsive)
    -------------------------------------------------------------------------- */
 @media (max-width: 980px) {
@@ -2204,6 +2370,7 @@ body.lb-open { overflow: hidden; }
   .hist-layout,
   .feature-article,
   .split-2 { grid-template-columns: 1fr; }
+  .section--map .map-layout { grid-template-columns: 1fr; }
   .article-grid { grid-template-columns: repeat(2, 1fr); }
   .hero__main { gap: clamp(32px, 8vw, 48px); }
   .news-band__inner { grid-template-columns: 1fr; }
@@ -2249,6 +2416,7 @@ body.lb-open { overflow: hidden; }
   .trust__link { margin-inline-start: 0; }
   .news-band__form { flex-direction: column; }
   .hero__figures { grid-template-columns: 1fr; gap: 24px; }
+  .band { --band-pad: var(--band-pad-sm); }
   .brand__logo { height: 38px; }
   .site-footer__top { grid-template-columns: 1fr; }
 }
