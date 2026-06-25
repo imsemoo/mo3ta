@@ -998,7 +998,7 @@ h1, h2, h3, h4 { margin: 0; }
   display: flex;
   flex-direction: column;
 }
-.week-plot { position: relative; flex: 1; min-height: 240px; }
+.week-plot { position: relative; height: clamp(220px, 24vw, 260px); }
 .week-bars {
   position: absolute;
   inset: 0;
@@ -1568,8 +1568,9 @@ button.calendar__cell:hover { background: var(--surface-2); }
   border: 1px solid var(--border); background: var(--bg); color: var(--muted); font-size: 11px;
 }
 @media (prefers-reduced-motion: reduce) {
-  .ticker__track { animation: none; }
-  .ticker__viewport { overflow-x: auto; }
+  /* الماركيه أساسيٌّ لوظيفة الشريط (تحديثات حيّة) وله زرّ إيقاف يدوي — يُعفى من تعطيل الحركة العام
+     (نُبقي التمرير التلقائي ونتجاوز قاعدة * !important عبر تخصيص أعلى؛ زرّ الإيقاف يبقى يعمل) */
+  .ticker__track { animation-duration: 40s !important; animation-iteration-count: infinite !important; }
 }
 
 /* معرض المرئيات */
