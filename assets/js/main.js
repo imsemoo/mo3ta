@@ -42,12 +42,12 @@
     ],
     // شريط المؤشّرات في البطل — أرقام موثّقة تراكمية فقط (لا توجد نِسَب تغيّر مُفترضة)
     heroKpis: [
-      { label: 'شهداء',            target: 1581,  icon: '✚', tone: 'casualties', href: 'daily_mo3ta.html' },
-      { label: 'إصابات',           target: 36776, icon: '◍', tone: 'casualties', href: 'daily_mo3ta.html' },
-      { label: 'اعتقالات',         target: 54385, icon: '▣', tone: 'violations', href: 'daily_mo3ta.html' },
-      { label: 'منازل مهدّمة',     target: 10951, icon: '⌂', tone: 'violations', href: 'daily_mo3ta.html' },
-      { label: 'مقاومة شعبية',     target: 55516, icon: '✷', tone: 'resistance', href: 'daily_mo3ta.html' },
-      { label: 'عمليات نوعية',     target: 8217,  icon: '◈', tone: 'resistance', href: 'daily_mo3ta.html' }
+      { label: 'شهداء',            target: 1581,  ic: 'person', tone: 'casualties', href: 'daily_mo3ta.html' },
+      { label: 'إصابات',           target: 36776, ic: 'aid',    tone: 'casualties', href: 'daily_mo3ta.html' },
+      { label: 'اعتقالات',         target: 54385, ic: 'lock',   tone: 'violations', href: 'daily_mo3ta.html' },
+      { label: 'منازل مهدّمة',     target: 10951, ic: 'house',  tone: 'violations', href: 'daily_mo3ta.html' },
+      { label: 'مقاومة شعبية',     target: 55516, ic: 'flag',   tone: 'resistance', href: 'daily_mo3ta.html' },
+      { label: 'عمليات نوعية',     target: 8217,  ic: 'target', tone: 'resistance', href: 'daily_mo3ta.html' }
     ],
     GOV: [
       { n: 'نابلس',            v: 66547, x: 188, y: 150, lat: 32.221, lng: 35.261 },
@@ -334,24 +334,6 @@
       svg('polyline', { points: d, fill: 'none', stroke: color, 'stroke-width': 1.6, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
   }
 
-  function heroRingSvg(th) {
-    var size = 240, cx = 120, cy = 120, r = 92, sw = 20, pct = 0.86;
-    var circ = 2 * Math.PI * r;
-    var grad = svg('linearGradient', { id: 'heroRingGrad', x1: '0', y1: '0', x2: '1', y2: '1' }, [
-      svg('stop', { offset: '0%', 'stop-color': th.accent, 'stop-opacity': 1 }),
-      svg('stop', { offset: '100%', 'stop-color': th.accent, 'stop-opacity': 0.45 })
-    ]);
-    var track = svg('circle', { cx: cx, cy: cy, r: r, fill: 'none', stroke: th.surface2, 'stroke-width': sw });
-    var prog = svg('circle', {
-      cx: cx, cy: cy, r: r, fill: 'none', stroke: 'url(#heroRingGrad)', 'stroke-width': sw,
-      'stroke-linecap': 'round', 'stroke-dasharray': circ.toFixed(2),
-      'stroke-dashoffset': (circ * (1 - pct)).toFixed(2),
-      transform: 'rotate(-90 ' + cx + ' ' + cy + ')'
-    });
-    return svg('svg', { viewBox: '0 0 ' + size + ' ' + size, width: '100%', 'aria-hidden': 'true' },
-      [svg('defs', null, grad), track, prog]);
-  }
-
   function lineChartSvg(th) {
     var m = monthly(), n = m.tot.length, W = 860, H = 300, padB = 34, padT = 18, padX = 8;
     var type = state.trendType, iw = W - padX * 2, ih = H - padB - padT;
@@ -555,11 +537,6 @@
      ========================================================================= */
   function bar(track, fill) { var t = h('div', 'bar-track'); var f = h('div', fill || 'bar-fill'); t.appendChild(f); return { track: t, fill: f }; }
 
-  function renderHeroRing() {
-    var box = slot('hero-ring'); if (!box) return; clear(box);
-    box.appendChild(heroRingSvg(theme()));
-  }
-
   // خريطة فلسطين الحيّة في البطل (SVG من حدود المحافظات — choropleth + بؤر + علامات + رادار)
   function renderHeroMap() {
     var box = slot('hero-map'); if (!box || !window.PS_GOV_GEO) return; clear(box);
@@ -606,7 +583,7 @@
       els.push(svg('path', {
         d: d, class: 'hero-map__gov',
         fill: th.accent, 'fill-opacity': (0.20 + 0.55 * dens).toFixed(3),
-        stroke: th.mode === 'dark' ? '#fff' : th.accent, 'stroke-width': 0.7, 'stroke-opacity': 0.5
+        stroke: th.mode === 'dark' ? th.ink : th.accent, 'stroke-width': 0.7, 'stroke-opacity': 0.5
       }));
     });
 
@@ -624,7 +601,7 @@
     // علامات المدن
     var live = { 0: 1, 1: 1, 5: 1, 11: 1 };
     DATA.GOV.forEach(function (g, idx) {
-      var x = px(g.lng), y = py(g.lat), c = g.gaza ? hot : (th.mode === 'dark' ? '#fff' : th.accent);
+      var x = px(g.lng), y = py(g.lat), c = g.gaza ? hot : (th.mode === 'dark' ? th.ink : th.accent);
       var grp = svg('g', { class: 'hero-map__marker' });
       if (live[idx]) grp.appendChild(svg('circle', { cx: x.toFixed(1), cy: y.toFixed(1), r: 5, fill: 'none', stroke: c, 'stroke-width': 1.5, 'stroke-opacity': 0.7, class: 'hero-map__pulse' }));
       grp.appendChild(svg('circle', { cx: x.toFixed(1), cy: y.toFixed(1), r: 3.2, fill: c }));
@@ -632,31 +609,44 @@
       els.push(grp);
     });
 
-    box.appendChild(svg('svg', { viewBox: '0 0 ' + W.toFixed(0) + ' ' + H.toFixed(0), class: 'hero-map__svg', role: 'img', 'aria-label': 'خريطة فلسطين — توزّع الأحداث الموثّقة على المحافظات' }, els));
+    box.appendChild(svg('svg', { viewBox: '0 0 ' + W.toFixed(0) + ' ' + H.toFixed(0), class: 'hero-map__svg' }, els));
+  }
+
+  // أيقونات خطّية موحّدة (نفس السماكة/المقاس) لشريط مؤشّرات البطل
+  function heroKpiIcon(name) {
+    var P = {
+      person: [['circle', { cx: 12, cy: 8, r: 3.2 }], ['path', { d: 'M5.6 19.4c0-3.6 2.9-6 6.4-6s6.4 2.4 6.4 6' }]],
+      aid:    [['rect', { x: 4.5, y: 7.5, width: 15, height: 11, rx: 2.5 }], ['path', { d: 'M12 10.5v5' }], ['path', { d: 'M9.5 13h5' }]],
+      lock:   [['rect', { x: 5.5, y: 10.5, width: 13, height: 8.5, rx: 2 }], ['path', { d: 'M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5' }], ['circle', { cx: 12, cy: 14.6, r: 1.25 }]],
+      house:  [['path', { d: 'M4 11.2l8-6 8 6' }], ['path', { d: 'M6 9.8v9.2h12V9.8' }]],
+      flag:   [['path', { d: 'M6.6 4v16' }], ['path', { d: 'M6.6 5h10.6l-2.5 3.5 2.5 3.5H6.6' }]],
+      target: [['circle', { cx: 12, cy: 12, r: 7.6 }], ['circle', { cx: 12, cy: 12, r: 3.7 }], ['circle', { cx: 12, cy: 12, r: 1, fill: 'currentColor', stroke: 'none' }]]
+    };
+    var kids = (P[name] || P.target).map(function (e) { return svg(e[0], e[1]); });
+    return svg('svg', { viewBox: '0 0 24 24', class: 'hero-kpi__glyph', fill: 'none', stroke: 'currentColor',
+      'stroke-width': 1.8, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, kids);
   }
 
   function renderHeroKpis() {
     var box = slot('hero-kpis'); if (!box) return; clear(box);
-    (DATA.heroKpis || []).forEach(function (k, i) {
+    (DATA.heroKpis || []).forEach(function (k) {
       var item = h('a', 'hero-kpi'); item.href = k.href || '#'; item.setAttribute('data-st', '');
-      var icon = h('span', 'hero-kpi__icon', k.icon);
-      icon.setAttribute('aria-hidden', 'true'); cssVar(icon, '--tone', 'var(--' + k.tone + ')');
+      var icon = h('span', 'hero-kpi__icon'); icon.setAttribute('aria-hidden', 'true');
+      cssVar(icon, '--tone', 'var(--' + k.tone + ')');
+      icon.appendChild(heroKpiIcon(k.ic));
       item.appendChild(icon);
       var body = h('div', 'hero-kpi__body');
       var val = h('div', 'hero-kpi__value num'); val.setAttribute('data-count', k.target); val.textContent = '0';
       body.appendChild(val);
       body.appendChild(h('div', 'hero-kpi__label', k.label));
-      var meta = h('div', 'hero-kpi__meta');
-      meta.appendChild(h('span', 'hero-kpi__verified', '✓ موثّق'));
-      meta.appendChild(h('span', 'hero-kpi__since', 'إجمالي تراكمي'));
-      body.appendChild(meta);
       item.appendChild(body);
       box.appendChild(item);
     });
   }
 
-  // أرقام البطاقات الطافية = إجماليات موثّقة مشتقّة من بيانات المحافظات نفسها
-  // (مطابِقة لتقسيم صفحة المحافظات: الضفة 10 محافظات · القدس · غزة)
+  // البطاقات الطافية = حصّة كل إقليم من النشاط المرصود (نِسَب مشتقّة من بيانات المحافظات
+  // نفسها التي تصوّرها الخريطة). نعرض نِسَباً لا أعداداً مطلقة كي لا تتعارض مع الإجمالي
+  // الموثّق المعتمد (434,505) المعروض في مواضع أخرى من الصفحة.
   function setHeroCards() {
     var wb = 0, jeru = 0, gaza = 0;
     (DATA.GOV || []).forEach(function (g) {
@@ -664,10 +654,11 @@
       else if (g.n === 'القدس') jeru += g.v;
       else wb += g.v;
     });
-    var map = { 'hero-wb': wb, 'hero-jeru': jeru, 'hero-gaza': gaza };
-    Object.keys(map).forEach(function (key) {
+    var tot = (wb + jeru + gaza) || 1;
+    var share = { 'hero-wb': wb, 'hero-jeru': jeru, 'hero-gaza': gaza };
+    Object.keys(share).forEach(function (key) {
       var el = $('[data-' + key + ']');
-      if (el) el.setAttribute('data-count', map[key]);
+      if (el) el.textContent = (share[key] / tot * 100).toFixed(1) + '%';
     });
   }
 
@@ -788,18 +779,6 @@
     renderMapRank();
     setMapHover(null);
     setFilterStatus('تمت إعادة الضبط — يُعرض كل البيانات');
-  }
-
-  function renderHero() {
-    var box = slot('hero'); if (!box) return; clear(box);
-    DATA.hero.forEach(function (f) {
-      var fig = h('div', 'figure' + (f.accent ? ' figure--accent' : ''));
-      var val = h('div', 'figure__value num'); val.setAttribute('data-count', f.target); val.textContent = '0';
-      fig.appendChild(val);
-      fig.appendChild(h('div', 'figure__label', f.label));
-      fig.appendChild(h('div', 'figure__note', f.note));
-      box.appendChild(fig);
-    });
   }
 
   function renderKpisLead() {
@@ -1343,7 +1322,6 @@
      ========================================================================= */
   // الرسوم التي تعتمد ألوانها على السمة تحتاج إعادة بناء عند تبديلها
   function renderThemed() {
-    renderHeroRing();
     renderHeroBg();
     renderHeroMap();
     renderSparks();
@@ -1497,7 +1475,6 @@
     renderFilters();
     renderTicker();
     renderVisuals();
-    renderHero();
     renderKpisLead();
     renderKpisSub();
     renderMapRank();
@@ -1517,7 +1494,6 @@
     renderHist();
 
     // الرسوم المعتمدة على السمة
-    renderHeroRing();
     renderHeroBg();
     renderHeroMap();
     renderHeroKpis();
