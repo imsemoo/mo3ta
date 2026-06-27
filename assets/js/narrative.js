@@ -1,108 +1,117 @@
 /* ==========================================================================
    مُعطى — «الرواية المصوّرة» (visual_narrative.html)
-   narrative.js — عارض كتاب محلي للعدد المصوّر: الصفحات مستضافة عندنا
-   (assets/narrative/page-NNN.webp) بدل تضمين منصّة خارجية مدفوعة.
-   طيّة (صفحتان) على الديسكتوب · صفحة واحدة على الموبايل · تنقّل/قفز/ملء شاشة/
-   لوحة مفاتيح/سحب · تحميل كسول (لا تُحمَّل الـ250 صفحة دفعةً واحدة).
+   narrative.js — عارض كتاب واقعي بتأثير تقليب الصفحات عبر StPageFlip
+   (مكتبة محلية: assets/vendor/page-flip). الصفحات مستضافة عندنا
+   (assets/narrative/page-NNN.webp).
+   • وضع HTML (صفحات DOM حقيقية) كي نتحكّم في الصور والتحميل الكسول.
+   • RTL: نعكس الحاوية بـscaleX(-1) فيُقلَّب من اليمين كالكتاب العربي،
+     ونعكس صورة كل صفحة كي يبقى محتواها سليماً.
+   • تحميل كسول: لا تُحمَّل الـ250 صورة معاً — فقط الجوار يُحمَّل عند التقليب.
    ========================================================================== */
 (function () {
   'use strict';
 
   var book = document.querySelector('[data-vn-book]');
-  var stage = document.querySelector('[data-vn-stage]');
-  if (!book || !stage) return;
+  var mount = document.querySelector('[data-vn-flip]');
+  if (!book || !mount || !window.St || !window.St.PageFlip) return;
 
   var totalEl = document.querySelector('[data-vn-total]');
   var TOTAL = parseInt((totalEl && totalEl.textContent) || '250', 10) || 250;
   var jump = document.querySelector('[data-vn-jump]');
   var fsBtn = document.querySelector('[data-vn-fs]');
-  var spreadMQ = window.matchMedia('(min-width: 820px)');
+  var loading = document.querySelector('[data-vn-loading]');
 
   function pad(n) { return ('00' + n).slice(-3); }
-  function path(n) { return 'assets/narrative/page-' + pad(n) + '.webp'; }
+  function src(n) { return 'assets/narrative/page-' + pad(n) + '.webp'; }
 
-  var current = 1, cache = {};
-
-  function imgEl(n) {
-    if (!cache[n]) {
-      var img = new Image();
-      img.className = 'vn-book__page';
-      img.alt = 'صفحة ' + n + ' من الرواية المصوّرة';
-      img.decoding = 'async';
-      img.src = path(n);
-      cache[n] = img;
-    }
-    return cache[n];
+  // بناء عناصر الصفحات (بلا src بعد — الأبعاد من width/height كي يصحّ التخطيط قبل التحميل)
+  var pageEls = [];
+  for (var i = 1; i <= TOTAL; i++) {
+    var d = document.createElement('div');
+    d.className = 'vn-page';
+    if (i === 1 || i === TOTAL) d.setAttribute('data-density', 'hard'); // الغلافان صلبان
+    var img = document.createElement('img');
+    img.className = 'vn-page__img';
+    img.setAttribute('width', '1980');
+    img.setAttribute('height', '2800');
+    img.alt = 'صفحة ' + i + ' من الرواية المصوّرة';
+    img.decoding = 'async';
+    img.dataset.src = src(i);
+    d.appendChild(img);
+    mount.appendChild(d);
+    pageEls.push(d);
   }
 
-  // الطيّة التي تحوي الصفحة c (الغلاف وحده، ثم أزواج 2-3، 4-5…)
-  function spread(c) {
-    if (c <= 1) return [1];
-    var a = c % 2 === 0 ? c : c - 1;
-    return (a + 1 <= TOTAL) ? [a, a + 1] : [a];
-  }
-  function shown() { return spreadMQ.matches ? spread(current) : [current]; }
+  var pf = new St.PageFlip(mount, {
+    width: 424, height: 600,            // نسبة الصفحة 0.707 (1980×2800)
+    size: 'stretch',
+    minWidth: 250, minHeight: 354,
+    maxWidth: 1600, maxHeight: 2264,
+    maxShadowOpacity: 0.5,
+    drawShadow: true,
+    flippingTime: 800,
+    usePortrait: true,                  // صفحة واحدة على الضيّق
+    showCover: true,                    // الغلاف وحده
+    autoSize: true,
+    mobileScrollSupport: false,
+    swipeDistance: 30,
+    clickEventForward: false,
+    useMouseEvents: true
+  });
 
-  function preload(pages) {
-    var lo = pages[0], hi = pages[pages.length - 1];
-    [hi + 1, hi + 2, lo - 1, lo - 2].forEach(function (n) {
-      if (n >= 1 && n <= TOTAL) { var i = new Image(); i.src = path(n); }
-    });
-  }
-
-  function render() {
-    var pages = shown();
-    while (stage.firstChild) stage.removeChild(stage.firstChild);
-    stage.classList.toggle('is-spread', pages.length === 2);
-    // RTL: الرقم الأصغر يميناً → نُلحق تصاعدياً وحاوية الفليكس RTL تضعه يمين
-    pages.forEach(function (n) { stage.appendChild(imgEl(n)); });
-    if (jump) jump.value = pages[0];
-    $$('[data-vn-prev]').forEach(function (b) { b.disabled = pages[0] <= 1; });
-    $$('[data-vn-next]').forEach(function (b) { b.disabled = pages[pages.length - 1] >= TOTAL; });
-    preload(pages);
-  }
+  pf.loadFromHTML(mount.querySelectorAll('.vn-page'));
 
   function $$(s) { return Array.prototype.slice.call(document.querySelectorAll(s)); }
-  function go(c) { current = Math.max(1, Math.min(TOTAL, c)); render(); }
-  function next() { if (spreadMQ.matches) { var p = spread(current); go(p[p.length - 1] + 1); } else go(current + 1); }
-  function prev() { if (spreadMQ.matches) { var p = spread(current); go(p[0] - 1); } else go(current - 1); }
 
-  $$('[data-vn-next]').forEach(function (b) { b.addEventListener('click', next); });
-  $$('[data-vn-prev]').forEach(function (b) { b.addEventListener('click', prev); });
-  var firstBtn = document.querySelector('[data-vn-first]'); if (firstBtn) firstBtn.addEventListener('click', function () { go(1); });
-  var lastBtn = document.querySelector('[data-vn-last]'); if (lastBtn) lastBtn.addEventListener('click', function () { go(TOTAL); });
-
-  if (jump) {
-    jump.addEventListener('change', function () {
-      var v = parseInt(jump.value, 10);
-      if (v >= 1 && v <= TOTAL) go(v); else jump.value = shown()[0];
-    });
+  // تحميل كسول للجوار
+  function loadAround(idx) {
+    for (var n = idx - 2; n <= idx + 3; n++) {
+      var p = pageEls[n]; if (!p) continue;
+      var im = p.querySelector('img');
+      if (im && !im.getAttribute('src') && im.dataset.src) im.setAttribute('src', im.dataset.src);
+    }
   }
+
+  function curIndex() { return pf.getCurrentPageIndex ? (pf.getCurrentPageIndex() || 0) : 0; }
+
+  function updateBar() {
+    var page = curIndex() + 1;
+    if (jump && document.activeElement !== jump) jump.value = page;
+    $$('[data-vn-prev]').forEach(function (b) { b.disabled = page <= 1; });
+    $$('[data-vn-next]').forEach(function (b) { b.disabled = page >= TOTAL; });
+  }
+
+  function ready() {
+    if (loading) loading.hidden = true;
+    book.classList.add('is-ready');
+    loadAround(curIndex());
+    updateBar();
+  }
+  pf.on('init', ready);
+  pf.on('flip', function () { loadAround(curIndex()); updateBar(); });
+  pf.on('changeOrientation', function () { loadAround(curIndex()); });
+  setTimeout(ready, 700);
+
+  // أزرار التنقّل
+  $$('[data-vn-next]').forEach(function (b) { b.addEventListener('click', function () { pf.flipNext(); }); });
+  $$('[data-vn-prev]').forEach(function (b) { b.addEventListener('click', function () { pf.flipPrev(); }); });
+  var firstBtn = document.querySelector('[data-vn-first]'); if (firstBtn) firstBtn.addEventListener('click', function () { pf.flip(0); });
+  var lastBtn = document.querySelector('[data-vn-last]'); if (lastBtn) lastBtn.addEventListener('click', function () { pf.flip(TOTAL - 1); });
+  if (jump) jump.addEventListener('change', function () {
+    var v = parseInt(jump.value, 10);
+    if (v >= 1 && v <= TOTAL) { loadAround(v - 1); pf.flip(v - 1); } else updateBar();
+  });
 
   // لوحة المفاتيح (RTL: يسار = التالي، يمين = السابق)
   document.addEventListener('keydown', function (e) {
     if (/^(input|textarea|select)$/i.test(e.target.tagName || '')) return;
-    if (e.key === 'ArrowLeft') next();
-    else if (e.key === 'ArrowRight') prev();
-    else if (e.key === 'Home') go(1);
-    else if (e.key === 'End') go(TOTAL);
+    if (e.key === 'ArrowLeft') pf.flipNext();
+    else if (e.key === 'ArrowRight') pf.flipPrev();
+    else if (e.key === 'Home') pf.flip(0);
+    else if (e.key === 'End') pf.flip(TOTAL - 1);
   });
 
-  // السحب باللمس
-  var tx = null;
-  stage.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; }, { passive: true });
-  stage.addEventListener('touchend', function (e) {
-    if (tx == null) return;
-    var dx = e.changedTouches[0].clientX - tx; tx = null;
-    if (Math.abs(dx) < 40) return;
-    if (dx < 0) next(); else prev(); // سحب لليسار = التالي
-  }, { passive: true });
-
-  // إعادة الرسم عند تبدّل وضع الطيّة (موبايل↔ديسكتوب)
-  if (spreadMQ.addEventListener) spreadMQ.addEventListener('change', render);
-  else if (spreadMQ.addListener) spreadMQ.addListener(render);
-
-  // ملء الشاشة (طبقة مثبّتة عبر كلاس — قابلة للتنسيق بالكامل)
+  // ملء الشاشة (طبقة مثبّتة عبر كلاس) — StPageFlip يُعيد القياس عند resize
   function fsOn() { return book.classList.contains('is-fullscreen'); }
   function syncFs() {
     if (!fsBtn) return;
@@ -112,12 +121,11 @@
   function setFs(on) {
     book.classList.toggle('is-fullscreen', on);
     document.body.classList.toggle('vn-fs-lock', on);
-    syncFs(); render();
+    syncFs();
+    requestAnimationFrame(function () { window.dispatchEvent(new Event('resize')); });
   }
   if (fsBtn) {
     fsBtn.addEventListener('click', function () { setFs(!fsOn()); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && fsOn()) { setFs(false); fsBtn.focus(); } });
   }
-
-  go(1);
 })();

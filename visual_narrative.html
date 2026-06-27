@@ -71,8 +71,9 @@
 
       <div class="vn-book" data-vn-book>
         <button class="vn-book__nav vn-book__nav--prev" type="button" data-vn-prev aria-label="الصفحة السابقة">›</button>
-        <div class="vn-book__stage" data-vn-stage aria-live="polite">
-          <p class="vn-book__loading">…جارٍ فتح العدد</p>
+        <div class="vn-book__stage">
+          <div class="vn-book__flip" data-vn-flip></div>
+          <p class="vn-book__loading" data-vn-loading>…جارٍ فتح العدد</p>
         </div>
         <button class="vn-book__nav vn-book__nav--next" type="button" data-vn-next aria-label="الصفحة التالية">‹</button>
       </div>
@@ -192,6 +193,7 @@
   </footer>
 
   <script src="assets/js/main.js" defer></script>
+  <script src="assets/vendor/page-flip/page-flip.browser.js" defer></script>
   <script src="assets/js/narrative.js" defer></script>
 </body>
 </html>

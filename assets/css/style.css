@@ -6687,40 +6687,60 @@ body {
 }
 
 .vn-book__stage {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2px;
-  min-height: clamp(360px, 58vh, 720px);
-  padding: clamp(8px, 1.5vw, 18px);
+  min-height: clamp(360px, 60vh, 760px);
+  padding: clamp(10px, 1.8vw, 22px);
   border-radius: var(--radius-lg);
   background: var(--surface-2);
-  overflow: hidden;
 }
 
 :root[data-mode="dark"] .vn-book__stage {
   background: color-mix(in srgb, var(--ink) 7%, var(--bg));
 }
 
-.vn-book__page {
-  max-block-size: min(74vh, 760px);
-  max-inline-size: 100%;
-  inline-size: auto;
-  block-size: auto;
-  object-fit: contain;
-  display: block;
-  background: #fff;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, .18);
+.vn-book__flip {
+  width: 100%;
+  max-width: 940px;
+  margin-inline: auto;
 }
 
-.vn-book__stage.is-spread .vn-book__page {
-  max-inline-size: 49%;
+/* عكس محتوى كل صفحة كي يبقى سليماً رغم عكس الحاوية */
+.vn-book__flip img {
+  transform: scaleX(-1);
+}
+
+.vn-book__flip .stf__parent {
+  margin-inline: auto;
+}
+
+.vn-page {
+  background: #fff;
+  overflow: hidden;
+}
+
+.vn-page__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .vn-book__loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
   margin: 0;
   font-size: 14px;
   color: var(--muted);
+  transform: scaleX(-1);
+}
+
+.vn-book.is-ready .vn-book__loading {
+  display: none;
 }
 
 /* أسهم التنقّل (overlay على الجوانب) */
