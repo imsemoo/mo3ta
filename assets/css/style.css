@@ -6707,11 +6707,6 @@ body {
   margin-inline: auto;
 }
 
-/* عكس محتوى كل صفحة كي يبقى سليماً رغم عكس الحاوية */
-.vn-book__flip img {
-  transform: scaleX(-1);
-}
-
 .vn-book__flip .stf__parent {
   margin-inline: auto;
 }
@@ -6736,7 +6731,6 @@ body {
   margin: 0;
   font-size: 14px;
   color: var(--muted);
-  transform: scaleX(-1);
 }
 
 .vn-book.is-ready .vn-book__loading {
