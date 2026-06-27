@@ -277,12 +277,19 @@
           <button class="chip chip--sm" type="button" data-heat-cat="crimes">جرائم</button>
         </div>
       </div>
-      <div class="chart-panel chart-panel--scroll" data-st>
+      <div class="chart-panel" data-st>
         <div data-render="heat"></div>
-        <div class="heat-legend">
-          <span>أقل</span>
-          <div class="heat-legend__scale" aria-hidden="true"></div>
-          <span>أكثر</span>
+        <div class="heatmap__foot">
+          <span class="heatmap__axis" aria-hidden="true">
+            <span class="heatmap__axis-end">الأقدم</span>
+            <span class="heatmap__axis-line"></span>
+            <span class="heatmap__axis-end">الأحدث</span>
+          </span>
+          <span class="heat-legend">
+            <span>أقل</span>
+            <span class="heat-legend__scale" aria-hidden="true"></span>
+            <span>أكثر</span>
+          </span>
         </div>
       </div>
     </section>

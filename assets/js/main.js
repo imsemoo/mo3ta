@@ -414,22 +414,41 @@
     return svg('svg', { viewBox: '0 0 200 200', width: '100%', height: 200, role: 'img', 'aria-label': 'مخطط دائري لنسب الفئات: انتهاكات الاحتلال 85.3٪، مقاومة شعبية 12.8٪، مقاومة نوعية 1.9٪' }, els);
   }
 
-  function heatSvg(th) {
+  // خريطة حرارية بشبكة HTML (لا SVG) — الأسماء نصوص HTML حقيقية تبقى مقروءة وملتصقة على
+  // كل المقاسات، والخلايا تتمدّد على الشاشات الكبيرة وتتزحلق أفقياً على الصغيرة بحجم أدنى مقروء.
+  // الزمن: العمود 0 = الأقدم (يميناً في RTL) ← العمود الأخير = الأحدث (يساراً).
+  function heatGrid() {
     var cities = DATA.GOV.filter(function (g) { return !g.gaza; }).slice(0, 12).map(function (g) { return g.n; });
-    var cols = 40, cell = 15, gap = 2.5, lblW = 84;
-    var W = lblW + cols * (cell + gap), H = cities.length * (cell + gap) + 20, els = [];
+    var cols = 40;
     var catSeed = ({ all: 0, q: 5, p: 9, v: 2, crimes: 7 })[state.heatCat] || 0;
+
+    var matrix = h('div', 'heatmap__matrix');
+    matrix.setAttribute('role', 'img');
+    matrix.setAttribute('aria-label',
+      'خريطة حرارية لكثافة الأحداث عبر الزمن في ' + cities.length +
+      ' محافظة؛ كثافة اللون تعكس عدد الأحداث (الأقدم يميناً، الأحدث يساراً).');
+    cssVar(matrix, '--cols', cols);
+
     cities.forEach(function (c, ri) {
-      els.push(svg('text', { x: lblW - 8, y: ri * (cell + gap) + cell - 2.5, 'text-anchor': 'end', 'font-size': 10.5, fill: th.muted }, c));
+      var label = h('div', 'heatmap__label');
+      var txt = h('span', 'heatmap__label-txt', c);
+      txt.title = c;
+      label.appendChild(txt);
+      matrix.appendChild(label);
       for (var ci = 0; ci < cols; ci++) {
         var intensity = rng(ri * 100 + ci + catSeed);
         var spike = (ci > 26 && ci < 31) ? 0.5 : 0; if (ci === 28) spike = 0.7;
         var val = Math.min(1, intensity * 0.7 + spike);
-        var op = 0.08 + val * 0.92;
-        els.push(svg('rect', { x: lblW + ci * (cell + gap), y: ri * (cell + gap), width: cell, height: cell, rx: 2.5, fill: th.accent, opacity: op }));
+        var cell = h('div', 'heatmap__cell');
+        cssVar(cell, '--w', (8 + val * 92).toFixed(1) + '%');
+        cell.title = c + ' — كثافة ' + (val > 0.66 ? 'مرتفعة' : (val > 0.33 ? 'متوسطة' : 'منخفضة'));
+        matrix.appendChild(cell);
       }
     });
-    return svg('svg', { viewBox: '0 0 ' + W + ' ' + H, width: '100%', role: 'img', 'aria-label': 'خريطة حرارية لكثافة الأحداث شهرياً لأكثر المحافظات نشاطاً؛ كثافة اللون تعكس عدد الأحداث' }, els);
+
+    var scroll = h('div', 'heatmap__scroll');
+    scroll.appendChild(matrix);
+    return scroll;
   }
 
   // ===== الخريطة التفاعلية (Leaflet + OpenStreetMap) — choropleth حدود المحافظات =====
@@ -992,7 +1011,7 @@
 
   function renderHeat() {
     var box = slot('heat'); if (!box) return; clear(box);
-    box.appendChild(heatSvg(theme()));
+    box.appendChild(heatGrid());
   }
 
   function renderWeek() {
