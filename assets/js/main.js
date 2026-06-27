@@ -425,8 +425,8 @@
     var matrix = h('div', 'heatmap__matrix');
     matrix.setAttribute('role', 'img');
     matrix.setAttribute('aria-label',
-      'خريطة حرارية لكثافة الأحداث عبر الزمن في ' + cities.length +
-      ' محافظة؛ كثافة اللون تعكس عدد الأحداث (الأقدم يميناً، الأحدث يساراً).');
+      'خريطة حرارية تمثيلية لمستوى نشاط الأحداث عبر الزمن في ' + cities.length +
+      ' محافظة؛ كثافة اللون تمثّل المستوى النسبي للأحداث (الأقدم يميناً، الأحدث يساراً).');
     cssVar(matrix, '--cols', cols);
 
     cities.forEach(function (c, ri) {
