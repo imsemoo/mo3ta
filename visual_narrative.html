@@ -4,13 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#1f2147">
-  <meta name="description" content="الرواية المصوّرة — رحلةٌ عبر الميدان الفلسطيني من خلال ما تمّ توثيقه فعلاً: أحداثٌ مُحصاة محافظةً محافظة منذ 2018، من مركز معلومات فلسطين «مُعطى».">
+  <meta name="description" content="الرواية المصوّرة — الإصدار المصوّر السنوي من مركز معلومات فلسطين «مُعطى». اقرأ العدد كاملاً واطّلع على الحصاد البصري الموثّق.">
   <title>الرواية المصوّرة — مُعطى</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -27,6 +26,7 @@
       <a class="main-nav__link" href="daily_mo3ta.html">منذ 7 أكتوبر</a>
       <a class="main-nav__link" href="articles.html">التقارير</a>
       <a class="main-nav__link is-active" href="visual_narrative.html" aria-current="page">الرواية المصوّرة</a>
+      <a class="main-nav__link" href="timeline.html">الخطّ الزمني</a>
       <a class="main-nav__link" href="governorates.html">المحافظات</a>
       <a class="main-nav__link" href="about_us.html">من نحن</a>
     </nav>
@@ -42,60 +42,76 @@
 
   <main class="container" id="main" tabindex="-1">
 
-    <!-- مقدّمة الرواية -->
-    <section class="nv-hero">
-      <p class="nv-hero__eyebrow">رواية مصوّرة</p>
-      <h1 class="nv-hero__title">فلسطين كما يرويها الرقم الموثّق</h1>
-      <p class="nv-hero__lead">رحلةٌ عبر الميدان الفلسطيني من خلال ما تمّ توثيقه فعلاً — لا تقديرات ولا مجازات: أحداثٌ مُحصاة، محافظةً محافظة، منذ مطلع 2018 وحتى اليوم.</p>
-      <div class="nv-hero__figs">
-        <div class="nv-fig"><span class="nv-fig__value num" data-count="434505">0</span><span class="nv-fig__label">حدثاً موثّقاً</span></div>
-        <div class="nv-fig"><span class="nv-fig__value num" data-count="12">0</span><span class="nv-fig__label">محافظة مرصودة</span></div>
-        <div class="nv-fig"><span class="nv-fig__value num" data-count="102">0</span><span class="nv-fig__label">شهراً متواصلاً</span></div>
+    <!-- ===================== ترويسة الإصدار ===================== -->
+    <section class="vn-hero">
+      <p class="vn-hero__eyebrow">إصدار مصوّر · 2024</p>
+      <h1 class="vn-hero__title">الرواية المصوّرة</h1>
+      <p class="vn-hero__lead">العدد المصوّر من «مُعطى» — حصادٌ بصريّ يروي ما تمّ توثيقه عبر الميدان الفلسطيني: صورٌ وإنفوغرافيك ومحطّات من سجلٍّ موثّق. اقرأ العدد كاملاً أدناه، أو افتحه في نافذة مستقلّة.</p>
+      <div class="vn-hero__actions">
+        <a class="btn btn--primary" href="https://online.fliphtml5.com/Mo3ta/dfhp/" target="_blank" rel="noopener">افتح الإصدار ↗</a>
+        <a class="btn btn--soft" href="#vn-reader">اقرأ هنا ↓</a>
       </div>
+      <dl class="vn-hero__meta">
+        <div class="vn-hero__meta-item"><dt>الإصدار</dt><dd>الرواية المصوّرة 2024</dd></div>
+        <div class="vn-hero__meta-item"><dt>الناشر</dt><dd>مركز معلومات فلسطين — مُعطى</dd></div>
+        <div class="vn-hero__meta-item"><dt>اللغة</dt><dd>العربية</dd></div>
+      </dl>
     </section>
 
-    <!-- رحلة الخريطة + المحطّات -->
-    <section class="nv-scrolly" data-nv-scrolly>
-      <div class="nv-rail" data-render="rail" aria-label="محطّات الرواية"></div>
-      <div class="nv-map-col">
-        <div class="nv-map-panel" data-st>
-          <div class="map-leaflet" data-map role="application" aria-label="خريطة فلسطين التفاعلية لتوزّع الأحداث الموثّقة على المحافظات — استخدم القائمة النصّية البديلة أدناه"></div>
-          <p class="nv-map-cap">خريطة موثّقة · كثافة التلوين تعكس حجم الأحداث · انقر محافظة للتقريب</p>
+    <!-- ===================== القارئ (تضمين الفليبوك) ===================== -->
+    <section class="band band--tint vn-reader" id="vn-reader">
+      <div class="vn-reader__head">
+        <div>
+          <h2 class="vn-reader__title">اقرأ العدد كاملاً</h2>
+          <p class="vn-reader__sub">تصفّح الصفحات بالسحب أو الأسهم — أو وسّعه لملء الشاشة لقراءة أوضح.</p>
+        </div>
+        <div class="vn-reader__tools">
+          <button class="vn-tool" type="button" data-vn-fs aria-pressed="false"><span aria-hidden="true">⛶</span> ملء الشاشة</button>
+          <a class="vn-tool" href="https://online.fliphtml5.com/Mo3ta/dfhp/" target="_blank" rel="noopener"><span aria-hidden="true">↗</span> نافذة جديدة</a>
         </div>
       </div>
-      <div class="nv-steps" data-render="steps">
-        <div class="nv-nojs">
-          <p>تعرض هذه الرواية محطّاتها تفاعلياً مع التمرير. لاستعراض الأرقام الموثّقة كاملةً لكل محافظة:</p>
-          <p><a class="btn btn--soft" href="governorates.html">استعرض المحافظات الـ12 →</a></p>
+
+      <div class="vn-frame" data-vn-frame>
+        <div class="vn-frame__stage">
+          <div class="vn-frame__fallback">
+            <p class="vn-frame__fallback-title">يُعرض العدد عبر منصّة خارجية</p>
+            <a class="btn btn--primary" href="https://online.fliphtml5.com/Mo3ta/dfhp/" target="_blank" rel="noopener">افتح الإصدار في نافذة جديدة ↗</a>
+          </div>
+          <iframe class="vn-frame__embed" title="الرواية المصوّرة 2024 — النسخة التفاعلية" src="https://online.fliphtml5.com/Mo3ta/dfhp/" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-presentation"></iframe>
         </div>
       </div>
+
+      <p class="vn-reader__note">إصدارٌ خارجيّ يُعرض عبر منصّة fliphtml5. إن لم يظهر العارض، استخدم زرّ «نافذة جديدة» أعلاه.</p>
     </section>
 
-    <!-- القائمة النصّية البديلة للخريطة (دائمة الحضور) -->
-    <section class="nv-alt">
-      <h2 class="visually-hidden">القائمة النصّية البديلة للخريطة</h2>
-      <ol class="nv-alt__list" data-render="alt"></ol>
-    </section>
-
-    <!-- كشف الترتيب -->
-    <section class="section nv-ranking rv" data-nv-ranking>
+    <!-- ===================== القراءة في سياقها ===================== -->
+    <section class="section vn-context rv" data-st>
       <div class="section__head">
-        <h2 class="section__title">المحافظات حسب حجم الأحداث الموثّقة</h2>
-        <p class="section__sub">ترتيبٌ تنازلي — كل قيمة إجمالٌ موثّق من سجلّ مُعطى.</p>
+        <h2 class="section__title">القراءة في سياقها</h2>
+        <p class="section__sub">الإصدار روايةٌ مصوّرة؛ وخلفه سجلٌّ من الأرقام الموثّقة يختصر فداحة المشهد الإنساني.</p>
       </div>
-      <div class="nv-rank" data-render="rank"></div>
+      <div class="ratio-cards">
+        <div class="ratio-card"><div class="ratio-card__value">10.3×</div><div class="ratio-card__label">شهيد فلسطيني مقابل كل قتيل إسرائيلي</div></div>
+        <div class="ratio-card"><div class="ratio-card__value">15.1×</div><div class="ratio-card__label">جريح فلسطيني مقابل كل جريح إسرائيلي</div></div>
+        <div class="ratio-card"><div class="ratio-card__value">94٪</div><div class="ratio-card__label">نسبة الضحايا الفلسطينيين من الإجمالي</div></div>
+      </div>
+      <section class="trust" aria-label="مصدر البيانات">
+        <div class="trust__item"><div class="trust__value">+50</div><div class="trust__label">مصدراً موثوقاً</div></div>
+        <div class="trust__sep"></div>
+        <div class="trust__item"><div class="trust__value">12</div><div class="trust__label">محافظة</div></div>
+        <div class="trust__sep"></div>
+        <div class="trust__item"><div class="trust__value">102</div><div class="trust__label">شهراً متواصلاً</div></div>
+        <a class="trust__link" href="governorates.html">استعرض المحافظات ↓</a>
+      </section>
     </section>
 
-    <!-- الحصيلة في سياقها -->
-    <section class="section nv-reckon rv">
-      <div class="section__head">
-        <h2 class="section__title">الحصيلة في سياقها</h2>
-        <p class="section__sub">نِسبٌ موثّقة تختصر فداحة المشهد الإنساني.</p>
-      </div>
-      <div class="ratio-cards" data-render="reckon-ratios"></div>
-      <section class="trust" data-render="reckon-trust" aria-label="مصدر البيانات"></section>
-      <div class="nv-reckon__cta">
-        <a class="btn btn--primary" href="articles.html">التقارير الكاملة</a>
+    <!-- ===================== تابِع التوثيق ===================== -->
+    <section class="section vn-outro rv" data-st>
+      <h2 class="section__title">تابِع التوثيق</h2>
+      <p class="section__sub">من الصورة إلى الرقم — واصل عبر سجلّ مُعطى.</p>
+      <div class="vn-outro__cta">
+        <a class="btn btn--primary" href="timeline.html">الخطّ الزمني الموثّق →</a>
+        <a class="btn btn--soft" href="articles.html">كل التقارير</a>
         <a class="btn btn--soft" href="daily_mo3ta.html">الرصد منذ 7 أكتوبر</a>
       </div>
     </section>
@@ -115,9 +131,9 @@
         <button class="btn btn--primary news-band__btn" type="submit">اشترك الآن</button>
       </form>
       <div class="news-band__links">
-        <a class="news-band__chip" href="#">القرى الفلسطينية ↗</a>
-        <a class="news-band__chip" href="#">مرصد شيرين ↗</a>
-        <a class="news-band__chip" href="visual_narrative.html">الرواية المصوّرة ↗</a>
+        <a class="news-band__chip" href="timeline.html">الخطّ الزمني ↗</a>
+        <a class="news-band__chip" href="articles.html">كل التقارير ↗</a>
+        <a class="news-band__chip" href="daily_mo3ta.html">منذ 7 أكتوبر ↗</a>
       </div>
     </div>
   </section>
@@ -135,6 +151,7 @@
           <a href="index.html">الرئيسية</a>
           <a href="about_us.html">من نحن</a>
           <a href="articles.html">التقارير</a>
+          <a href="timeline.html">الخطّ الزمني</a>
           <a href="daily_mo3ta.html">منذ 7 أكتوبر</a>
         </nav>
       </div>
@@ -167,20 +184,6 @@
     </div>
   </footer>
 
-  <!-- ===================== Lightbox للمرئيات ===================== -->
-  <div class="lightbox" data-lightbox role="dialog" aria-modal="true" aria-label="عارض الصور" hidden>
-    <div class="lightbox__backdrop" data-lightbox-close></div>
-    <button class="lightbox__close" type="button" data-lightbox-close aria-label="إغلاق">✕</button>
-    <button class="lightbox__nav lightbox__nav--prev" type="button" data-lightbox-prev aria-label="السابق">›</button>
-    <figure class="lightbox__figure">
-      <img class="lightbox__img" data-lightbox-img src="" alt="">
-      <figcaption class="lightbox__caption" data-lightbox-caption></figcaption>
-    </figure>
-    <button class="lightbox__nav lightbox__nav--next" type="button" data-lightbox-next aria-label="التالي">‹</button>
-  </div>
-
-  <script src="assets/vendor/leaflet/leaflet.js" defer></script>
-  <script src="assets/data/palestine-governorates.js" defer></script>
   <script src="assets/js/main.js" defer></script>
   <script src="assets/js/narrative.js" defer></script>
 </body>
