@@ -1014,31 +1014,45 @@
     box.appendChild(heatGrid());
   }
 
+  // قرص «إيقاع الأسبوع» — الأسبوع دورة، فيُعرض دائرياً: شعاعٌ لكل يوم طوله ∝ نشاطه،
+  // حلقة منقّطة = المتوسط اليومي، والمركز يحمل المتوسط. (عكس عقارب الساعة لطبيعة RTL.)
   function renderWeek() {
-    var max = Math.max.apply(null, DATA.WEEK.map(function (w) { return w.v; }));
-    var sum = DATA.WEEK.reduce(function (a, w) { return a + w.v; }, 0);
-    var avg = sum / DATA.WEEK.length;
-    var CAP = 86; // ترك مساحة أعلى الأعمدة لأرقام القيم
+    var box = slot('week'); if (!box) return; clear(box);
+    var W = DATA.WEEK, n = W.length; if (!n) return;
+    var max = Math.max.apply(null, W.map(function (w) { return w.v; }));
+    var min = Math.min.apply(null, W.map(function (w) { return w.v; }));
+    var avg = W.reduce(function (a, w) { return a + w.v; }, 0) / n;
+    var SZ = 340, cx = SZ / 2, cy = SZ / 2, r0 = 54, rMax = 126;
+    function pt(r, ang) { return [cx + r * Math.cos(ang), cy + r * Math.sin(ang)]; }
+    var els = [];
 
-    var box = slot('week');
-    if (box) {
-      clear(box);
-      DATA.WEEK.forEach(function (w) {
-        var col = h('div', 'week-bar' + (w.v === max ? ' is-top' : ''));
-        col.appendChild(h('span', 'week-bar__value num', fmt(w.v)));
-        var fill = h('div', 'week-bar__fill');
-        cssVar(fill, '--h', (w.v / max * CAP) + '%');
-        col.appendChild(fill);
-        box.appendChild(col);
-      });
-    }
-    var days = slot('week-days');
-    if (days) {
-      clear(days);
-      DATA.WEEK.forEach(function (w) { days.appendChild(h('span', 'week-day', w.d)); });
-    }
-    var avgEl = $('[data-week-avg]');
-    if (avgEl) cssVar(avgEl, '--avg', (avg / max * CAP) + '%');
+    // حلقة المتوسط (مرجع منقّط)
+    var rAvg = r0 + (avg / max) * (rMax - r0);
+    els.push(svg('circle', { cx: cx, cy: cy, r: rAvg.toFixed(1), class: 'week-dial__avg', fill: 'none' }));
+
+    // الأشعّة + النقاط + أسماء الأيام
+    W.forEach(function (w, i) {
+      var ang = (-90 - i * (360 / n)) * Math.PI / 180;
+      var r1 = r0 + (w.v / max) * (rMax - r0);
+      var a = pt(r0, ang), b = pt(r1, ang);
+      var top = w.v === max, low = w.v === min;
+      var mod = top ? ' is-top' : (low ? ' is-low' : '');
+      var line = svg('line', { x1: a[0].toFixed(1), y1: a[1].toFixed(1), x2: b[0].toFixed(1), y2: b[1].toFixed(1), class: 'week-dial__spoke' + mod });
+      line.appendChild(svg('title', null, w.d + ': ' + fmt(w.v) + ' حدثاً'));
+      els.push(line);
+      els.push(svg('circle', { cx: b[0].toFixed(1), cy: b[1].toFixed(1), r: (top ? 5.5 : 4).toFixed(1), class: 'week-dial__dot' + mod }));
+      var lab = pt(rMax + 22, ang);
+      els.push(svg('text', { x: lab[0].toFixed(1), y: lab[1].toFixed(1), class: 'week-dial__day' + mod, 'text-anchor': 'middle', 'dominant-baseline': 'middle' }, (DATA.DOWS && DATA.DOWS[i]) || w.d));
+    });
+
+    // المركز: المتوسط اليومي
+    els.push(svg('text', { x: cx, y: cy - 5, class: 'week-dial__c-num num', 'text-anchor': 'middle', 'dominant-baseline': 'middle' }, fmt(Math.round(avg))));
+    els.push(svg('text', { x: cx, y: cy + 17, class: 'week-dial__c-lab', 'text-anchor': 'middle', 'dominant-baseline': 'middle' }, 'متوسط يومي'));
+
+    box.appendChild(svg('svg', {
+      viewBox: '0 0 ' + SZ + ' ' + SZ, class: 'week-dial__svg', role: 'img',
+      'aria-label': 'قرص نمط أيام الأسبوع: طول كل شعاع يعكس نشاط اليوم؛ أكثرها الثلاثاء وأقلّها السبت، والحلقة المنقّطة هي المتوسط اليومي.'
+    }, els));
   }
 
   function renderTop10() {

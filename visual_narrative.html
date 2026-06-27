@@ -46,42 +46,49 @@
     <section class="vn-hero">
       <p class="vn-hero__eyebrow">إصدار مصوّر · 2024</p>
       <h1 class="vn-hero__title">الرواية المصوّرة</h1>
-      <p class="vn-hero__lead">العدد المصوّر من «مُعطى» — حصادٌ بصريّ يروي ما تمّ توثيقه عبر الميدان الفلسطيني: صورٌ وإنفوغرافيك ومحطّات من سجلٍّ موثّق. اقرأ العدد كاملاً أدناه، أو افتحه في نافذة مستقلّة.</p>
+      <p class="vn-hero__lead">العدد المصوّر من «مُعطى» — حصادٌ بصريّ يروي ما تمّ توثيقه عبر الميدان الفلسطيني: صورٌ وإنفوغرافيك ومحطّات من سجلٍّ موثّق. تصفّح العدد كاملاً أدناه، صفحةً صفحة.</p>
       <div class="vn-hero__actions">
-        <a class="btn btn--primary" href="https://online.fliphtml5.com/Mo3ta/dfhp/" target="_blank" rel="noopener">افتح الإصدار ↗</a>
-        <a class="btn btn--soft" href="#vn-reader">اقرأ هنا ↓</a>
+        <a class="btn btn--primary" href="#vn-reader">ابدأ القراءة ↓</a>
       </div>
       <dl class="vn-hero__meta">
         <div class="vn-hero__meta-item"><dt>الإصدار</dt><dd>الرواية المصوّرة 2024</dd></div>
+        <div class="vn-hero__meta-item"><dt>عدد الصفحات</dt><dd><span class="num">250</span> صفحة</dd></div>
         <div class="vn-hero__meta-item"><dt>الناشر</dt><dd>مركز معلومات فلسطين — مُعطى</dd></div>
-        <div class="vn-hero__meta-item"><dt>اللغة</dt><dd>العربية</dd></div>
       </dl>
     </section>
 
-    <!-- ===================== القارئ (تضمين الفليبوك) ===================== -->
+    <!-- ===================== القارئ (عارض محلي — صفحات مستضافة عندنا) ===================== -->
     <section class="band band--tint vn-reader" id="vn-reader">
       <div class="vn-reader__head">
         <div>
           <h2 class="vn-reader__title">اقرأ العدد كاملاً</h2>
-          <p class="vn-reader__sub">تصفّح الصفحات بالسحب أو الأسهم — أو وسّعه لملء الشاشة لقراءة أوضح.</p>
+          <p class="vn-reader__sub">تصفّح الصفحات بالأسهم أو السحب — أو وسّعه لملء الشاشة.</p>
         </div>
         <div class="vn-reader__tools">
           <button class="vn-tool" type="button" data-vn-fs aria-pressed="false"><span aria-hidden="true">⛶</span> ملء الشاشة</button>
-          <a class="vn-tool" href="https://online.fliphtml5.com/Mo3ta/dfhp/" target="_blank" rel="noopener"><span aria-hidden="true">↗</span> نافذة جديدة</a>
         </div>
       </div>
 
-      <div class="vn-frame" data-vn-frame>
-        <div class="vn-frame__stage">
-          <div class="vn-frame__fallback">
-            <p class="vn-frame__fallback-title">يُعرض العدد عبر منصّة خارجية</p>
-            <a class="btn btn--primary" href="https://online.fliphtml5.com/Mo3ta/dfhp/" target="_blank" rel="noopener">افتح الإصدار في نافذة جديدة ↗</a>
-          </div>
-          <iframe class="vn-frame__embed" title="الرواية المصوّرة 2024 — النسخة التفاعلية" src="https://online.fliphtml5.com/Mo3ta/dfhp/" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-presentation"></iframe>
+      <div class="vn-book" data-vn-book>
+        <button class="vn-book__nav vn-book__nav--prev" type="button" data-vn-prev aria-label="الصفحة السابقة">›</button>
+        <div class="vn-book__stage" data-vn-stage aria-live="polite">
+          <p class="vn-book__loading">…جارٍ فتح العدد</p>
         </div>
+        <button class="vn-book__nav vn-book__nav--next" type="button" data-vn-next aria-label="الصفحة التالية">‹</button>
       </div>
 
-      <p class="vn-reader__note">إصدارٌ خارجيّ يُعرض عبر منصّة fliphtml5. إن لم يظهر العارض، استخدم زرّ «نافذة جديدة» أعلاه.</p>
+      <div class="vn-book__bar">
+        <button class="vn-book__edge" type="button" data-vn-first>الأولى</button>
+        <div class="vn-book__counter">
+          <label class="visually-hidden" for="vn-jump">اذهب إلى صفحة</label>
+          <span>صفحة</span>
+          <input class="vn-book__jump num" id="vn-jump" type="number" min="1" max="250" value="1" data-vn-jump inputmode="numeric" aria-label="رقم الصفحة">
+          <span>/ <span class="num" data-vn-total>250</span></span>
+        </div>
+        <button class="vn-book__edge" type="button" data-vn-last>الأخيرة</button>
+      </div>
+
+      <p class="vn-reader__note">إصدار «مُعطى» المصوّر — معروضٌ ومستضافٌ محلياً.</p>
     </section>
 
     <!-- ===================== القراءة في سياقها ===================== -->

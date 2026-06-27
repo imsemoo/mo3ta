@@ -302,27 +302,33 @@
 
       <div class="week-layout">
         <div class="week-chart" data-st>
-          <div class="week-plot">
-            <div class="week-avg" data-week-avg><span class="week-avg__label">المتوسط</span></div>
-            <div class="week-bars" data-render="week"></div>
-          </div>
-          <div class="week-days" data-render="week-days"></div>
+          <div class="week-dial" data-render="week"></div>
+          <p class="week-chart__cap"><span class="week-chart__key"></span> طول الشعاع = نشاط اليوم · الحلقة المنقّطة = المتوسط اليومي</p>
         </div>
         <div class="week-side">
-          <div class="mini-stat" data-st>
-            <p class="mini-stat__label">أكثر الأيام نشاطاً</p>
-            <p class="mini-stat__value">الثلاثاء</p>
-            <p class="mini-stat__note">16٪ من الأحداث</p>
+          <div class="week-stat week-stat--top" data-st>
+            <span class="week-stat__icon" aria-hidden="true">▲</span>
+            <div class="week-stat__body">
+              <p class="week-stat__label">أكثر الأيام نشاطاً</p>
+              <p class="week-stat__value">الثلاثاء</p>
+              <p class="week-stat__note"><span class="num">40,273</span> حدثاً · أعلى من المتوسط بـ11٪</p>
+            </div>
           </div>
-          <div class="mini-stat" data-st>
-            <p class="mini-stat__label">أقل الأيام نشاطاً</p>
-            <p class="mini-stat__value">السبت</p>
-            <p class="mini-stat__note mini-stat__note--muted">31,136 حدثاً</p>
+          <div class="week-stat week-stat--low" data-st>
+            <span class="week-stat__icon" aria-hidden="true">▼</span>
+            <div class="week-stat__body">
+              <p class="week-stat__label">أقلّ الأيام نشاطاً</p>
+              <p class="week-stat__value">السبت</p>
+              <p class="week-stat__note"><span class="num">31,136</span> حدثاً · أدنى من المتوسط بـ14٪</p>
+            </div>
           </div>
-          <div class="mini-stat" data-st>
-            <p class="mini-stat__label">الذروة التاريخية</p>
-            <p class="mini-stat__value mini-stat__value--sm">14 مايو 2021</p>
-            <p class="mini-stat__note mini-stat__note--red">556 حدثاً في يوم واحد</p>
+          <div class="week-stat week-stat--peak" data-st>
+            <span class="week-stat__icon" aria-hidden="true">⚡</span>
+            <div class="week-stat__body">
+              <p class="week-stat__label">الذروة التاريخية</p>
+              <p class="week-stat__value week-stat__value--sm">14 مايو 2021</p>
+              <p class="week-stat__note"><span class="num">556</span> حدثاً موثّقاً في يوم واحد</p>
+            </div>
           </div>
         </div>
       </div>

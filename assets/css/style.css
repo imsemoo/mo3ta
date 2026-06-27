@@ -2055,151 +2055,183 @@ h4 {
    -------------------------------------------------------------------------- */
 .week-layout {
   display: grid;
-  grid-template-columns: 1fr 300px;
+  grid-template-columns: 1fr 320px;
   gap: clamp(20px, 3vw, 40px);
-  align-items: start;
+  align-items: stretch;
 }
 
 .week-chart {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
-  padding: 28px 26px 20px;
-  display: flex;
-  flex-direction: column;
-}
-
-.week-plot {
-  position: relative;
-  height: clamp(240px, 26vw, 300px);
-}
-
-.week-bars {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.week-bar {
-  flex: 1;
-  height: 100%;
+  padding: clamp(20px, 3vw, 32px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
+  gap: clamp(10px, 1.6vw, 16px);
 }
 
-.week-bar__value {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 8px;
-}
-
-.week-bar__fill {
+/* قرص «إيقاع الأسبوع» (SVG) */
+.week-dial {
   width: 100%;
-  max-width: 46px;
-  height: var(--h, 0%);
-  border-radius: 8px 8px 0 0;
-  background: var(--surface-2);
-  transition: height .7s var(--ease);
+  display: flex;
+  justify-content: center;
 }
 
-.week-bar:hover .week-bar__fill {
-  background: color-mix(in srgb, var(--accent) 42%, var(--surface-2));
+.week-dial__svg {
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  overflow: visible;
+  font-family: inherit;
 }
 
-.week-bar.is-top .week-bar__fill {
-  background: var(--accent);
+.week-dial__spoke {
+  stroke: color-mix(in srgb, var(--accent) 30%, transparent);
+  stroke-width: 13;
+  stroke-linecap: round;
+  transition: stroke var(--t-fast) var(--ease);
 }
 
-/* خط المتوسط فوق الأعمدة */
-.week-avg {
-  position: absolute;
-  inset-inline: 0;
-  bottom: var(--avg, 50%);
-  border-top: 1px dashed var(--muted);
+.week-dial__spoke:hover {
+  stroke: color-mix(in srgb, var(--accent) 72%, transparent);
+}
+
+.week-dial__spoke.is-top {
+  stroke: var(--accent);
+  filter: drop-shadow(0 0 7px color-mix(in srgb, var(--accent) 55%, transparent));
+}
+
+.week-dial__spoke.is-low {
+  stroke: color-mix(in srgb, var(--muted) 38%, transparent);
+}
+
+.week-dial__dot {
+  fill: var(--accent);
   opacity: .55;
-  pointer-events: none;
-  z-index: 1;
 }
 
-.week-avg__label {
-  position: absolute;
-  inset-inline-end: 0;
-  top: -9px;
+.week-dial__dot.is-top {
+  opacity: 1;
+}
+
+.week-dial__dot.is-low {
+  fill: var(--muted);
+  opacity: .6;
+}
+
+.week-dial__avg {
+  stroke: var(--muted);
+  stroke-width: 1.2;
+  stroke-dasharray: 3 4;
+  opacity: .5;
+}
+
+.week-dial__day {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--muted);
+}
+
+.week-dial__day.is-top {
+  fill: var(--accent);
+  font-weight: 700;
+}
+
+.week-dial__c-num {
+  font-size: 22px;
+  font-weight: 800;
+  fill: var(--ink);
+  letter-spacing: -.02em;
+}
+
+.week-dial__c-lab {
   font-size: 10.5px;
   font-weight: 600;
-  color: var(--muted);
-  background: var(--surface);
-  padding: 0 6px;
+  fill: var(--muted);
 }
 
-.week-days {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 10px;
-}
-
-.week-day {
-  flex: 1;
-  text-align: center;
+.week-chart__cap {
+  margin: 0;
   font-size: 12px;
+  line-height: 1.6;
   color: var(--muted);
+  text-align: center;
 }
 
+/* بطاقات الرؤى — تتمدّد (flex:1) لتساوي ارتفاع القرص فتُصلَح المحاذاة */
 .week-side {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
 }
 
-.mini-stat {
-  flex: 0 0 auto;
-  padding: var(--space-5);
+.week-stat {
+  --st-tone: var(--accent);
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: clamp(16px, 2vw, 22px);
   border-radius: var(--radius-lg);
   background: var(--surface);
   border: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  border-inline-start: 3px solid var(--st-tone);
 }
 
-.mini-stat__label {
+.week-stat--top {
+  --st-tone: var(--accent);
+}
+
+.week-stat--low {
+  --st-tone: var(--violations);
+}
+
+.week-stat--peak {
+  --st-tone: var(--red);
+}
+
+.week-stat__icon {
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
   font-size: 13px;
-  color: var(--muted);
-  margin: 0 0 8px;
+  color: var(--st-tone);
+  background: color-mix(in srgb, var(--st-tone) 13%, var(--surface));
 }
 
-.mini-stat__value {
-  font-size: 26px;
-  font-weight: 700;
-  color: var(--ink);
+.week-stat__body {
+  min-width: 0;
+}
+
+.week-stat__label {
+  margin: 0 0 4px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.week-stat__value {
   margin: 0;
+  font-size: 24px;
+  font-weight: 800;
   line-height: 1.1;
+  color: var(--ink);
+  letter-spacing: -.01em;
 }
 
-.mini-stat__value--sm {
-  font-size: 22px;
+.week-stat__value--sm {
+  font-size: 19px;
 }
 
-.mini-stat__note {
-  font-size: 13px;
+.week-stat__note {
+  margin: 8px 0 0;
+  font-size: 12.5px;
   font-weight: 600;
-  margin: var(--space-2) 0 0;
-  color: var(--accent);
-}
-
-.mini-stat__note--red {
-  color: var(--red);
-}
-
-.mini-stat__note--muted {
-  color: var(--muted);
+  color: var(--st-tone);
 }
 
 /* --------------------------------------------------------------------------
@@ -5901,7 +5933,6 @@ body.lb-open {
 .counter__value,
 .ratio-card__value,
 .stat-card__value,
-.mini-stat__value,
 .trust__value,
 .figure__value,
 .kpi-stat__value {
@@ -5920,7 +5951,6 @@ body.lb-open {
 .counter__label,
 .ratio-card__label,
 .stat-card__label,
-.mini-stat__label,
 .kpi-stat__label,
 .trust__label,
 .kpi-card__label {
@@ -5933,7 +5963,6 @@ body.lb-open {
 .chart-panel,
 .stat-card,
 .ratio-card,
-.mini-stat,
 .counter,
 .rcard,
 .govx-card,
@@ -5978,7 +6007,6 @@ body.lb-open {
 .govx-card,
 .pillar,
 .counter,
-.mini-stat,
 .kpi-card {
   box-shadow: var(--shadow-xs);
 }
@@ -6644,57 +6672,147 @@ body {
 }
 
 /* إطار «مكتب القراءة» — محايد ومقصود في الفاتح والداكن (الـiframe الخارجي لا يتلوّن) */
-.vn-frame {
+/* عارض الكتاب المحلي — «مكتب قراءة» مؤطّر بهوية الموقع */
+.vn-book {
+  position: relative;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-lg);
-  padding: clamp(8px, 1.2vw, 14px);
+  padding: clamp(10px, 1.6vw, 18px);
 }
 
-:root[data-mode="dark"] .vn-frame {
+:root[data-mode="dark"] .vn-book {
   background: var(--surface-2);
 }
 
-.vn-frame__stage {
-  position: relative;
-  aspect-ratio: 4 / 3;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  background: var(--surface-2);
-}
-
-.vn-frame__embed {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
-}
-
-/* بديل خلف الـiframe: يظهر فقط لو لم يُحمَّل/مُنِع (الـiframe يغطّيه عند نجاحه) */
-.vn-frame__fallback {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
+.vn-book__stage {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  min-height: clamp(360px, 58vh, 720px);
+  padding: clamp(8px, 1.5vw, 18px);
+  border-radius: var(--radius-lg);
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+:root[data-mode="dark"] .vn-book__stage {
+  background: color-mix(in srgb, var(--ink) 7%, var(--bg));
+}
+
+.vn-book__page {
+  max-block-size: min(74vh, 760px);
+  max-inline-size: 100%;
+  inline-size: auto;
+  block-size: auto;
+  object-fit: contain;
+  display: block;
+  background: #fff;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .18);
+}
+
+.vn-book__stage.is-spread .vn-book__page {
+  max-inline-size: 49%;
+}
+
+.vn-book__loading {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* أسهم التنقّل (overlay على الجوانب) */
+.vn-book__nav {
+  position: absolute;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--surface) 86%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease), opacity var(--t-fast) var(--ease);
+}
+
+.vn-book__nav:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.vn-book__nav:disabled {
+  opacity: .3;
+  cursor: default;
+  pointer-events: none;
+}
+
+.vn-book__nav--prev {
+  inset-inline-start: clamp(6px, 1.4vw, 18px);
+  /* RTL: start = اليمين */
+}
+
+.vn-book__nav--next {
+  inset-inline-end: clamp(6px, 1.4vw, 18px);
+  /* RTL: end = اليسار */
+}
+
+/* شريط التحكّم */
+.vn-book__bar {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 10px 16px;
+  margin-block-start: clamp(12px, 1.6vw, 18px);
+}
+
+.vn-book__edge {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+
+.vn-book__edge:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.vn-book__counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.vn-book__jump {
+  inline-size: 58px;
+  padding: 7px 8px;
   text-align: center;
-  padding: 24px;
-}
-
-.vn-frame__embed {
-  z-index: 1;
-}
-
-.vn-frame__fallback-title {
-  margin: 0;
+  font-size: 13.5px;
   font-weight: 700;
   color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
 }
 
 .vn-reader__note {
@@ -6704,21 +6822,28 @@ body {
   text-align: center;
 }
 
-/* ملء الشاشة (بديل بلا Fullscreen API) */
-.vn-frame.is-fullscreen {
+/* ملء الشاشة (طبقة مثبّتة عبر كلاس) */
+.vn-book.is-fullscreen {
   position: fixed;
   inset: 0;
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   border: 0;
   border-radius: 0;
-  padding: 0;
   box-shadow: none;
+  padding: clamp(10px, 2vw, 28px);
+  background: var(--bg);
 }
 
-.vn-frame.is-fullscreen .vn-frame__stage {
-  aspect-ratio: auto;
-  height: 100%;
-  border-radius: 0;
+.vn-book.is-fullscreen .vn-book__stage {
+  flex: 1;
+  min-height: 0;
+}
+
+.vn-book.is-fullscreen .vn-book__page {
+  max-block-size: 88vh;
 }
 
 body.vn-fs-lock {
@@ -6734,12 +6859,16 @@ body.vn-fs-lock {
 }
 
 @media (max-width: 720px) {
-  .vn-frame__stage {
-    aspect-ratio: 3 / 4;
-  }
-
   .vn-reader__head {
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 560px) {
+  .vn-book__nav {
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
   }
 }
 
