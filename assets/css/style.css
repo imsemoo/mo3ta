@@ -6693,12 +6693,26 @@ body {
   align-items: center;
   min-height: clamp(360px, 60vh, 760px);
   padding: clamp(10px, 1.8vw, 22px);
-  border-radius: var(--radius-lg);
-  background: var(--surface-2);
+  /* الإطار شفاف فالكتاب «يطفو» على سطح .vn-book — كي تبدو إزاحة التمركز/التوسّع طبيعيةً (كـfliphtml5)
+     بلا لوحٍ خلفيّ يتحرّك معها. */
+  background: transparent;
+  /* عكس أفقي ثابت دائماً = كتاب عربي يُقلَّب من اليمين لليسار (الأصغر يميناً)، والصور تُعكَس بدورها
+     (‎.vn-book__flip img‎) فيبقى المحتوى سليماً. لا نبدّل العكس أبداً (كان مصدر «القلبة»).
+     StPageFlip لا يقيس الـstage فالتحويل عليها آمن، والـtransition يجعل الإزاحة سلسة. */
+  transform: scaleX(-1);
+  /* مدّة قريبة من flippingTime (800ms) كي ينزلق التوسّع مع انحناء الصفحة؛ يحترم prefers-reduced-motion
+     عبر القاعدة العامة (يصير فورياً ونظيفاً عندئذٍ — بلا أي «قلبة» لأن العكس ثابت أصلاً). */
+  transition: transform 0.8s cubic-bezier(0.33, 0, 0.2, 1);
 }
 
-:root[data-mode="dark"] .vn-book__stage {
-  background: color-mix(in srgb, var(--ink) 7%, var(--bg));
+/* الغلاف وحده: StPageFlip يضع طيّة الغلاف (صفحة واحدة) في نصفٍ جانبي. نزيح الكتاب أفقياً
+   (إزاحةٌ فقط — لا تبديل عكس) ليتمركز الغلاف؛ ومع الـtransition: عند الفتح تنزلق الإزاحة إلى الصفر
+   أثناء انحناء الصفحة فيبدو الكتاب وكأنه يتوسّع بسلاسة من غلافٍ مفردٍ في النص إلى طيّةٍ كاملة.
+   محصورٌ بالوضع العريض (الموبايل/portrait صفحةٌ واحدة متمركزة أصلاً). النسبة تُضبط لتتمركز تماماً. */
+@media (min-width: 700px) {
+  .vn-book.is-cover .vn-book__stage {
+    transform: translateX(24%) scaleX(-1);
+  }
 }
 
 .vn-book__flip {
@@ -6712,6 +6726,7 @@ body {
 }
 
 .vn-page {
+  position: relative;
   background: #fff;
   overflow: hidden;
 }
@@ -6723,6 +6738,16 @@ body {
   display: block;
 }
 
+/* عكس صورة كل صفحة كي يبقى محتواها سليماً رغم عكس الحاوية */
+.vn-book__flip img {
+  transform: scaleX(-1);
+}
+
+/* ظلّ «الكتاب الطافي» — يعرّف حافّة الكتاب فوق سطح .vn-book (الإطار صار شفافاً) */
+.vn-book__flip .stf__block {
+  filter: drop-shadow(0 14px 30px rgba(15, 18, 40, 0.22));
+}
+
 .vn-book__loading {
   position: absolute;
   inset: 0;
@@ -6731,6 +6756,7 @@ body {
   margin: 0;
   font-size: 14px;
   color: var(--muted);
+  transform: scaleX(-1);
 }
 
 .vn-book.is-ready .vn-book__loading {
@@ -6851,17 +6877,322 @@ body {
   background: var(--bg);
 }
 
+/* في ملء الشاشة: StPageFlip يكتب width:100% inline على .vn-book__flip (لا يحترم max-width بالـCSS)،
+   لكنه لا يلمس .vn-book__stage — فنتحكّم في حجم الكتاب من عرض الـstage. نشتقّ العرض من الارتفاع
+   المتاح (نسبة الطيّة عرض/ارتفاع = 1.414) كي تبقى الطيّة كاملةً داخل الشاشة بلا قصٍّ من أعلى/أسفل. */
 .vn-book.is-fullscreen .vn-book__stage {
-  flex: 1;
+  flex: 0 1 auto;
+  align-self: center;
+  width: min(94vw, calc((100dvh - 92px) * 1.414));
+  height: auto;
   min-height: 0;
-}
-
-.vn-book.is-fullscreen .vn-book__page {
-  max-block-size: 88vh;
+  padding: 0;
 }
 
 body.vn-fs-lock {
   overflow: hidden;
+}
+
+/* ===== مزايا العارض: تقدّم · استئناف · إعادة محاولة · أدوات ===== */
+
+/* شريط تقدّم القراءة (RTL: يمتلئ من اليمين عبر inset-inline-start) */
+.vn-book__progress {
+  position: relative;
+  block-size: 5px;
+  margin-block: var(--space-3) 0;
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.vn-book__progress-fill {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: var(--vn-progress, 0%);
+  background: var(--accent);
+  border-radius: 999px;
+  transition: inline-size var(--t-med) var(--ease);
+}
+
+/* شريحة «تابِع القراءة» */
+.vn-resume {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-block-end: var(--space-4);
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-inline-start: 3px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: 14px;
+}
+
+.vn-resume__go {
+  margin-inline-start: auto;
+  padding: 6px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.vn-resume__x {
+  display: grid;
+  place-items: center;
+  inline-size: 28px;
+  block-size: 28px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* طبقة «إعادة المحاولة» داخل صفحةٍ فشل تحميل صورتها (عكسٌ مضادٌّ لعكس الحاوية) */
+.vn-page__retry {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 12px;
+  padding: 16px;
+  text-align: center;
+  background: var(--surface-2);
+  color: var(--ink);
+  transform: scaleX(-1);
+}
+
+.vn-page__retry p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.vn-page__retry-btn {
+  padding: 8px 18px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* أداة مفعّلة (مثل الصوت) */
+.vn-tool[aria-pressed="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* تغذية راجعة لرقم صفحة غير صالح */
+.vn-book__jump.is-invalid {
+  border-color: var(--violations);
+  animation: vn-shake 0.3s var(--ease);
+}
+
+@keyframes vn-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+/* ===== لوحة تصفّح المصغّرات ===== */
+.vn-thumbs {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: grid;
+  place-items: center;
+  padding: clamp(12px, 3vw, 32px);
+  background: color-mix(in srgb, var(--ink) 55%, transparent);
+}
+
+.vn-thumbs[hidden] {
+  display: none;
+}
+
+.vn-thumbs__panel {
+  display: flex;
+  flex-direction: column;
+  inline-size: min(100%, 1080px);
+  max-block-size: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+}
+
+.vn-thumbs__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: 14px clamp(14px, 2.4vw, 22px);
+  border-block-end: 1px solid var(--border);
+}
+
+.vn-thumbs__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.vn-thumbs__close {
+  display: grid;
+  place-items: center;
+  inline-size: 34px;
+  block-size: 34px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.vn-thumbs__close:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.vn-thumbs__grid {
+  flex: 1;
+  min-block-size: 0;             /* كي تتقصّ الشبكة داخل اللوحة ويعمل التحميل الكسول فعلاً */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  grid-auto-rows: 156px;         /* صفوف مُحدَّدة الارتفاع — تتجاوز انهيار القياس الضمني لأزرار الصور */
+  align-content: start;
+  gap: clamp(8px, 1.4vw, 14px);
+  padding: clamp(14px, 2.4vw, 22px);
+  overflow-y: auto;
+}
+
+.vn-thumb {
+  display: block;
+  padding: 0 0 4px;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.vn-thumb img {
+  display: block;
+  inline-size: 100%;
+  block-size: 132px;            /* ارتفاع ثابت = صفّ مُحدَّد ⇒ تمرير + تحميل كسول سليم */
+  object-fit: cover;
+  object-position: top;
+  background: #fff;
+}
+
+.vn-thumb__n {
+  display: block;
+  margin-block-start: 4px;
+  font-size: 11px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.vn-thumb:hover {
+  border-color: var(--accent);
+}
+
+.vn-thumb.is-active {
+  border-color: var(--accent);
+}
+
+.vn-thumb.is-active .vn-thumb__n {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ===== فهرس المحتويات ===== */
+.vn-toc {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: grid;
+  place-items: center;
+  padding: clamp(12px, 3vw, 32px);
+  background: color-mix(in srgb, var(--ink) 55%, transparent);
+}
+
+.vn-toc[hidden] {
+  display: none;
+}
+
+.vn-toc__panel {
+  display: flex;
+  flex-direction: column;
+  inline-size: min(100%, 460px);
+  max-block-size: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+}
+
+.vn-toc__list {
+  flex: 1;
+  min-block-size: 0;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.vn-toc__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  inline-size: 100%;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.vn-toc__item:hover {
+  background: var(--surface-2);
+}
+
+.vn-toc__item.is-active {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.vn-toc__item.is-active .vn-toc__title {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.vn-toc__title {
+  flex: 1;
+}
+
+.vn-toc__page {
+  font-size: 13px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
 }
 
 /* تابِع التوثيق */

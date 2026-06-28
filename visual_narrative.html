@@ -65,6 +65,9 @@
           <p class="vn-reader__sub">تصفّح الصفحات بالأسهم أو السحب — أو وسّعه لملء الشاشة.</p>
         </div>
         <div class="vn-reader__tools">
+          <button class="vn-tool" type="button" data-vn-toc title="فهرس المحتويات" hidden><span aria-hidden="true">☰</span> المحتويات</button>
+          <button class="vn-tool" type="button" data-vn-grid title="تصفّح الصفحات بالمصغّرات"><span aria-hidden="true">▦</span> تصفّح</button>
+          <button class="vn-tool" type="button" data-vn-sound aria-pressed="false" title="تشغيل صوت التقليب"><span aria-hidden="true">♪</span> الصوت</button>
           <button class="vn-tool" type="button" data-vn-fs aria-pressed="false"><span aria-hidden="true">⛶</span> ملء الشاشة</button>
         </div>
       </div>
@@ -76,6 +79,10 @@
           <p class="vn-book__loading" data-vn-loading>…جارٍ فتح العدد</p>
         </div>
         <button class="vn-book__nav vn-book__nav--next" type="button" data-vn-next aria-label="الصفحة التالية">‹</button>
+      </div>
+
+      <div class="vn-book__progress" role="progressbar" aria-valuemin="1" aria-valuemax="250" aria-valuenow="1" aria-label="تقدّم القراءة" data-vn-progress>
+        <span class="vn-book__progress-fill"></span>
       </div>
 
       <div class="vn-book__bar">
@@ -90,6 +97,29 @@
       </div>
 
       <p class="vn-reader__note">إصدار «مُعطى» المصوّر — معروضٌ ومستضافٌ محلياً.</p>
+      <p class="visually-hidden" aria-live="polite" data-vn-live></p>
+
+      <!-- لوحة تصفّح المصغّرات (تُبنى عناصرها عبر JS) -->
+      <div class="vn-thumbs" data-vn-thumbs hidden role="dialog" aria-modal="true" aria-label="تصفّح صفحات العدد">
+        <div class="vn-thumbs__panel">
+          <div class="vn-thumbs__head">
+            <h3 class="vn-thumbs__title">تصفّح الصفحات</h3>
+            <button class="vn-thumbs__close" type="button" data-vn-thumbs-close aria-label="إغلاق التصفّح">×</button>
+          </div>
+          <div class="vn-thumbs__grid" data-vn-thumbs-grid></div>
+        </div>
+      </div>
+
+      <!-- فهرس المحتويات (تُبنى عناصره عبر JS من window.VN_TOC) -->
+      <div class="vn-toc" data-vn-toc-panel hidden role="dialog" aria-modal="true" aria-label="فهرس محتويات العدد">
+        <div class="vn-toc__panel">
+          <div class="vn-thumbs__head">
+            <h3 class="vn-thumbs__title">فهرس المحتويات</h3>
+            <button class="vn-thumbs__close" type="button" data-vn-toc-close aria-label="إغلاق الفهرس">×</button>
+          </div>
+          <ul class="vn-toc__list" data-vn-toc-list></ul>
+        </div>
+      </div>
     </section>
 
     <!-- ===================== القراءة في سياقها ===================== -->
@@ -194,6 +224,7 @@
 
   <script src="assets/js/main.js" defer></script>
   <script src="assets/vendor/page-flip/page-flip.browser.js" defer></script>
+  <script src="assets/data/narrative-toc.js" defer></script>
   <script src="assets/js/narrative.js" defer></script>
 </body>
 </html>
