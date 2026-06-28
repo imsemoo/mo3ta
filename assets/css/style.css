@@ -6833,9 +6833,9 @@ body {
 /* ٣ · مساحة القراءة — شريط الأدوات العلوي */
 .vn-ws-toolbar {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap;              /* الموبايل: يلتفّ بأمان (لا تمرير أفقي على الشاشات الصغيرة) */
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   margin-block-end: 10px;
   padding: 8px;
   border: 1px solid var(--border);
@@ -6843,9 +6843,28 @@ body {
   background: var(--surface);
 }
 
-.vn-ws-group { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-.vn-ws-sep { inline-size: 1px; align-self: stretch; min-block-size: 24px; background: var(--border); margin-inline: 2px; }
-@media (max-width: 700px) { .vn-ws-sep { display: none; } }
+.vn-ws-group { display: flex; flex-wrap: nowrap; gap: 5px; align-items: center; }
+
+/* أدوات مُدمجة قليلاً كي تترصّ كلّها في سطرٍ واحد على الأجهزة الأوسع */
+.vn-ws-toolbar .vn-tool { white-space: nowrap; gap: 6px; padding: 7px 12px; font-size: 12.5px; }
+.vn-ws-toolbar .vn-tool--select { padding-block: 6px; }
+
+.vn-ws-sep { inline-size: 1px; align-self: stretch; min-block-size: 22px; background: var(--border); margin-inline: 2px; }
+
+/* سطرٌ واحد على الأجهزة الأوسع (تمرير أفقي داخليّ عند الحاجة) */
+@media (min-width: 768px) {
+  .vn-ws-toolbar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .vn-ws-toolbar > * { flex: none; }
+  .vn-ws-toolbar::-webkit-scrollbar { block-size: 7px; }
+  .vn-ws-toolbar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+}
 
 /* شريط التنقّل السفلي البسيط */
 .vn-book__bar--reading {
@@ -7032,6 +7051,7 @@ body {
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-lg);
   padding: clamp(10px, 1.6vw, 18px);
+  
 }
 
 :root[data-mode="dark"] .vn-book {
@@ -7249,7 +7269,6 @@ body.vn-fs-lock {
 .vn-book__progress {
   position: relative;
   block-size: 5px;
-  margin-block: var(--space-3) 0;
   border-radius: 999px;
   background: var(--border);
   overflow: hidden;
