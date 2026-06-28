@@ -189,10 +189,49 @@
     progress.setAttribute('aria-valuenow', String(page));
   }
 
-  /* ---------- التنقّل (مركزيّ: نضبط حالة الغلاف قبل التقليب) ---------- */
-  function goNext() { setCover(false); pf.flipNext(); }
-  function goPrev() { if (curIndex() <= COVER_PREV_MAX) setCover(true); pf.flipPrev(); }
-  function goTo(idx) { idx = clamp(idx, 0, TOTAL - 1); setCover(idx === 0); loadAround(idx); pf.flip(idx); }
+  /* ---------- التنقّل (مركزيّ: نضبط حالة الغلاف قبل التقليب · ونوقف العرض التلقائي عند تدخّل المستخدم) ---------- */
+  function goNext() { if (!autoTicking) stopAuto(); setCover(false); pf.flipNext(); }
+  function goPrev() { if (!autoTicking) stopAuto(); if (curIndex() <= COVER_PREV_MAX) setCover(true); pf.flipPrev(); }
+  function goTo(idx) { if (!autoTicking) stopAuto(); idx = clamp(idx, 0, TOTAL - 1); setCover(idx === 0); loadAround(idx); pf.flip(idx); }
+
+  /* ---------- العرض التلقائي ---------- */
+  var playBtn = document.querySelector('[data-vn-play]');
+  var speedSel = document.querySelector('[data-vn-speed]');
+  var restartBtn = document.querySelector('[data-vn-restart]');
+  var LS_SPEED = 'mo3ta:vn:speed';
+  var autoTimer = null, autoTicking = false, autoWasPlaying = false, autoSpeed = 7000;
+  try { var sp0 = parseInt(localStorage.getItem(LS_SPEED), 10); if (sp0 >= 1000) autoSpeed = sp0; } catch (e) {}
+  if (speedSel) {
+    speedSel.value = String(autoSpeed);
+    speedSel.addEventListener('change', function () {
+      autoSpeed = parseInt(speedSel.value, 10) || 7000;
+      try { localStorage.setItem(LS_SPEED, String(autoSpeed)); } catch (e) {}
+      if (autoTimer) { clearInterval(autoTimer); autoTimer = setInterval(autoTick, autoSpeed); }
+    });
+  }
+  function syncPlay() {
+    if (!playBtn) return;
+    var on = autoTimer != null;
+    playBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    playBtn.innerHTML = on ? '<span aria-hidden="true">▣</span> إيقاف' : '<span aria-hidden="true">▷</span> عرض تلقائي';
+    playBtn.title = on ? 'إيقاف العرض التلقائي' : 'عرض تلقائي';
+  }
+  function stopAuto() { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; syncPlay(); } }
+  function startAuto() {
+    if (autoTimer) return;
+    if (curIndex() + 1 >= TOTAL) goTo(0);          // من البداية لو كنّا في النهاية
+    autoTimer = setInterval(autoTick, autoSpeed); syncPlay();
+  }
+  function autoTick() {
+    if (curIndex() + 1 >= TOTAL) { stopAuto(); return; }
+    autoTicking = true; goNext(); autoTicking = false;
+  }
+  if (playBtn) playBtn.addEventListener('click', function () { if (autoTimer) stopAuto(); else startAuto(); });
+  if (restartBtn) restartBtn.addEventListener('click', function () { goTo(0); });
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) { if (autoTimer) { autoWasPlaying = true; stopAuto(); } }
+    else if (autoWasPlaying) { autoWasPlaying = false; startAuto(); }
+  });
 
   function updateBar() {
     var page = curIndex() + 1;
@@ -203,6 +242,8 @@
     setProgress(page);
     writeHash(page);
     if (page > 1) saveLast(page - 1);   // لا نحفظ الغلاف كي لا يمحو التحميلُ قيمةَ الاستئناف
+    if (page === TOTAL && !book.classList.contains('is-end')) stopAuto();
+    book.classList.toggle('is-end', page === TOTAL);   // شاشة الختام على الصفحة الأخيرة
     announce('صفحة ' + page + ' من ' + TOTAL);
   }
 
