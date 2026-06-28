@@ -4,6 +4,15 @@
    لا يوجد أي استايل inline في الـ HTML — كل شيء هنا.
    ========================================================================== */
 
+/* مكتبة الأيقونات الموحّدة: Font Awesome 6 Free (مستضافة محلياً) */
+@import url("../vendor/fontawesome/css/all.min.css");
+
+/* محاذاة أيقونات Font Awesome مع النص (تتبع لون النص وحجمه عبر em) */
+.fa-solid, .fa-regular, .fa-brands, .fas, .far, .fab {
+  vertical-align: -0.05em;
+  line-height: 1;
+}
+
 /* --------------------------------------------------------------------------
    1. السمات (Theme tokens)
    الوضع يتحكّم فيه data-mode على <html>  (light | dark)

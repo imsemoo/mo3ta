@@ -84,7 +84,7 @@
   var INCIDENTS = buildIncidents();
 
   var BREAKDOWN = {
-    qualitative: { total: 8217, items: [{ n: 'إطلاق نار', v: 4580, icon: '🎯' }, { n: 'عبوات ناسفة', v: 2127, icon: '💥' }, { n: 'عمليات طعن', v: 266, icon: '🗡' }, { n: 'عمليات دهس', v: 139, icon: '🚗' }] },
+    qualitative: { total: 8217, items: [{ n: 'إطلاق نار', v: 4580, icon: 'fa-solid fa-crosshairs' }, { n: 'عبوات ناسفة', v: 2127, icon: 'fa-solid fa-bomb' }, { n: 'عمليات طعن', v: 266, icon: 'fa-solid fa-burst' }, { n: 'عمليات دهس', v: 139, icon: 'fa-solid fa-car-burst' }] },
     popular: { total: 55516, items: [{ n: 'مواجهات', v: 42068 }, { n: 'صدّ مستوطنين', v: 6558 }, { n: 'تظاهرات', v: 4196 }, { n: 'زجاجات حارقة', v: 2171 }] }
   };
 
@@ -159,7 +159,7 @@
       if (state.q) active.push({ label: 'بحث: ' + state.q, clear: function () { state.q = ''; var s = $('[data-search]'); if (s) s.value = ''; } });
       active.forEach(function (a) {
         var tok = h('button', 'filter-token', a.label); tok.type = 'button';
-        var x = h('span', 'filter-token__x', '✕'); x.setAttribute('aria-hidden', 'true'); tok.appendChild(x);
+        var x = h('span', 'filter-token__x fa-solid fa-xmark'); x.setAttribute('aria-hidden', 'true'); tok.appendChild(x);
         tok.setAttribute('aria-label', 'إزالة الفلتر: ' + a.label);
         tok.addEventListener('click', function () { a.clear(); state.shown = PER; renderControls(); renderAll(); });
         chips.appendChild(tok);
@@ -206,7 +206,7 @@
     var box = slot('explorer'); if (!box) return; clear(box);
     if (!list.length) {
       var empty = h('div', 'archive-empty');
-      var icon = h('div', 'archive-empty__icon', '🔍'); icon.setAttribute('aria-hidden', 'true'); empty.appendChild(icon);
+      var icon = h('div', 'archive-empty__icon fa-solid fa-magnifying-glass'); icon.setAttribute('aria-hidden', 'true'); empty.appendChild(icon);
       empty.appendChild(h('p', 'archive-empty__title', 'لا توجد أحداث ضمن هذا النطاق'));
       empty.appendChild(h('p', 'archive-empty__text', 'جرّب توسيع النطاق الزمني أو تعديل الفلاتر.'));
       var rb = h('button', 'btn btn--primary', 'إعادة الضبط'); rb.type = 'button';
@@ -227,7 +227,7 @@
     th.setAttribute('aria-label', label + ' — ترتيب');
     th.tabIndex = 0;
     th.appendChild(document.createTextNode(label + ' '));
-    th.appendChild(h('span', 'dtable__sort', state.sort === key ? (state.dir === 'asc' ? '▲' : '▼') : '⇅'));
+    var sortIc = h('span', 'dtable__sort fa-solid ' + (state.sort === key ? (state.dir === 'asc' ? 'fa-caret-up' : 'fa-caret-down') : 'fa-sort')); sortIc.setAttribute('aria-hidden', 'true'); th.appendChild(sortIc);
     function go() { if (state.sort === key) state.dir = state.dir === 'asc' ? 'desc' : 'asc'; else { state.sort = key; state.dir = 'desc'; } renderExplorer(); }
     th.addEventListener('click', go);
     th.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
@@ -265,9 +265,9 @@
       var inner = h('div', 'dtable__detail-inner');
       inner.appendChild(h('p', 'dtable__detail-desc', r.desc));
       var meta = h('div', 'dtable__detail-meta');
-      meta.appendChild(h('span', null, '📍 ' + r.gov));
-      meta.appendChild(h('span', null, '🗓 ' + r.date));
-      meta.appendChild(h('span', null, '🗂 المصدر: ' + r.source));
+      var mg = h('span'); mg.innerHTML = '<i class="fa-solid fa-location-dot" aria-hidden="true"></i> '; mg.appendChild(document.createTextNode(r.gov)); meta.appendChild(mg);
+      var md = h('span'); md.innerHTML = '<i class="fa-solid fa-calendar-day" aria-hidden="true"></i> '; md.appendChild(document.createTextNode(r.date)); meta.appendChild(md);
+      var ms = h('span'); ms.innerHTML = '<i class="fa-solid fa-folder-open" aria-hidden="true"></i> '; ms.appendChild(document.createTextNode('المصدر: ' + r.source)); meta.appendChild(ms);
       inner.appendChild(meta);
       dtd.appendChild(inner); det.appendChild(dtd);
       if (!_expanded[r.id]) det.hidden = true;
@@ -300,7 +300,7 @@
       card.appendChild(h('p', 'dcard__desc', r.desc));
       var meta = h('div', 'dcard__meta');
       meta.appendChild(h('span', 'dgov', r.gov));
-      meta.appendChild(h('span', 'dcard__source', '🗂 ' + r.source));
+      var ds = h('span', 'dcard__source'); ds.innerHTML = '<i class="fa-solid fa-folder-open" aria-hidden="true"></i> '; ds.appendChild(document.createTextNode(r.source)); meta.appendChild(ds);
       card.appendChild(meta);
       grid.appendChild(card);
     });
@@ -320,7 +320,7 @@
       var qmax = Math.max.apply(null, BREAKDOWN.qualitative.items.map(function (x) { return x.v; }));
       BREAKDOWN.qualitative.items.forEach(function (x) {
         var tile = h('div', 'bd-tile');
-        tile.appendChild(h('span', 'bd-tile__icon', x.icon));
+        var bdi = h('span', 'bd-tile__icon ' + x.icon); bdi.setAttribute('aria-hidden', 'true'); tile.appendChild(bdi);
         tile.appendChild(h('div', 'bd-tile__value num', fmt(x.v)));
         tile.appendChild(h('div', 'bd-tile__label', x.n));
         var track = h('div', 'bd-tile__track'); var fill = h('div', 'bd-tile__fill'); fill.style.setProperty('--w', (x.v / qmax * 100) + '%'); track.appendChild(fill); tile.appendChild(track);

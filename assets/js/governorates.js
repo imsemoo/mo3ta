@@ -57,7 +57,7 @@
 
     var cta = h('span', 'govx-card__cta');
     cta.appendChild(document.createTextNode('استعراض الملف'));
-    var arrow = h('span', 'govx-card__arrow', '‹'); arrow.setAttribute('aria-hidden', 'true');
+    var arrow = h('span', 'govx-card__arrow fa-solid fa-chevron-left'); arrow.setAttribute('aria-hidden', 'true');
     cta.appendChild(arrow);
     card.appendChild(cta);
     return card;
@@ -80,7 +80,7 @@
     box.appendChild(item(fmt(total), 'حدث موثّق إجمالاً'));
     box.appendChild(h('div', 'trust__sep'));
     box.appendChild(item(top.n, 'الأكثر توثيقاً'));
-    var link = h('a', 'trust__link', 'ابدأ بالضفة الغربية ↓'); link.href = '#region-wb';
+    var link = h('a', 'trust__link'); link.innerHTML = 'ابدأ بالضفة الغربية <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>'; link.href = '#region-wb';
     box.appendChild(link);
   }
 

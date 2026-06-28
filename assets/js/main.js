@@ -29,10 +29,10 @@
       { key: 'events',  label: 'إجمالي الأحداث', target: 434505, note: 'حدث موثّق · 102 شهر',   accent: false }
     ],
     kpisLead: [
-      { label: 'إجمالي الأحداث',    target: 434505, icon: '◆', tone: 'ink'        },
-      { label: 'انتهاكات الاحتلال', target: 370772, icon: '⚠', tone: 'violations' },
-      { label: 'مقاومة شعبية',      target: 55516,  icon: '✊', tone: 'resistance' },
-      { label: 'مقاومة نوعية',      target: 8217,   icon: '⊛', tone: 'resistance' }
+      { label: 'إجمالي الأحداث',    target: 434505, icon: 'fa-solid fa-layer-group',          tone: 'ink'        },
+      { label: 'انتهاكات الاحتلال', target: 370772, icon: 'fa-solid fa-triangle-exclamation', tone: 'violations' },
+      { label: 'مقاومة شعبية',      target: 55516,  icon: 'fa-solid fa-hand-fist',            tone: 'resistance' },
+      { label: 'مقاومة نوعية',      target: 8217,   icon: 'fa-solid fa-bullseye',             tone: 'resistance' }
     ],
     kpisSub: [
       { label: 'شهداء فلسطينيون', target: 1581,  tone: 'casualties' },
@@ -174,8 +174,8 @@
     ],
     FILTERS: [
       { id: 'range', label: 'النطاق', options: [
-        { v: 'all', t: '2018 → 2026' }, { v: 'aqsa', t: 'منذ 7 أكتوبر 2023' },
-        { v: '12m', t: 'آخر 12 شهراً' }, { v: 'pre', t: '2018 → 2023' } ] },
+        { v: 'all', t: '2018–2026' }, { v: 'aqsa', t: 'منذ 7 أكتوبر 2023' },
+        { v: '12m', t: 'آخر 12 شهراً' }, { v: 'pre', t: '2018–2023' } ] },
       { id: 'geo', label: 'الجغرافيا', options: [
         { v: 'all', t: 'الضفة · غزة · 48' }, { v: 'wb', t: 'الضفة الغربية' },
         { v: 'gaza', t: 'قطاع غزة' }, { v: 'jeru', t: 'القدس' }, { v: '48', t: 'أراضي 48' } ] },
@@ -729,7 +729,7 @@
       });
       sel.value = state.filters[f.id];
       field.appendChild(sel);
-      var chev = h('span', 'filter__chev', '▾');
+      var chev = h('span', 'filter__chev fa-solid fa-chevron-down');
       chev.setAttribute('aria-hidden', 'true');
       field.appendChild(chev);
       lab.appendChild(field);
@@ -805,7 +805,7 @@
     DATA.kpisLead.forEach(function (k, i) {
       var card = h('div', 'kpi-card'); card.setAttribute('data-st', '');
       var head = h('div', 'kpi-card__head');
-      var icon = h('span', 'kpi-card__icon', k.icon);
+      var icon = h('span', 'kpi-card__icon ' + k.icon); icon.setAttribute('aria-hidden', 'true');
       cssVar(icon, '--tone', 'var(--' + k.tone + ')');
       head.appendChild(icon);
       head.appendChild(h('span', 'kpi-card__label', k.label));
@@ -829,7 +829,7 @@
       var val = h('div', 'kpi-stat__value num'); val.setAttribute('data-count', k.target); val.textContent = '0';
       left.appendChild(val);
       card.appendChild(left);
-      var arrow = h('span', 'kpi-stat__arrow', '›');
+      var arrow = h('span', 'kpi-stat__arrow fa-solid fa-chevron-left'); arrow.setAttribute('aria-hidden', 'true');
       cssVar(arrow, '--tone', 'var(--' + k.tone + ')');
       card.appendChild(arrow);
       box.appendChild(card);
@@ -1057,11 +1057,13 @@
 
   function renderTop10() {
     var box = slot('top10'); if (!box) return; clear(box);
-    var medals = ['🥇', '🥈', '🥉'];
+    var medals = ['fa-trophy', 'fa-medal', 'fa-award'];
     var sorted = DATA.GOV.filter(function (g) { return !g.gaza; }).sort(function (a, b) { return b.v - a.v; });
     sorted.slice(0, 10).forEach(function (g, i) {
       var item = h('div', 'top-item' + (i < 3 ? ' is-lead' : '')); item.setAttribute('data-st', '');
-      item.appendChild(h('span', 'top-item__rank', i < 3 ? medals[i] : '#' + (i + 1)));
+      var rk = h('span', 'top-item__rank');
+      if (i < 3) { rk.innerHTML = '<i class="fa-solid ' + medals[i] + '" aria-hidden="true"></i>'; } else { rk.textContent = '#' + (i + 1); }
+      item.appendChild(rk);
       item.appendChild(h('span', 'top-item__name', g.n));
       item.appendChild(h('span', 'top-item__value num', fmt(g.v)));
       box.appendChild(item);
@@ -1107,7 +1109,7 @@
       aside.appendChild(h('span', 'timeline__tag', ev.tag));
       var cta = h('span', 'timeline__cta');
       cta.appendChild(h('span', 'timeline__cta-label', 'اقرأ التقرير'));
-      var arrow = h('span', 'timeline__arrow', '←');
+      var arrow = h('span', 'timeline__arrow fa-solid fa-chevron-left');
       arrow.setAttribute('aria-hidden', 'true');
       cta.appendChild(arrow);
       aside.appendChild(cta);
@@ -1218,7 +1220,7 @@
     var evs = DATA.CAL_EVENTS[state.selDay] || [];
     if (!evs.length) {
       var empty = h('div', 'day-empty');
-      var icon = h('div', 'day-empty__icon', '🗓'); icon.setAttribute('aria-hidden', 'true');
+      var icon = h('div', 'day-empty__icon fa-solid fa-calendar-day'); icon.setAttribute('aria-hidden', 'true');
       empty.appendChild(icon);
       empty.appendChild(h('p', 'day-empty__title', 'لا توجد أحداث موثّقة في هذا اليوم'));
       empty.appendChild(h('p', 'day-empty__text', 'اختر يوماً معلّماً بنقطة على التقويم لعرض الأحداث والتقارير الموثّقة فيه.'));
@@ -1234,7 +1236,7 @@
         img.width = 96; img.height = 68;
         item.appendChild(img);
       } else {
-        var ph = h('div', 'day-event__thumb day-event__thumb--icon', '⚑');
+        var ph = h('div', 'day-event__thumb day-event__thumb--icon fa-solid fa-flag'); ph.setAttribute('aria-hidden', 'true');
         ph.setAttribute('aria-hidden', 'true');
         item.appendChild(ph);
       }
@@ -1381,7 +1383,8 @@
       var dark = root.getAttribute('data-mode') === 'dark';
       root.setAttribute('data-mode', dark ? 'light' : 'dark');
       var icon = toggle.querySelector('.theme-toggle__icon') || toggle;
-      icon.textContent = dark ? '☾' : '☀';
+      icon.classList.remove('fa-moon', 'fa-sun');
+      icon.classList.add('fa-solid', dark ? 'fa-moon' : 'fa-sun');
       try { localStorage.setItem('m3-mode', root.getAttribute('data-mode')); } catch (e) {}
       renderThemed();
     });
@@ -1478,7 +1481,7 @@
     if (tkToggle) tkToggle.addEventListener('click', function () {
       var sec = tkToggle.closest('.ticker'); if (!sec) return;
       var paused = sec.classList.toggle('is-paused');
-      tkToggle.textContent = paused ? '▶' : '⏸';
+      tkToggle.innerHTML = '<i class="fa-solid ' + (paused ? 'fa-play' : 'fa-pause') + '" aria-hidden="true"></i>';
     });
   }
 
@@ -1495,7 +1498,8 @@
     var toggle = $('[data-theme-toggle]');
     if (toggle) {
       var icon = toggle.querySelector('.theme-toggle__icon') || toggle;
-      icon.textContent = root.getAttribute('data-mode') === 'dark' ? '☀' : '☾';
+      icon.classList.remove('fa-moon', 'fa-sun');
+      icon.classList.add('fa-solid', root.getAttribute('data-mode') === 'dark' ? 'fa-sun' : 'fa-moon');
     }
     var v = root.getAttribute('data-dir');
     setActive($$('[data-dir-set]'), 'data-dir-set', v);

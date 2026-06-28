@@ -89,7 +89,7 @@
     track.appendChild(fill); card.appendChild(track);
     var cta = h('span', 'govx-card__cta');
     cta.appendChild(document.createTextNode('استعراض الملف'));
-    var arrow = h('span', 'govx-card__arrow', '‹'); arrow.setAttribute('aria-hidden', 'true');
+    var arrow = h('span', 'govx-card__arrow fa-solid fa-chevron-left'); arrow.setAttribute('aria-hidden', 'true');
     cta.appendChild(arrow); card.appendChild(cta);
     return card;
   }

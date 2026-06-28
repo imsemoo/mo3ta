@@ -83,8 +83,8 @@
     body.appendChild(h('h3', 'rcard__title', r.title));
     body.appendChild(h('p', 'rcard__excerpt', r.excerpt));
     var meta = h('div', 'rcard__meta');
-    meta.appendChild(h('span', 'rcard__date', '🗓 ' + r.date));
-    meta.appendChild(h('span', 'rcard__read', '⏱ ' + r.readMin + ' دقائق'));
+    var rd = h('span', 'rcard__date'); rd.innerHTML = '<i class="fa-solid fa-calendar-day" aria-hidden="true"></i> '; rd.appendChild(document.createTextNode(r.date)); meta.appendChild(rd);
+    var rr = h('span', 'rcard__read'); rr.innerHTML = '<i class="fa-solid fa-clock" aria-hidden="true"></i> '; rr.appendChild(document.createTextNode(r.readMin + ' دقائق')); meta.appendChild(rr);
     body.appendChild(meta);
     card.appendChild(body);
     return card;
@@ -103,10 +103,10 @@
     body.appendChild(h('h2', 'feature-report__title', r.title));
     body.appendChild(h('p', 'feature-report__excerpt', r.excerpt));
     var meta = h('div', 'rcard__meta');
-    meta.appendChild(h('span', 'rcard__date', '🗓 ' + r.date));
-    meta.appendChild(h('span', 'rcard__read', '⏱ ' + r.readMin + ' دقائق'));
+    var rd = h('span', 'rcard__date'); rd.innerHTML = '<i class="fa-solid fa-calendar-day" aria-hidden="true"></i> '; rd.appendChild(document.createTextNode(r.date)); meta.appendChild(rd);
+    var rr = h('span', 'rcard__read'); rr.innerHTML = '<i class="fa-solid fa-clock" aria-hidden="true"></i> '; rr.appendChild(document.createTextNode(r.readMin + ' دقائق')); meta.appendChild(rr);
     body.appendChild(meta);
-    var cta = h('span', 'feature-report__cta', 'اقرأ التقرير كاملاً ←');
+    var cta = h('span', 'feature-report__cta'); cta.innerHTML = 'اقرأ التقرير كاملاً <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>';
     body.appendChild(cta);
     art.appendChild(body);
     box.appendChild(art);
@@ -143,7 +143,7 @@
     clear(grid);
     if (!list.length) {
       var empty = h('div', 'archive-empty');
-      var icon = h('div', 'archive-empty__icon', '🔍'); icon.setAttribute('aria-hidden', 'true');
+      var icon = h('div', 'archive-empty__icon fa-solid fa-magnifying-glass'); icon.setAttribute('aria-hidden', 'true');
       empty.appendChild(icon);
       empty.appendChild(h('p', 'archive-empty__title', 'لا توجد تقارير مطابقة'));
       empty.appendChild(h('p', 'archive-empty__text', 'جرّب تعديل الفلتر أو مسح البحث.'));

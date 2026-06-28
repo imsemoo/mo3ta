@@ -65,7 +65,7 @@
   function flashCopied() {
     if (!copyBtn) return;
     copyBtn.classList.add('is-copied');
-    copyBtn.setAttribute('aria-label', 'تم نسخ الرابط ✓');
+    copyBtn.setAttribute('aria-label', 'تم نسخ الرابط');
     clearTimeout(copyBtn._t);
     copyBtn._t = setTimeout(function () {
       copyBtn.classList.remove('is-copied');

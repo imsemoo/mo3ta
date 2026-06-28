@@ -36,7 +36,7 @@
         <button class="seg__btn is-active" type="button" data-dir-set="editorial" title="تحريري">تحريري</button>
         <button class="seg__btn" type="button" data-dir-set="bold" title="جريء">جريء</button>
       </div>
-      <button class="theme-toggle" type="button" data-theme-toggle title="تبديل السمة" aria-label="تبديل السمة"><span class="theme-toggle__icon" aria-hidden="true">☾</span></button>
+      <button class="theme-toggle" type="button" data-theme-toggle title="تبديل السمة" aria-label="تبديل السمة"><span class="theme-toggle__icon fa-solid fa-moon" aria-hidden="true"></span></button>
     </div>
   </header>
 
@@ -44,7 +44,7 @@
 
     <nav class="breadcrumb" aria-label="مسار التنقّل">
       <a href="index.html">الرئيسية</a>
-      <span class="breadcrumb__sep" aria-hidden="true">›</span>
+      <span class="breadcrumb__sep fa-solid fa-chevron-left" aria-hidden="true"></span>
       <span class="breadcrumb__current">منذ 7 أكتوبر</span>
     </nav>
 
@@ -57,7 +57,7 @@
           <div class="cc-hero__meta">
             <span class="cc-hero__chip"><strong class="num" data-day-counter>0</strong> يوماً من التوثيق المتواصل</span>
             <span>آخر تحديث: 23 يونيو 2026</span>
-            <a class="cc-hero__link" href="#">منهجية التوثيق ←</a>
+            <a class="cc-hero__link" href="#">منهجية التوثيق <i class="fa-solid fa-arrow-left" aria-hidden="true"></i></a>
           </div>
         </div>
         <div class="cc-hero__cta">
@@ -68,22 +68,22 @@
 
       <div class="cc-hero__kpis">
         <div class="kpi-card" data-st>
-          <div class="kpi-card__head"><span class="kpi-card__icon t-accent">◆</span><span class="kpi-card__label">إجمالي الأحداث</span></div>
+          <div class="kpi-card__head"><span class="kpi-card__icon t-accent fa-solid fa-layer-group" aria-hidden="true"></span><span class="kpi-card__label">إجمالي الأحداث</span></div>
           <div class="kpi-card__value num" data-count="434505">0</div>
           <div class="kpi-card__spark" data-spark-seed="3" data-tone="ink"></div>
         </div>
         <div class="kpi-card" data-st>
-          <div class="kpi-card__head"><span class="kpi-card__icon t-violations">⚠</span><span class="kpi-card__label">انتهاكات الاحتلال</span></div>
+          <div class="kpi-card__head"><span class="kpi-card__icon t-violations fa-solid fa-triangle-exclamation" aria-hidden="true"></span><span class="kpi-card__label">انتهاكات الاحتلال</span></div>
           <div class="kpi-card__value num" data-count="370772">0</div>
           <div class="kpi-card__spark" data-spark-seed="18" data-tone="red"></div>
         </div>
         <div class="kpi-card" data-st>
-          <div class="kpi-card__head"><span class="kpi-card__icon t-resistance">✊</span><span class="kpi-card__label">مقاومة شعبية</span></div>
+          <div class="kpi-card__head"><span class="kpi-card__icon t-resistance fa-solid fa-hand-fist" aria-hidden="true"></span><span class="kpi-card__label">مقاومة شعبية</span></div>
           <div class="kpi-card__value num" data-count="55516">0</div>
           <div class="kpi-card__spark" data-spark-seed="13" data-tone="accent"></div>
         </div>
         <div class="kpi-card" data-st>
-          <div class="kpi-card__head"><span class="kpi-card__icon t-resistance">⊛</span><span class="kpi-card__label">مقاومة نوعية</span></div>
+          <div class="kpi-card__head"><span class="kpi-card__icon t-resistance fa-solid fa-bullseye" aria-hidden="true"></span><span class="kpi-card__label">مقاومة نوعية</span></div>
           <div class="kpi-card__value num" data-count="8217">0</div>
           <div class="kpi-card__spark" data-spark-seed="8" data-tone="olive"></div>
         </div>
@@ -93,7 +93,7 @@
     <!-- شريط التحكّم -->
     <section class="control-bar rv" data-st aria-label="تخصيص العرض">
       <div class="control-bar__head">
-        <span class="control-bar__legend"><span aria-hidden="true">⚙</span> تخصيص العرض — اختر النطاق الزمني والجغرافيا</span>
+        <span class="control-bar__legend"><span class="fa-solid fa-sliders" aria-hidden="true"></span> تخصيص العرض — اختر النطاق الزمني والجغرافيا</span>
         <button class="btn btn--ghost control-bar__reset" type="button" data-reset hidden>إعادة الضبط</button>
       </div>
       <div class="control-bar__row">
@@ -130,18 +130,18 @@
           </div>
           <div class="explorer__tools">
             <span class="archive-search">
-              <span class="archive-search__icon" aria-hidden="true">🔍</span>
+              <span class="archive-search__icon fa-solid fa-magnifying-glass" aria-hidden="true"></span>
               <input class="archive-search__input" type="search" data-search placeholder="ابحث في الأحداث…" aria-label="بحث في الأحداث">
             </span>
             <div class="seg seg--soft" role="group" aria-label="نمط العرض">
               <button class="seg__btn is-active" type="button" data-view="table" aria-pressed="true">جدول</button>
               <button class="seg__btn" type="button" data-view="cards" aria-pressed="false">بطاقات</button>
             </div>
-            <button class="btn btn--soft" type="button" data-export aria-label="تصدير CSV">⬇ CSV</button>
+            <button class="btn btn--soft" type="button" data-export aria-label="تصدير CSV"><i class="fa-solid fa-download" aria-hidden="true"></i> CSV</button>
           </div>
         </div>
         <div data-render="explorer"></div>
-        <div class="explorer__more"><button class="btn btn--soft" type="button" data-loadmore>تحميل المزيد ↓</button></div>
+        <div class="explorer__more"><button class="btn btn--soft" type="button" data-loadmore>تحميل المزيد <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button></div>
       </div>
     </section>
 
@@ -176,9 +176,9 @@
         <button class="btn btn--primary news-band__btn" type="submit">اشترك الآن</button>
       </form>
       <div class="news-band__links">
-        <a class="news-band__chip" href="#">القرى الفلسطينية ↗</a>
-        <a class="news-band__chip" href="#">مرصد شيرين ↗</a>
-        <a class="news-band__chip" href="visual_narrative.html">الرواية المصوّرة ↗</a>
+        <a class="news-band__chip" href="#">القرى الفلسطينية <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i></a>
+        <a class="news-band__chip" href="#">مرصد شيرين <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i></a>
+        <a class="news-band__chip" href="visual_narrative.html">الرواية المصوّرة <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i></a>
       </div>
     </div>
   </section>

@@ -31,7 +31,7 @@
     box.appendChild(item('102', 'شهراً متواصلاً'));
     box.appendChild(h('div', 'trust__sep'));
     box.appendChild(item('+50', 'مصدراً موثوقاً'));
-    var link = h('a', 'trust__link', 'استعرض اللوحة ↓'); link.href = 'index.html';
+    var link = h('a', 'trust__link'); link.innerHTML = 'استعرض اللوحة <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>'; link.href = 'index.html';
     box.appendChild(link);
   }
 

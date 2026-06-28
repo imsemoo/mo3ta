@@ -220,7 +220,7 @@
     if (!playBtn) return;
     var on = autoTimer != null;
     playBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
-    playBtn.innerHTML = on ? '<span aria-hidden="true">▣</span> إيقاف' : '<span aria-hidden="true">▷</span> عرض تلقائي';
+    playBtn.innerHTML = on ? '<i class="fa-solid fa-pause" aria-hidden="true"></i> إيقاف' : '<i class="fa-solid fa-play" aria-hidden="true"></i> عرض تلقائي';
     playBtn.title = on ? 'إيقاف العرض التلقائي' : 'عرض تلقائي';
   }
   function stopAuto() { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; syncPlay(); } }
@@ -303,7 +303,7 @@
     go.type = 'button'; go.className = 'vn-resume__go'; go.textContent = 'متابعة';
     go.addEventListener('click', function () { chip.remove(); goTo(idx); });
     var x = document.createElement('button');
-    x.type = 'button'; x.className = 'vn-resume__x'; x.setAttribute('aria-label', 'إغلاق'); x.textContent = '×';
+    x.type = 'button'; x.className = 'vn-resume__x'; x.setAttribute('aria-label', 'إغلاق'); x.innerHTML = '<i class="fa-solid fa-xmark" aria-hidden="true"></i>';
     x.addEventListener('click', function () { chip.remove(); });
     chip.appendChild(span); chip.appendChild(go); chip.appendChild(x);
     anchor.parentNode.insertBefore(chip, anchor.nextSibling);
