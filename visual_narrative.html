@@ -1,264 +1,434 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" data-mode="light" data-dir="editorial">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#1f2147">
-  <meta name="description" content="الرواية المصوّرة — الإصدار المصوّر السنوي من مركز معلومات فلسطين «مُعطى». اقرأ العدد كاملاً واطّلع على الحصاد البصري الموثّق.">
-  <title>الرواية المصوّرة — مُعطى</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#1f2147">
+    <meta name="description"
+      content="الرواية المصوّرة — الإصدار المصوّر السنوي من مركز معلومات فلسطين «مُعطى». اقرأ العدد كاملاً واطّلع على الحصاد البصري الموثّق.">
+    <title>الرواية المصوّرة — مُعطى</title>
 
-  <a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+  </head>
 
-  <!-- ===================== الرأس ===================== -->
-  <header class="site-header" data-st>
-    <a class="brand" href="index.html" aria-label="مُعطى — الصفحة الرئيسية">
-      <img class="brand__logo" src="assets/img/logo.webp" alt="" width="160" height="46">
-    </a>
-    <nav class="main-nav" aria-label="التنقّل الرئيسي">
-      <a class="main-nav__link" href="index.html">الرئيسية</a>
-      <a class="main-nav__link" href="daily_mo3ta.html">منذ 7 أكتوبر</a>
-      <a class="main-nav__link" href="articles.html">التقارير</a>
-      <a class="main-nav__link is-active" href="visual_narrative.html" aria-current="page">الرواية المصوّرة</a>
-      <a class="main-nav__link" href="timeline.html">الخطّ الزمني</a>
-      <a class="main-nav__link" href="governorates.html">المحافظات</a>
-      <a class="main-nav__link" href="about_us.html">من نحن</a>
-    </nav>
-    <div class="header-controls">
-      <div class="seg" role="group" aria-label="الاتجاه التحريري">
-        <button class="seg__btn" type="button" data-dir-set="conservative" title="محافظ">محافظ</button>
-        <button class="seg__btn is-active" type="button" data-dir-set="editorial" title="تحريري">تحريري</button>
-        <button class="seg__btn" type="button" data-dir-set="bold" title="جريء">جريء</button>
-      </div>
-      <button class="theme-toggle" type="button" data-theme-toggle title="تبديل السمة" aria-label="تبديل السمة"><span class="theme-toggle__icon" aria-hidden="true">☾</span></button>
-    </div>
-  </header>
+  <body>
 
-  <main class="container" id="main" tabindex="-1">
+    <a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
 
-    <!-- ===================== ترويسة الإصدار ===================== -->
-    <section class="vn-hero">
-      <p class="vn-hero__eyebrow">إصدار مصوّر · 2024</p>
-      <h1 class="vn-hero__title">الرواية المصوّرة</h1>
-      <p class="vn-hero__lead">العدد المصوّر من «مُعطى» — حصادٌ بصريّ يروي ما تمّ توثيقه عبر الميدان الفلسطيني: صورٌ وإنفوغرافيك ومحطّات من سجلٍّ موثّق. تصفّح العدد كاملاً أدناه، صفحةً صفحة.</p>
-      <div class="vn-hero__actions">
-        <a class="btn btn--primary" href="#vn-reader">ابدأ القراءة ↓</a>
-      </div>
-      <dl class="vn-hero__meta">
-        <div class="vn-hero__meta-item"><dt>الإصدار</dt><dd>الرواية المصوّرة 2024</dd></div>
-        <div class="vn-hero__meta-item"><dt>عدد الصفحات</dt><dd><span class="num">250</span> صفحة</dd></div>
-        <div class="vn-hero__meta-item"><dt>الناشر</dt><dd>مركز معلومات فلسطين — مُعطى</dd></div>
-      </dl>
-    </section>
-
-    <!-- ===================== القارئ (عارض محلي — صفحات مستضافة عندنا) ===================== -->
-    <section class="band band--tint vn-reader" id="vn-reader">
-      <div class="vn-reader__head">
-        <div>
-          <h2 class="vn-reader__title">اقرأ العدد كاملاً</h2>
-          <p class="vn-reader__sub">تصفّح الصفحات بالأسهم أو السحب — أو وسّعه لملء الشاشة.</p>
+    <!-- ===================== الرأس ===================== -->
+    <header class="site-header" data-st>
+      <a class="brand" href="index.html" aria-label="مُعطى — الصفحة الرئيسية">
+        <img class="brand__logo" src="assets/img/logo.webp" alt="" width="160" height="46">
+      </a>
+      <nav class="main-nav" aria-label="التنقّل الرئيسي">
+        <a class="main-nav__link" href="index.html">الرئيسية</a>
+        <a class="main-nav__link" href="daily_mo3ta.html">منذ 7 أكتوبر</a>
+        <a class="main-nav__link" href="articles.html">التقارير</a>
+        <a class="main-nav__link is-active" href="visual_narrative.html" aria-current="page">الرواية المصوّرة</a>
+        <a class="main-nav__link" href="timeline.html">الخطّ الزمني</a>
+        <a class="main-nav__link" href="governorates.html">المحافظات</a>
+        <a class="main-nav__link" href="about_us.html">من نحن</a>
+      </nav>
+      <div class="header-controls">
+        <div class="seg" role="group" aria-label="الاتجاه التحريري">
+          <button class="seg__btn" type="button" data-dir-set="conservative" title="محافظ">محافظ</button>
+          <button class="seg__btn is-active" type="button" data-dir-set="editorial" title="تحريري">تحريري</button>
+          <button class="seg__btn" type="button" data-dir-set="bold" title="جريء">جريء</button>
         </div>
-        <div class="vn-reader__tools">
-          <button class="vn-tool" type="button" data-vn-toc title="فهرس المحتويات" hidden><span aria-hidden="true">☰</span> المحتويات</button>
-          <button class="vn-tool" type="button" data-vn-grid title="تصفّح الصفحات بالمصغّرات"><span aria-hidden="true">▦</span> تصفّح</button>
-          <button class="vn-tool" type="button" data-vn-zoom title="تكبير الصفحة (أو نقرة مزدوجة على الصفحة)"><span aria-hidden="true">⊕</span> تكبير</button>
-          <button class="vn-tool" type="button" data-vn-play aria-pressed="false" title="عرض تلقائي"><span aria-hidden="true">▷</span> عرض تلقائي</button>
-          <label class="visually-hidden" for="vn-speed">سرعة العرض التلقائي</label>
-          <select class="vn-tool vn-tool--select" id="vn-speed" data-vn-speed title="سرعة العرض التلقائي">
-            <option value="4000">سريع</option>
-            <option value="7000" selected>متوسّط</option>
-            <option value="11000">بطيء</option>
-          </select>
-          <button class="vn-tool" type="button" data-vn-sound aria-pressed="false" title="تشغيل صوت التقليب"><span aria-hidden="true">♪</span> الصوت</button>
-          <button class="vn-tool" type="button" data-vn-fs aria-pressed="false"><span aria-hidden="true">⛶</span> ملء الشاشة</button>
-        </div>
+        <button class="theme-toggle" type="button" data-theme-toggle title="تبديل السمة" aria-label="تبديل السمة"><span
+            class="theme-toggle__icon" aria-hidden="true">☾</span></button>
       </div>
+    </header>
 
-      <div class="vn-book" data-vn-book>
-        <button class="vn-book__nav vn-book__nav--prev" type="button" data-vn-prev aria-label="الصفحة السابقة">›</button>
-        <div class="vn-book__stage">
-          <div class="vn-book__flip" data-vn-flip></div>
-          <p class="vn-book__loading" data-vn-loading>…جارٍ فتح العدد</p>
-          <div class="vn-book__outro" data-vn-outro>
-            <div class="vn-book__outro-inner">
-              <p class="vn-book__outro-eyebrow">انتهى العدد</p>
-              <h3 class="vn-book__outro-title">شكراً لقراءتك «الرواية المصوّرة»</h3>
-              <div class="vn-book__outro-cta">
-                <button class="btn btn--primary" type="button" data-vn-restart>إعادة من البداية</button>
-                <a class="btn btn--soft" href="timeline.html">الخطّ الزمني الموثّق</a>
-                <a class="btn btn--soft" href="articles.html">كل التقارير</a>
+    <main class="container" id="main" tabindex="-1">
+
+      <!-- ===================== ١ · الهيرو — تعريف بالعدد (بلا غلاف) ===================== -->
+      <section class="vn-hero" data-st>
+        <div class="vn-hero__main">
+        <p class="vn-hero__eyebrow">إصدار مصوّر · توثيق سنوي</p>
+        <h1 class="vn-hero__title">الرواية المصوّرة</h1>
+        <p class="vn-hero__lead">العدد المصوّر من «مُعطى» — حصادٌ بصريّ يروي ما وثّقه الميدان الفلسطيني: صورٌ
+          وإنفوغرافيك ومحطّاتٌ من سجلٍّ موثّق.</p>
+        <p class="vn-hero__blurb">يجمع هذا الإصدار خلاصة عامٍ من الرصد والتوثيق في ٢٥٠ صفحة، من الغلاف إلى المصادر —
+          قراءةٌ متّصلة تنقلك عبر المشهد الفلسطيني رقماً وصورة.</p>
+        <dl class="vn-hero__facts">
+          <div class="vn-hero__fact">
+            <dt>تاريخ النشر</dt>
+            <dd>ديسمبر 2024</dd>
+          </div>
+          <div class="vn-hero__fact">
+            <dt>رقم الإصدار</dt>
+            <dd>2024 / 01</dd>
+          </div>
+          <div class="vn-hero__fact">
+            <dt>عدد الصفحات</dt>
+            <dd><span class="num">250</span></dd>
+          </div>
+          <div class="vn-hero__fact">
+            <dt>التصنيف</dt>
+            <dd>توثيق مصوّر</dd>
+          </div>
+        </dl>
+        <div class="vn-hero__actions">
+          <button class="btn btn--primary" type="button" data-vn-start>ابدأ القراءة</button>
+        </div>
+        </div><!-- /.vn-hero__main -->
+
+        <aside class="vn-hero__aside" aria-label="في هذا العدد">
+          <p class="vn-hero__aside-title">في هذا العدد</p>
+          <ol class="vn-hero__toc">
+            <li class="vn-hero__toc-item">المقدّمة</li>
+            <li class="vn-hero__toc-item">روايات وقصص إنسانية</li>
+            <li class="vn-hero__toc-item">الأوضاع الإنسانية والمعيشية</li>
+            <li class="vn-hero__toc-item">الفصائل والأجنحة العسكرية</li>
+            <li class="vn-hero__toc-item">يوميّات الأحداث</li>
+          </ol>
+          <p class="vn-hero__aside-foot"><span class="num">250</span> صفحة · من الغلاف إلى المصادر</p>
+        </aside>
+      </section>
+
+      <!-- ===================== ٢ · بطاقة معلومات العدد ===================== -->
+      <section class="vn-meta-section" data-st>
+        <article class="vn-meta">
+          <div class="vn-meta__cover-wrap">
+            <img class="vn-meta__cover" src="assets/narrative/page-001.webp" alt="غلاف الرواية المصوّرة" width="1980"
+              height="2800" loading="lazy" decoding="async">
+          </div>
+          <div class="vn-meta__body">
+            <p class="vn-meta__eyebrow">معلومات العدد</p>
+            <h2 class="vn-meta__title">الرواية المصوّرة — الإصدار المصوّر 2024</h2>
+            <p class="vn-meta__desc">سردٌ بصريّ موثّق يجمع صور الميدان وإنفوغرافيك الأرقام في رحلةٍ متّصلة عبر القضية
+              الفلسطينية.</p>
+            <dl class="vn-meta__specs">
+              <div class="vn-meta__spec">
+                <dt>عدد الصفحات</dt>
+                <dd><span class="num">250</span> صفحة</dd>
+              </div>
+              <div class="vn-meta__spec">
+                <dt>حجم الملف</dt>
+                <dd>~<span class="num">62</span> ميجابايت</dd>
+              </div>
+              <div class="vn-meta__spec">
+                <dt>تاريخ النشر</dt>
+                <dd>ديسمبر 2024</dd>
+              </div>
+              <div class="vn-meta__spec">
+                <dt>اللغة</dt>
+                <dd>العربية</dd>
+              </div>
+              <div class="vn-meta__spec">
+                <dt>الناشر</dt>
+                <dd>مركز معلومات فلسطين — مُعطى</dd>
+              </div>
+            </dl>
+            <div class="vn-meta__tags" aria-label="كلمات مفتاحية">
+              <span class="vn-tag">فلسطين</span><span class="vn-tag">غزة</span><span class="vn-tag">الضفة
+                الغربية</span><span class="vn-tag">توثيق</span><span class="vn-tag">2024</span>
+            </div>
+            <div class="vn-meta__actions">
+              <a class="btn btn--primary" href="assets/narrative/mo3ta-visual-narrative-2024.pdf" download
+                data-vn-download>تحميل PDF</a>
+              <button class="btn btn--soft" type="button" data-vn-share>مشاركة</button>
+              <button class="btn btn--soft" type="button" data-vn-save aria-pressed="false">حفظ</button>
+              <button class="btn btn--soft" type="button" data-vn-copy>نسخ الرابط</button>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- ===================== القارئ (عارض محلي — صفحات مستضافة عندنا) ===================== -->
+      <section class="band band--tint vn-reader" id="vn-reader">
+        <div class="vn-reader__head">
+          <div>
+            <h2 class="vn-reader__title">مساحة القراءة</h2>
+            <p class="vn-reader__sub">العدد كاملاً — كلّ الأدوات في الأعلى، والتنقّل في الأسفل.</p>
+          </div>
+        </div>
+
+        <!-- شريط الأدوات العلوي -->
+        <div class="vn-ws-toolbar" role="toolbar" aria-label="أدوات القراءة">
+          <div class="vn-ws-group" aria-label="التنقّل والتصفّح">
+            <button class="vn-tool" type="button" data-vn-first title="الصفحة الأولى"><span aria-hidden="true">⏮</span>
+              الأولى</button>
+            <button class="vn-tool" type="button" data-vn-last title="الصفحة الأخيرة"><span aria-hidden="true">⏭</span>
+              الأخيرة</button>
+            <button class="vn-tool" type="button" data-vn-toc title="فهرس المحتويات" hidden><span
+                aria-hidden="true">☰</span> المحتويات</button>
+            <button class="vn-tool" type="button" data-vn-grid title="تصفّح/اعثر بالمصغّرات"><span
+                aria-hidden="true">▦</span> تصفّح</button>
+          </div>
+          <div class="vn-ws-sep" aria-hidden="true"></div>
+          <div class="vn-ws-group" aria-label="العرض">
+            <button class="vn-tool" type="button" data-vn-zoom title="تكبير (تصغير · نسبة · تكبير)"><span
+                aria-hidden="true">⊕</span> تكبير</button>
+            <button class="vn-tool" type="button" data-vn-rotate title="تدوير الصفحة"><span aria-hidden="true">⟳</span>
+              تدوير</button>
+            <button class="vn-tool" type="button" data-vn-fs aria-pressed="false" title="ملء الشاشة"><span
+                aria-hidden="true">⛶</span> ملء الشاشة</button>
+          </div>
+          <div class="vn-ws-sep" aria-hidden="true"></div>
+          <div class="vn-ws-group" aria-label="التشغيل">
+            <button class="vn-tool" type="button" data-vn-play aria-pressed="false" title="عرض تلقائي"><span
+                aria-hidden="true">▷</span> عرض تلقائي</button>
+            <label class="visually-hidden" for="vn-speed">سرعة العرض التلقائي</label>
+            <select class="vn-tool vn-tool--select" id="vn-speed" data-vn-speed title="سرعة العرض التلقائي">
+              <option value="4000">سريع</option>
+              <option value="7000" selected>متوسّط</option>
+              <option value="11000">بطيء</option>
+            </select>
+            <button class="vn-tool" type="button" data-vn-sound aria-pressed="false" title="تشغيل صوت التقليب"><span
+                aria-hidden="true">♪</span> الصوت</button>
+          </div>
+          <div class="vn-ws-sep" aria-hidden="true"></div>
+          <div class="vn-ws-group" aria-label="تصدير ومشاركة">
+            <a class="vn-tool" href="assets/narrative/mo3ta-visual-narrative-2024.pdf" download data-vn-download
+              title="تحميل PDF"><span aria-hidden="true">⬇</span> تحميل</a>
+            <button class="vn-tool" type="button" data-vn-print title="طباعة"><span aria-hidden="true">⎙</span>
+              طباعة</button>
+            <button class="vn-tool" type="button" data-vn-share title="مشاركة"><span aria-hidden="true">↗</span>
+              مشاركة</button>
+          </div>
+        </div>
+
+        <!-- شريط تقدّم رفيع أعلى العارض -->
+        <div class="vn-book__progress" role="progressbar" aria-valuemin="1" aria-valuemax="250" aria-valuenow="1"
+          aria-label="تقدّم القراءة" data-vn-progress>
+          <span class="vn-book__progress-fill"></span>
+        </div>
+
+        <div class="vn-book" data-vn-book>
+          <button class="vn-book__nav vn-book__nav--prev" type="button" data-vn-prev
+            aria-label="الصفحة السابقة">›</button>
+          <div class="vn-book__stage">
+            <div class="vn-book__flip" data-vn-flip></div>
+            <p class="vn-book__loading" data-vn-loading>…جارٍ فتح العدد</p>
+            <div class="vn-book__outro" data-vn-outro>
+              <div class="vn-book__outro-inner">
+                <p class="vn-book__outro-eyebrow">انتهى العدد</p>
+                <h3 class="vn-book__outro-title">شكراً لقراءتك «الرواية المصوّرة»</h3>
+                <div class="vn-book__outro-cta">
+                  <button class="btn btn--primary" type="button" data-vn-restart>إعادة من البداية</button>
+                  <a class="btn btn--soft" href="timeline.html">الخطّ الزمني الموثّق</a>
+                  <a class="btn btn--soft" href="articles.html">كل التقارير</a>
+                </div>
               </div>
             </div>
           </div>
+          <button class="vn-book__nav vn-book__nav--next" type="button" data-vn-next
+            aria-label="الصفحة التالية">‹</button>
         </div>
-        <button class="vn-book__nav vn-book__nav--next" type="button" data-vn-next aria-label="الصفحة التالية">‹</button>
-      </div>
 
-      <div class="vn-book__progress" role="progressbar" aria-valuemin="1" aria-valuemax="250" aria-valuenow="1" aria-label="تقدّم القراءة" data-vn-progress>
-        <span class="vn-book__progress-fill"></span>
-      </div>
-
-      <div class="vn-book__bar">
-        <button class="vn-book__edge" type="button" data-vn-first>الأولى</button>
-        <div class="vn-book__counter">
-          <label class="visually-hidden" for="vn-jump">اذهب إلى صفحة</label>
-          <span>صفحة</span>
-          <input class="vn-book__jump num" id="vn-jump" type="number" min="1" max="250" value="1" data-vn-jump inputmode="numeric" aria-label="رقم الصفحة">
-          <span>/ <span class="num" data-vn-total>250</span></span>
-        </div>
-        <button class="vn-book__edge" type="button" data-vn-last>الأخيرة</button>
-      </div>
-
-      <p class="vn-reader__note">إصدار «مُعطى» المصوّر — معروضٌ ومستضافٌ محلياً.</p>
-      <p class="visually-hidden" aria-live="polite" data-vn-live></p>
-
-      <!-- لوحة تصفّح المصغّرات (تُبنى عناصرها عبر JS) -->
-      <div class="vn-thumbs" data-vn-thumbs hidden role="dialog" aria-modal="true" aria-label="تصفّح صفحات العدد">
-        <div class="vn-thumbs__panel">
-          <div class="vn-thumbs__head">
-            <h3 class="vn-thumbs__title">تصفّح الصفحات</h3>
-            <button class="vn-thumbs__close" type="button" data-vn-thumbs-close aria-label="إغلاق التصفّح">×</button>
+        <!-- شريط التنقّل السفلي البسيط: السابقة · الصفحة/الإجمالي · التالية -->
+        <div class="vn-book__bar vn-book__bar--reading">
+          <button class="vn-book__edge vn-book__edge--prev" type="button" data-vn-prev>
+            <span aria-hidden="true">‹</span> السابقة
+          </button>
+          <div class="vn-book__counter">
+            <label class="visually-hidden" for="vn-jump">رقم الصفحة الحالية</label>
+            <input class="vn-book__jump num" id="vn-jump" type="number" min="1" max="250" value="1" data-vn-jump
+              inputmode="numeric" aria-label="رقم الصفحة">
+            <span class="vn-book__counter-total">/ <span class="num" data-vn-total>250</span></span>
           </div>
-          <div class="vn-thumbs__grid" data-vn-thumbs-grid></div>
+          <button class="vn-book__edge vn-book__edge--next" type="button" data-vn-next>
+            التالية <span aria-hidden="true">›</span>
+          </button>
         </div>
-      </div>
 
-      <!-- فهرس المحتويات (تُبنى عناصره عبر JS من window.VN_TOC) -->
-      <div class="vn-toc" data-vn-toc-panel hidden role="dialog" aria-modal="true" aria-label="فهرس محتويات العدد">
-        <div class="vn-toc__panel">
-          <div class="vn-thumbs__head">
-            <h3 class="vn-thumbs__title">فهرس المحتويات</h3>
-            <button class="vn-thumbs__close" type="button" data-vn-toc-close aria-label="إغلاق الفهرس">×</button>
+        <p class="vn-reader__note">إصدار «مُعطى» المصوّر — معروضٌ ومستضافٌ محلياً.</p>
+        <p class="visually-hidden" aria-live="polite" data-vn-live></p>
+
+        <!-- لوحة تصفّح المصغّرات (تُبنى عناصرها عبر JS) -->
+        <div class="vn-thumbs" data-vn-thumbs hidden role="dialog" aria-modal="true" aria-label="تصفّح صفحات العدد">
+          <div class="vn-thumbs__panel">
+            <div class="vn-thumbs__head">
+              <h3 class="vn-thumbs__title">تصفّح الصفحات</h3>
+              <button class="vn-thumbs__close" type="button" data-vn-thumbs-close aria-label="إغلاق التصفّح">×</button>
+            </div>
+            <div class="vn-thumbs__grid" data-vn-thumbs-grid></div>
           </div>
-          <ul class="vn-toc__list" data-vn-toc-list></ul>
         </div>
-      </div>
 
-      <!-- طبقة تكبير الصفحة (دقة أصلية · سحب وتقريب) -->
-      <div class="vn-zoom" data-vn-zoom-panel hidden role="dialog" aria-modal="true" aria-label="تكبير الصفحة">
-        <div class="vn-zoom__stage" data-vn-zoom-stage>
-          <img class="vn-zoom__img" data-vn-zoom-img alt="صفحة مكبّرة" draggable="false">
+        <!-- فهرس المحتويات (تُبنى عناصره عبر JS من window.VN_TOC) -->
+        <div class="vn-toc" data-vn-toc-panel hidden role="dialog" aria-modal="true" aria-label="فهرس محتويات العدد">
+          <div class="vn-toc__panel">
+            <div class="vn-thumbs__head">
+              <h3 class="vn-thumbs__title">فهرس المحتويات</h3>
+              <button class="vn-thumbs__close" type="button" data-vn-toc-close aria-label="إغلاق الفهرس">×</button>
+            </div>
+            <ul class="vn-toc__list" data-vn-toc-list></ul>
+          </div>
         </div>
-        <div class="vn-zoom__bar">
-          <button class="vn-zoom__btn" type="button" data-vn-zoom-prev aria-label="الصفحة السابقة">›</button>
-          <button class="vn-zoom__btn" type="button" data-vn-zoom-out aria-label="تصغير">−</button>
-          <span class="vn-zoom__level" data-vn-zoom-level>100%</span>
-          <button class="vn-zoom__btn" type="button" data-vn-zoom-in aria-label="تكبير">+</button>
-          <button class="vn-zoom__btn" type="button" data-vn-zoom-next aria-label="الصفحة التالية">‹</button>
-          <button class="vn-zoom__btn vn-zoom__btn--close" type="button" data-vn-zoom-close aria-label="إغلاق التكبير">✕</button>
-        </div>
-      </div>
-    </section>
 
-    <!-- ===================== القراءة في سياقها ===================== -->
-    <section class="section vn-context rv" data-st>
-      <div class="section__head">
-        <h2 class="section__title">القراءة في سياقها</h2>
-        <p class="section__sub">الإصدار روايةٌ مصوّرة؛ وخلفه سجلٌّ من الأرقام الموثّقة يختصر فداحة المشهد الإنساني.</p>
-      </div>
-      <div class="ratio-cards">
-        <div class="ratio-card"><div class="ratio-card__value">10.3×</div><div class="ratio-card__label">شهيد فلسطيني مقابل كل قتيل إسرائيلي</div></div>
-        <div class="ratio-card"><div class="ratio-card__value">15.1×</div><div class="ratio-card__label">جريح فلسطيني مقابل كل جريح إسرائيلي</div></div>
-        <div class="ratio-card"><div class="ratio-card__value">94٪</div><div class="ratio-card__label">نسبة الضحايا الفلسطينيين من الإجمالي</div></div>
-      </div>
-      <section class="trust" aria-label="مصدر البيانات">
-        <div class="trust__item"><div class="trust__value">+50</div><div class="trust__label">مصدراً موثوقاً</div></div>
-        <div class="trust__sep"></div>
-        <div class="trust__item"><div class="trust__value">12</div><div class="trust__label">محافظة</div></div>
-        <div class="trust__sep"></div>
-        <div class="trust__item"><div class="trust__value">102</div><div class="trust__label">شهراً متواصلاً</div></div>
-        <a class="trust__link" href="governorates.html">استعرض المحافظات ↓</a>
+        <!-- طبقة تكبير الصفحة (دقة أصلية · سحب وتقريب) -->
+        <div class="vn-zoom" data-vn-zoom-panel hidden role="dialog" aria-modal="true" aria-label="تكبير الصفحة">
+          <div class="vn-zoom__stage" data-vn-zoom-stage>
+            <img class="vn-zoom__img" data-vn-zoom-img alt="صفحة مكبّرة" draggable="false">
+          </div>
+          <div class="vn-zoom__bar">
+            <button class="vn-zoom__btn" type="button" data-vn-zoom-prev aria-label="الصفحة السابقة">›</button>
+            <button class="vn-zoom__btn" type="button" data-vn-zoom-out aria-label="تصغير">−</button>
+            <span class="vn-zoom__level" data-vn-zoom-level>100%</span>
+            <button class="vn-zoom__btn" type="button" data-vn-zoom-in aria-label="تكبير">+</button>
+            <button class="vn-zoom__btn" type="button" data-vn-zoom-next aria-label="الصفحة التالية">‹</button>
+            <button class="vn-zoom__btn vn-zoom__btn--close" type="button" data-vn-zoom-close
+              aria-label="إغلاق التكبير">✕</button>
+          </div>
+        </div>
       </section>
-    </section>
 
-    <!-- ===================== تابِع التوثيق ===================== -->
-    <section class="section vn-outro rv" data-st>
-      <h2 class="section__title">تابِع التوثيق</h2>
-      <p class="section__sub">من الصورة إلى الرقم — واصل عبر سجلّ مُعطى.</p>
-      <div class="vn-outro__cta">
-        <a class="btn btn--primary" href="timeline.html">الخطّ الزمني الموثّق →</a>
-        <a class="btn btn--soft" href="articles.html">كل التقارير</a>
-        <a class="btn btn--soft" href="daily_mo3ta.html">الرصد منذ 7 أكتوبر</a>
-      </div>
-    </section>
+      <!-- ===================== ٤ · إحصائيات العدد (بعد القراءة) ===================== -->
+      <section class="section band vn-context rv" data-st>
+        <div class="section__head">
+          <h2 class="section__title">إحصائيات العدد</h2>
+          <p class="section__sub">أرقامٌ موثّقة من خلف الصور — تكمِّل ما قرأته في الرواية.</p>
+        </div>
+        <div class="ratio-cards">
+          <div class="ratio-card">
+            <div class="ratio-card__value">10.3×</div>
+            <div class="ratio-card__label">شهيد فلسطيني مقابل كل قتيل إسرائيلي</div>
+          </div>
+          <div class="ratio-card">
+            <div class="ratio-card__value">15.1×</div>
+            <div class="ratio-card__label">جريح فلسطيني مقابل كل جريح إسرائيلي</div>
+          </div>
+          <div class="ratio-card">
+            <div class="ratio-card__value">94٪</div>
+            <div class="ratio-card__label">نسبة الضحايا الفلسطينيين من الإجمالي</div>
+          </div>
+        </div>
+        <section class="trust" aria-label="مصدر البيانات">
+          <div class="trust__item">
+            <div class="trust__value">+50</div>
+            <div class="trust__label">مصدراً موثوقاً</div>
+          </div>
+          <div class="trust__sep"></div>
+          <div class="trust__item">
+            <div class="trust__value">12</div>
+            <div class="trust__label">محافظة</div>
+          </div>
+          <div class="trust__sep"></div>
+          <div class="trust__item">
+            <div class="trust__value">102</div>
+            <div class="trust__label">شهراً متواصلاً</div>
+          </div>
+          <a class="trust__link" href="governorates.html">استعرض المحافظات ↓</a>
+        </section>
+      </section>
 
-  </main>
+      <!-- ===================== ٥ · إصدارات ومحتوى ذو صلة ===================== -->
+      <section class="section vn-related rv" data-st>
+        <div class="section__head">
+          <h2 class="section__title">إصدارات ومحتوى ذو صلة</h2>
+          <p class="section__sub">واصل من الرواية إلى بقية سجلّ مُعطى الموثّق.</p>
+        </div>
+        <div class="vn-related__grid">
+          <a class="vn-related__card" href="timeline.html" data-st>
+            <span class="vn-related__kicker">خطّ زمني</span>
+            <span class="vn-related__title">الخطّ الزمني الموثّق</span>
+            <span class="vn-related__text">رحلة الأحداث الموثّقة يوماً بيوم عبر سجلٍّ متّصل.</span>
+            <span class="vn-related__go">افتح <span aria-hidden="true">‹</span></span>
+          </a>
+          <a class="vn-related__card" href="articles.html" data-st>
+            <span class="vn-related__kicker">تقارير</span>
+            <span class="vn-related__title">الأرشيف التحريري</span>
+            <span class="vn-related__text">تقارير دورية وخاصة ودراسات موثّقة حول الانتهاكات والمقاومة.</span>
+            <span class="vn-related__go">افتح <span aria-hidden="true">‹</span></span>
+          </a>
+          <a class="vn-related__card" href="governorates.html" data-st>
+            <span class="vn-related__kicker">محافظات</span>
+            <span class="vn-related__title">المحافظات الـ12</span>
+            <span class="vn-related__text">ملفٌّ لكل محافظة فلسطينية: الموقع والجغرافيا وكثافة الأحداث.</span>
+            <span class="vn-related__go">افتح <span aria-hidden="true">‹</span></span>
+          </a>
+          <a class="vn-related__card" href="daily_mo3ta.html" data-st>
+            <span class="vn-related__kicker">رصد</span>
+            <span class="vn-related__title">منذ 7 أكتوبر</span>
+            <span class="vn-related__text">الرصد اليومي المتواصل منذ بدء العدوان، رقماً بعد رقم.</span>
+            <span class="vn-related__go">افتح <span aria-hidden="true">‹</span></span>
+          </a>
+        </div>
+      </section>
 
-  <!-- ===================== بانر النشرة البريدية ===================== -->
-  <section class="news-band rv" data-st>
-    <div class="news-band__inner">
-      <div class="news-band__intro">
-        <h2 class="news-band__title">ابقَ على اطّلاع بالتوثيق</h2>
-        <p class="news-band__text">اشترك لتصلك أبرز التقارير الدورية والتحديثات الموثّقة أولاً بأول.</p>
-      </div>
-      <form class="news-band__form" onsubmit="return false">
-        <label class="visually-hidden" for="news-band-email">بريدك الإلكتروني</label>
-        <input class="news-band__input" id="news-band-email" type="email" placeholder="بريدك الإلكتروني" autocomplete="email">
-        <button class="btn btn--primary news-band__btn" type="submit">اشترك الآن</button>
-      </form>
-      <div class="news-band__links">
-        <a class="news-band__chip" href="timeline.html">الخطّ الزمني ↗</a>
-        <a class="news-band__chip" href="articles.html">كل التقارير ↗</a>
-        <a class="news-band__chip" href="daily_mo3ta.html">منذ 7 أكتوبر ↗</a>
-      </div>
-    </div>
-  </section>
+    </main>
 
-  <!-- ===================== التذييل ===================== -->
-  <footer class="site-footer" data-st>
-    <div class="site-footer__top">
-      <div class="footer-brand">
-        <img class="footer-brand__logo" src="assets/img/logo.webp" alt="مُعطى — مركز معلومات فلسطين" width="188" height="54">
-        <p class="footer-brand__text">نوثّق ونحلّل كل ما يتعلّق بالقضية الفلسطينية باحترافية وموضوعية، ونقدّم تقارير دورية حول الواقع الفلسطيني ومواجهة الاحتلال.</p>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col__title">روابط سريعة</div>
-        <nav class="footer-links" aria-label="روابط سريعة">
-          <a href="index.html">الرئيسية</a>
-          <a href="about_us.html">من نحن</a>
-          <a href="articles.html">التقارير</a>
-          <a href="timeline.html">الخطّ الزمني</a>
-          <a href="daily_mo3ta.html">منذ 7 أكتوبر</a>
-        </nav>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col__title">روابط موصى بها</div>
-        <nav class="footer-links" aria-label="روابط موصى بها">
-          <a href="#">القرى الفلسطينية</a>
-          <a href="#">مرصد شيرين</a>
-          <a href="visual_narrative.html">الرواية المصوّرة</a>
-        </nav>
-      </div>
-      <div class="footer-news">
-        <div class="footer-col__title">النشرة البريدية</div>
-        <p class="footer-news__text">اشترك لتصلك أبرز التقارير والتحديثات.</p>
-        <form class="footer-news__form" onsubmit="return false">
-          <input class="footer-news__input" type="email" placeholder="بريدك الإلكتروني" aria-label="بريدك الإلكتروني">
-          <button class="footer-news__btn" type="submit">اشترك</button>
+    <!-- ===================== بانر النشرة البريدية ===================== -->
+    <section class="news-band rv" data-st>
+      <div class="news-band__inner">
+        <div class="news-band__intro">
+          <h2 class="news-band__title">ابقَ على اطّلاع بالتوثيق</h2>
+          <p class="news-band__text">اشترك لتصلك أبرز التقارير الدورية والتحديثات الموثّقة أولاً بأول.</p>
+        </div>
+        <form class="news-band__form" onsubmit="return false">
+          <label class="visually-hidden" for="news-band-email">بريدك الإلكتروني</label>
+          <input class="news-band__input" id="news-band-email" type="email" placeholder="بريدك الإلكتروني"
+            autocomplete="email">
+          <button class="btn btn--primary news-band__btn" type="submit">اشترك الآن</button>
         </form>
+        <div class="news-band__links">
+          <a class="news-band__chip" href="timeline.html">الخطّ الزمني ↗</a>
+          <a class="news-band__chip" href="articles.html">كل التقارير ↗</a>
+          <a class="news-band__chip" href="daily_mo3ta.html">منذ 7 أكتوبر ↗</a>
+        </div>
       </div>
-    </div>
-    <div class="site-footer__bottom">
-      <div class="site-footer__bottom-inner">
-        <span>© 2026 مُعطى — مركز معلومات فلسطين. جميع الحقوق محفوظة.</span>
-        <nav class="site-footer__legal" aria-label="روابط قانونية">
-          <a href="#">سياسة الخصوصية</a>
-          <a href="#">الشروط والأحكام</a>
-          <a href="#">تواصل معنا</a>
-        </nav>
-      </div>
-    </div>
-  </footer>
+    </section>
 
-  <script src="assets/js/main.js" defer></script>
-  <script src="assets/vendor/page-flip/page-flip.browser.js" defer></script>
-  <script src="assets/data/narrative-toc.js" defer></script>
-  <script src="assets/js/narrative.js" defer></script>
-</body>
+    <!-- ===================== التذييل ===================== -->
+    <footer class="site-footer" data-st>
+      <div class="site-footer__top">
+        <div class="footer-brand">
+          <img class="footer-brand__logo" src="assets/img/logo.webp" alt="مُعطى — مركز معلومات فلسطين" width="188"
+            height="54">
+          <p class="footer-brand__text">نوثّق ونحلّل كل ما يتعلّق بالقضية الفلسطينية باحترافية وموضوعية، ونقدّم تقارير
+            دورية حول الواقع الفلسطيني ومواجهة الاحتلال.</p>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col__title">روابط سريعة</div>
+          <nav class="footer-links" aria-label="روابط سريعة">
+            <a href="index.html">الرئيسية</a>
+            <a href="about_us.html">من نحن</a>
+            <a href="articles.html">التقارير</a>
+            <a href="timeline.html">الخطّ الزمني</a>
+            <a href="daily_mo3ta.html">منذ 7 أكتوبر</a>
+          </nav>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col__title">روابط موصى بها</div>
+          <nav class="footer-links" aria-label="روابط موصى بها">
+            <a href="#">القرى الفلسطينية</a>
+            <a href="#">مرصد شيرين</a>
+            <a href="visual_narrative.html">الرواية المصوّرة</a>
+          </nav>
+        </div>
+        <div class="footer-news">
+          <div class="footer-col__title">النشرة البريدية</div>
+          <p class="footer-news__text">اشترك لتصلك أبرز التقارير والتحديثات.</p>
+          <form class="footer-news__form" onsubmit="return false">
+            <input class="footer-news__input" type="email" placeholder="بريدك الإلكتروني" aria-label="بريدك الإلكتروني">
+            <button class="footer-news__btn" type="submit">اشترك</button>
+          </form>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <div class="site-footer__bottom-inner">
+          <span>© 2026 مُعطى — مركز معلومات فلسطين. جميع الحقوق محفوظة.</span>
+          <nav class="site-footer__legal" aria-label="روابط قانونية">
+            <a href="#">سياسة الخصوصية</a>
+            <a href="#">الشروط والأحكام</a>
+            <a href="#">تواصل معنا</a>
+          </nav>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js" defer></script>
+    <script src="assets/vendor/page-flip/page-flip.browser.js" defer></script>
+    <script src="assets/data/narrative-toc.js" defer></script>
+    <script src="assets/js/narrative.js" defer></script>
+  </body>
+
 </html>

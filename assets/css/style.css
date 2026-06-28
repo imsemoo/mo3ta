@@ -1879,6 +1879,7 @@ h4 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
+  margin-bottom: 16px;
 }
 
 .ratio-card {
@@ -6617,6 +6618,78 @@ body {
   color: var(--ink);
 }
 
+/* الهيرو عمودان: المحتوى (يمين/البدء) + لوحة «في هذا العدد» (يسار) — تملأ الفراغ */
+@media (min-width: 880px) {
+  .vn-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.82fr);
+    gap: clamp(30px, 4.5vw, 70px);
+    align-items: center;
+  }
+}
+
+.vn-hero__aside {
+  align-self: center;
+  padding: clamp(18px, 2.2vw, 26px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 879px) {
+  .vn-hero__aside { margin-block-start: clamp(28px, 6vw, 40px); }
+}
+
+.vn-hero__aside-title {
+  margin: 0 0 12px;
+  padding-block-end: 12px;
+  border-block-end: 1px solid var(--border);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--accent);
+}
+
+.vn-hero__toc {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: vn-toc;
+}
+
+.vn-hero__toc-item {
+  counter-increment: vn-toc;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 10px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  border-block-end: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+}
+
+.vn-hero__toc-item:last-child { border-block-end: 0; }
+
+.vn-hero__toc-item::before {
+  content: counter(vn-toc, decimal-leading-zero);
+  flex: none;
+  min-inline-size: 22px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.vn-hero__aside-foot {
+  margin: 14px 0 0;
+  padding-block-start: 12px;
+  border-block-start: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--muted);
+}
+
 /* القارئ — شريط كامل العرض (.band) */
 .vn-reader {
   margin-block-start: clamp(20px, 3vw, 32px);
@@ -6671,8 +6744,287 @@ body {
   color: var(--accent);
 }
 
-/* إطار «مكتب القراءة» — محايد ومقصود في الفاتح والداكن (الـiframe الخارجي لا يتلوّن) */
-/* عارض الكتاب المحلي — «مكتب قراءة» مؤطّر بهوية الموقع */
+/* ============================================================
+   إعادة تصميم «الرواية المصوّرة» حول تجربة القراءة
+   (الهيرو التعريفي · بطاقة معلومات العدد · مساحة القراءة · ذو صلة)
+   ============================================================ */
+
+/* ١ · الهيرو — تعريف بالعدد */
+.vn-hero__blurb {
+  margin: var(--space-3) 0 0;
+  max-inline-size: 62ch;
+  color: var(--muted);
+  font-size: clamp(14px, 1.2vw, 16px);
+  line-height: 1.85;
+}
+
+.vn-hero__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: var(--space-5) 0 0;
+  padding: 0;
+}
+
+.vn-hero__fact {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+}
+
+.vn-hero__fact dt { font-size: 11px; color: var(--muted); }
+.vn-hero__fact dd { margin: 0; font-size: 14px; font-weight: 600; color: var(--ink); }
+
+/* ٢ · بطاقة معلومات العدد */
+.vn-meta-section {
+  max-inline-size: var(--maxw);
+  margin-inline: auto;
+  margin-block-start: clamp(28px, 5vw, 56px);
+}
+
+.vn-meta {
+  display: grid;
+  grid-template-columns: minmax(0, 230px) minmax(0, 1fr);
+  gap: clamp(18px, 3vw, 36px);
+  align-items: start;
+  padding: clamp(18px, 2.6vw, 30px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.vn-meta__cover-wrap {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  background: #fff;
+}
+
+.vn-meta__cover { display: block; inline-size: 100%; block-size: auto; }
+.vn-meta__body { min-inline-size: 0; }
+.vn-meta__eyebrow { margin: 0 0 6px; color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
+.vn-meta__title { margin: 0 0 8px; font-size: clamp(20px, 2.4vw, 28px); font-weight: var(--weight-display, 800); color: var(--ink); line-height: 1.15; }
+.vn-meta__desc { margin: 0 0 var(--space-4); max-inline-size: 60ch; color: var(--muted); font-size: 15px; line-height: 1.7; }
+
+.vn-meta__specs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+  gap: 1px;
+  margin: 0 0 var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--border);
+  overflow: hidden;
+}
+
+.vn-meta__spec { display: flex; flex-direction: column; gap: 2px; padding: 10px 14px; background: var(--surface); }
+.vn-meta__spec dt { font-size: 11.5px; color: var(--muted); }
+.vn-meta__spec dd { margin: 0; font-size: 14px; font-weight: 600; color: var(--ink); }
+
+.vn-meta__tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 var(--space-4); }
+.vn-tag { font-size: 12px; color: var(--muted); border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; background: var(--surface-2); }
+.vn-meta__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* ٣ · مساحة القراءة — شريط الأدوات العلوي */
+.vn-ws-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-block-end: 10px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.vn-ws-group { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.vn-ws-sep { inline-size: 1px; align-self: stretch; min-block-size: 24px; background: var(--border); margin-inline: 2px; }
+@media (max-width: 700px) { .vn-ws-sep { display: none; } }
+
+/* شريط التنقّل السفلي البسيط */
+.vn-book__bar--reading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-block-start: 12px;
+}
+
+.vn-book__edge--prev,
+.vn-book__edge--next { display: inline-flex; align-items: center; gap: 6px; }
+.vn-book__counter-total { color: var(--muted); }
+
+/* ٥ · إصدارات ومحتوى ذو صلة */
+.vn-related__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(12px, 1.6vw, 18px);
+}
+
+.vn-related__card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: clamp(16px, 2vw, 22px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  text-decoration: none;
+  transition: border-color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+}
+
+.vn-related__card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.vn-related__kicker { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: 0.04em; }
+.vn-related__title { font-size: 17px; font-weight: 700; color: var(--ink); }
+.vn-related__text { flex: 1; font-size: 13.5px; color: var(--muted); line-height: 1.7; }
+.vn-related__go { margin-block-start: 4px; font-size: 13px; font-weight: 600; color: var(--accent); }
+
+/* تجاوب: البطاقة تتكدّس على الضيّق */
+@media (max-width: 720px) {
+  .vn-meta { grid-template-columns: 1fr; }
+  .vn-meta__cover-wrap { max-inline-size: 190px; }
+}
+
+/* إشعار خفيف (نسخ/مشاركة/حفظ) */
+.vn-toast {
+  position: fixed;
+  inset-block-end: 22px;
+  inset-inline: 0;
+  margin-inline: auto;
+  inline-size: max-content;
+  max-inline-size: 90vw;
+  z-index: 1300;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bg);
+  font-size: 13px;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity var(--t-med) var(--ease), transform var(--t-med) var(--ease);
+}
+
+.vn-toast.is-show { opacity: 1; transform: translateY(0); }
+
+/* طباعة: نُخفي عناصر الواجهة ونُبقي العارض (التحميل PDF هو الأنسب للعدد كاملاً) */
+@media print {
+  .site-header, .vn-ws-toolbar, .vn-book__bar, .vn-book__nav, .news-band,
+  .site-footer, .vn-related, .skip-link, .vn-hero__actions, .vn-meta__actions { display: none !important; }
+}
+
+/* ===== العدد: ترويسة + قارئ في تجربةٍ واحدة (الكتاب الحيّ محورُ الصفحة + لوحة بيانات) ===== */
+.vn-issue__grid {
+  display: grid;
+  gap: clamp(22px, 3.4vw, 48px);
+  align-items: center;
+  max-inline-size: var(--maxw);
+  margin-inline: auto;
+}
+
+@media (min-width: 920px) {
+  .vn-issue__grid {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.95fr);
+  }
+
+  .vn-issue__viewer { grid-column: 1; }   /* البدء = يمين في RTL (الكتاب أوّلاً) */
+  .vn-issue__panel { grid-column: 2; }    /* النهاية = يسار */
+}
+
+.vn-issue__viewer,
+.vn-issue__panel {
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.vn-issue__eyebrow {
+  margin: 0;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.vn-issue__title {
+  margin: 0;
+  font-size: clamp(30px, 4.6vw, 50px);
+  font-weight: var(--weight-display, 800);
+  line-height: 1.06;
+  color: var(--ink);
+}
+
+.vn-issue__lead {
+  margin: 0;
+  max-inline-size: 46ch;
+  color: var(--muted);
+  font-size: clamp(15px, 1.3vw, 17px);
+  line-height: 1.7;
+}
+
+/* لوحة بيانات الإصدار — شبكة مواصفات بفواصل رفيعة (كالتقارير السنوية) */
+.vn-issue__meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: var(--space-2) 0 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--border);              /* يظهر كخطوطٍ فاصلة عبر الفجوة */
+  overflow: hidden;
+}
+
+.vn-issue__meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px 14px;
+  background: var(--surface);
+}
+
+.vn-issue__meta-item dt {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.vn-issue__meta-item dd {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.vn-issue__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-block-start: var(--space-2);
+}
+
+.vn-issue__source {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* شريط أدوات القراءة أسفل الكتاب */
+.vn-issue__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-block-start: 2px;
+}
+
+/* إطار «مكتب القراءة» — محايد ومقصود في الفاتح والداكن */
 .vn-book {
   position: relative;
   background: var(--surface);
@@ -6705,14 +7057,12 @@ body {
   transition: transform 0.8s cubic-bezier(0.33, 0, 0.2, 1);
 }
 
-/* الغلاف وحده: StPageFlip يضع طيّة الغلاف (صفحة واحدة) في نصفٍ جانبي. نزيح الكتاب أفقياً
-   (إزاحةٌ فقط — لا تبديل عكس) ليتمركز الغلاف؛ ومع الـtransition: عند الفتح تنزلق الإزاحة إلى الصفر
-   أثناء انحناء الصفحة فيبدو الكتاب وكأنه يتوسّع بسلاسة من غلافٍ مفردٍ في النص إلى طيّةٍ كاملة.
-   محصورٌ بالوضع العريض (الموبايل/portrait صفحةٌ واحدة متمركزة أصلاً). النسبة تُضبط لتتمركز تماماً. */
-@media (min-width: 700px) {
-  .vn-book.is-cover .vn-book__stage {
-    transform: translateX(24%) scaleX(-1);
-  }
+/* الغلاف وحده في وضع الطيّتين (landscape): StPageFlip يضعه في نصفٍ جانبي، فنزيح الكتاب أفقياً
+   (إزاحةٌ فقط — لا تبديل عكس) ليتمركز؛ ومع الـtransition تنزلق الإزاحة إلى الصفر أثناء الفتح فيبدو
+   توسّعاً سلساً. **محصورٌ بوضع landscape عبر `:not(.is-portrait)`** (يضبطه JS من StPageFlip): في
+   وضع portrait (موبايل أو عمودٌ ضيّق) الصفحة كاملة العرض متمركزةٌ أصلاً فلا إزاحة — وإلا انزاحت وقُصّت. */
+.vn-book.is-cover:not(.is-portrait) .vn-book__stage {
+  transform: translateX(24%) scaleX(-1);
 }
 
 .vn-book__flip {
@@ -7229,7 +7579,7 @@ body.vn-fs-lock {
   max-block-size: 100%;
   inline-size: auto;
   block-size: auto;
-  transform: translate(var(--zx, 0px), var(--zy, 0px)) scale(var(--zs, 1));
+  transform: translate(var(--zx, 0px), var(--zy, 0px)) scale(var(--zs, 1)) rotate(var(--zr, 0deg));
   transform-origin: center center;
   user-select: none;
   -webkit-user-drag: none;

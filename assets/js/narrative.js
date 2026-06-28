@@ -120,6 +120,13 @@
   function curIndex() { return pf.getCurrentPageIndex ? (pf.getCurrentPageIndex() || 0) : 0; }
   function setCover(on) { book.classList.toggle('is-cover', !!on); }
 
+  // وضع العرض (portrait صفحة واحدة / landscape طيّتان) — يحدّده StPageFlip حسب عرض الحاوية.
+  // نضبط كلاس .is-portrait كي تُطبَّق إزاحةُ تمركز الغلاف في landscape فقط (في portrait الصفحة متمركزة أصلاً).
+  function syncOrientation() {
+    var w = mount.querySelector('.stf__wrapper');
+    book.classList.toggle('is-portrait', !!(w && /(^|\s)--portrait(\s|$)/.test(w.className)));
+  }
+
   // الطيّة الأولى (بعد الغلاف) تشغل الفهرسين 1 و2 ⇒ الرجوع من فهرسٍ ≤ COVER_PREV_MAX يهبط على الغلاف.
   var COVER_PREV_MAX = 2;
 
@@ -252,6 +259,7 @@
   function ready() {
     if (loading) loading.hidden = true;
     book.classList.add('is-ready');
+    syncOrientation();
     loadAround(curIndex());
     if (!started) {
       started = true;
@@ -265,7 +273,8 @@
   }
   pf.on('init', ready);
   pf.on('flip', function () { loadAround(curIndex()); updateBar(); });
-  pf.on('changeOrientation', function () { loadAround(curIndex()); });
+  pf.on('changeOrientation', function () { syncOrientation(); loadAround(curIndex()); });
+  window.addEventListener('resize', syncOrientation, { passive: true });
   // صوت التقليب عند بداية الحركة (changeState='flipping') لا عند نهايتها
   var lastState = null;
   pf.on('changeState', function (e) {
@@ -305,6 +314,48 @@
   $$('[data-vn-prev]').forEach(function (b) { b.addEventListener('click', goPrev); });
   var firstBtn = document.querySelector('[data-vn-first]'); if (firstBtn) firstBtn.addEventListener('click', function () { goTo(0); });
   var lastBtn = document.querySelector('[data-vn-last]'); if (lastBtn) lastBtn.addEventListener('click', function () { goTo(TOTAL - 1); });
+
+  // «ابدأ القراءة»: يُبرز مساحة القراءة ويفتح الكتاب من الغلاف
+  var startBtn = document.querySelector('[data-vn-start]');
+  if (startBtn) startBtn.addEventListener('click', function () {
+    var reader = document.getElementById('vn-reader') || book;
+    reader.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    if (curIndex() === 0) setTimeout(goNext, 360);
+  });
+
+  /* ---------- أدوات: نسخ · مشاركة · حفظ · طباعة ---------- */
+  function toast(msg) {
+    announce(msg);
+    var t = document.querySelector('.vn-toast');
+    if (!t) { t = document.createElement('div'); t.className = 'vn-toast'; document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add('is-show');
+    clearTimeout(t.__h); t.__h = setTimeout(function () { t.classList.remove('is-show'); }, 2200);
+  }
+  function copyText(text, okMsg) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { toast(okMsg); }, function () { toast(text); });
+    } else { toast(text); }
+  }
+  $$('[data-vn-copy]').forEach(function (b) { b.addEventListener('click', function () { copyText(location.href, 'تم نسخ الرابط'); }); });
+  $$('[data-vn-share]').forEach(function (b) { b.addEventListener('click', function () {
+    var data = { title: 'الرواية المصوّرة — مُعطى', text: 'العدد المصوّر من «مُعطى»', url: location.href };
+    if (navigator.share) { navigator.share(data).catch(function () {}); }
+    else { copyText(data.url, 'تم نسخ الرابط للمشاركة'); }
+  }); });
+  var printBtn = document.querySelector('[data-vn-print]');
+  if (printBtn) printBtn.addEventListener('click', function () { window.print(); });
+  var saveBtn = document.querySelector('[data-vn-save]');
+  if (saveBtn) {
+    var LS_SAVE = 'mo3ta:vn:saved';
+    var isSaved = false; try { isSaved = localStorage.getItem(LS_SAVE) === '1'; } catch (e) {}
+    var syncSave = function () { saveBtn.setAttribute('aria-pressed', isSaved ? 'true' : 'false'); saveBtn.textContent = isSaved ? 'محفوظ' : 'حفظ'; };
+    syncSave();
+    saveBtn.addEventListener('click', function () {
+      isSaved = !isSaved;
+      try { localStorage.setItem(LS_SAVE, isSaved ? '1' : '0'); } catch (e) {}
+      syncSave(); toast(isSaved ? 'حُفِظ في قائمتك' : 'أُزيل من قائمتك');
+    });
+  }
 
   // القفز لصفحة: يدعم Enter + يقصّ النطاق + يُغذّي راجعةً عند الخطأ
   function submitJump() {
@@ -485,7 +536,7 @@
     if (!panel || !stage || !img || !openBtn) return;
 
     var MINZ = 1, MAXZ = 4;
-    var zPage = 1, scale = 1, tx = 0, ty = 0;
+    var zPage = 1, scale = 1, tx = 0, ty = 0, rot = 0;
     var pointers = {}, startDist = 0, startScale = 1, panStart = null, lastFocus = null;
 
     function clampPan() {
@@ -500,6 +551,7 @@
       img.style.setProperty('--zs', scale);
       img.style.setProperty('--zx', tx + 'px');
       img.style.setProperty('--zy', ty + 'px');
+      img.style.setProperty('--zr', rot + 'deg');
       if (levelEl) levelEl.textContent = Math.round(scale * 100) + '%';
       if (outBtn) outBtn.disabled = scale <= MINZ + 0.01;
       if (inBtn) inBtn.disabled = scale >= MAXZ - 0.01;
@@ -513,7 +565,7 @@
       zPage = clamp(p, 1, TOTAL);
       img.setAttribute('src', src(zPage));
       img.alt = 'صفحة ' + zPage + ' مكبّرة';
-      scale = 1; tx = 0; ty = 0; apply();
+      scale = 1; tx = 0; ty = 0; rot = 0; apply();
       if (prevBtn) prevBtn.disabled = zPage <= 1;
       if (nextBtn) nextBtn.disabled = zPage >= TOTAL;
     }
@@ -539,6 +591,12 @@
     }
 
     openBtn.addEventListener('click', function () { open(curIndex() + 1); });
+    // تدوير الصفحة: يفتح طبقة التكبير (إن لزم) ويُدوّر 90° في كل نقرة
+    var rotateBtn = document.querySelector('[data-vn-rotate]');
+    if (rotateBtn) rotateBtn.addEventListener('click', function () {
+      if (panel.hidden) open(curIndex() + 1);
+      rot = (rot + 90) % 360; apply();
+    });
     if (closeBtn) closeBtn.addEventListener('click', close);
     if (inBtn) inBtn.addEventListener('click', function () { setScale(scale + 0.5); });
     if (outBtn) outBtn.addEventListener('click', function () { setScale(scale - 0.5); });
