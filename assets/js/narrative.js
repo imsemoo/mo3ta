@@ -429,6 +429,121 @@
     panel.addEventListener('click', function (e) { if (e.target === panel) close(); });
   })();
 
+  /* ---------- تكبير الصفحة (دقة أصلية · سحب وقرص) ---------- */
+  (function () {
+    var panel = document.querySelector('[data-vn-zoom-panel]');
+    var stage = document.querySelector('[data-vn-zoom-stage]');
+    var img = document.querySelector('[data-vn-zoom-img]');
+    var openBtn = document.querySelector('[data-vn-zoom]');
+    var closeBtn = document.querySelector('[data-vn-zoom-close]');
+    var inBtn = document.querySelector('[data-vn-zoom-in]');
+    var outBtn = document.querySelector('[data-vn-zoom-out]');
+    var prevBtn = document.querySelector('[data-vn-zoom-prev]');
+    var nextBtn = document.querySelector('[data-vn-zoom-next]');
+    var levelEl = document.querySelector('[data-vn-zoom-level]');
+    if (!panel || !stage || !img || !openBtn) return;
+
+    var MINZ = 1, MAXZ = 4;
+    var zPage = 1, scale = 1, tx = 0, ty = 0;
+    var pointers = {}, startDist = 0, startScale = 1, panStart = null, lastFocus = null;
+
+    function clampPan() {
+      var visW = img.clientWidth * scale, visH = img.clientHeight * scale;
+      var maxX = Math.max(0, (visW - stage.clientWidth) / 2);
+      var maxY = Math.max(0, (visH - stage.clientHeight) / 2);
+      tx = Math.max(-maxX, Math.min(maxX, tx));
+      ty = Math.max(-maxY, Math.min(maxY, ty));
+    }
+    function apply() {
+      clampPan();
+      img.style.setProperty('--zs', scale);
+      img.style.setProperty('--zx', tx + 'px');
+      img.style.setProperty('--zy', ty + 'px');
+      if (levelEl) levelEl.textContent = Math.round(scale * 100) + '%';
+      if (outBtn) outBtn.disabled = scale <= MINZ + 0.01;
+      if (inBtn) inBtn.disabled = scale >= MAXZ - 0.01;
+    }
+    function setScale(s) {
+      scale = Math.max(MINZ, Math.min(MAXZ, s));
+      if (scale === MINZ) { tx = 0; ty = 0; }
+      apply();
+    }
+    function loadPage(p) {
+      zPage = clamp(p, 1, TOTAL);
+      img.setAttribute('src', src(zPage));
+      img.alt = 'صفحة ' + zPage + ' مكبّرة';
+      scale = 1; tx = 0; ty = 0; apply();
+      if (prevBtn) prevBtn.disabled = zPage <= 1;
+      if (nextBtn) nextBtn.disabled = zPage >= TOTAL;
+    }
+    function open(p) {
+      lastFocus = document.activeElement;
+      panel.hidden = false;
+      loadPage(p);
+      (closeBtn || panel).focus();
+      document.addEventListener('keydown', onKey, true);
+    }
+    function close() {
+      panel.hidden = true;
+      document.removeEventListener('keydown', onKey, true);
+      goTo(zPage - 1);                       // مزامنة الكتاب مع آخر صفحة مكبّرة
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') { e.preventDefault(); close(); }
+      else if (e.key === '+' || e.key === '=') setScale(scale + 0.5);
+      else if (e.key === '-' || e.key === '_') setScale(scale - 0.5);
+      else if (e.key === 'ArrowLeft') loadPage(zPage + 1);   // RTL: يسار = التالي
+      else if (e.key === 'ArrowRight') loadPage(zPage - 1);
+    }
+
+    openBtn.addEventListener('click', function () { open(curIndex() + 1); });
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    if (inBtn) inBtn.addEventListener('click', function () { setScale(scale + 0.5); });
+    if (outBtn) outBtn.addEventListener('click', function () { setScale(scale - 0.5); });
+    if (prevBtn) prevBtn.addEventListener('click', function () { loadPage(zPage - 1); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { loadPage(zPage + 1); });
+    panel.addEventListener('click', function (e) { if (e.target === panel) close(); });
+
+    stage.addEventListener('wheel', function (e) {
+      e.preventDefault();
+      setScale(scale + (e.deltaY < 0 ? 0.3 : -0.3));
+    }, { passive: false });
+
+    function dist() {
+      var ps = Object.keys(pointers).map(function (k) { return pointers[k]; });
+      return Math.hypot(ps[0].x - ps[1].x, ps[0].y - ps[1].y);
+    }
+    stage.addEventListener('pointerdown', function (e) {
+      try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+      pointers[e.pointerId] = { x: e.clientX, y: e.clientY };
+      var n = Object.keys(pointers).length;
+      if (n === 1) { panStart = { x: e.clientX, y: e.clientY, tx: tx, ty: ty }; stage.classList.add('is-panning'); }
+      else if (n === 2) { startDist = dist(); startScale = scale; panStart = null; }
+    });
+    stage.addEventListener('pointermove', function (e) {
+      if (!pointers[e.pointerId]) return;
+      pointers[e.pointerId] = { x: e.clientX, y: e.clientY };
+      var n = Object.keys(pointers).length;
+      if (n >= 2 && startDist) {
+        setScale(startScale * (dist() / startDist));
+      } else if (n === 1 && panStart && scale > 1) {
+        tx = panStart.tx + (e.clientX - panStart.x);
+        ty = panStart.ty + (e.clientY - panStart.y);
+        apply();
+      }
+    });
+    function endPointer(e) {
+      delete pointers[e.pointerId];
+      if (Object.keys(pointers).length === 0) { stage.classList.remove('is-panning'); panStart = null; startDist = 0; }
+    }
+    stage.addEventListener('pointerup', endPointer);
+    stage.addEventListener('pointercancel', endPointer);
+
+    // فتح بالنقر المزدوج على الصفحة
+    mount.addEventListener('dblclick', function () { open(curIndex() + 1); });
+  })();
+
   /* ---------- ملء الشاشة ---------- */
   function fsOn() { return book.classList.contains('is-fullscreen'); }
   function syncFs() {

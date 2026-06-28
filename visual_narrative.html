@@ -67,6 +67,14 @@
         <div class="vn-reader__tools">
           <button class="vn-tool" type="button" data-vn-toc title="فهرس المحتويات" hidden><span aria-hidden="true">☰</span> المحتويات</button>
           <button class="vn-tool" type="button" data-vn-grid title="تصفّح الصفحات بالمصغّرات"><span aria-hidden="true">▦</span> تصفّح</button>
+          <button class="vn-tool" type="button" data-vn-zoom title="تكبير الصفحة (أو نقرة مزدوجة على الصفحة)"><span aria-hidden="true">⊕</span> تكبير</button>
+          <button class="vn-tool" type="button" data-vn-play aria-pressed="false" title="عرض تلقائي"><span aria-hidden="true">▷</span> عرض تلقائي</button>
+          <label class="visually-hidden" for="vn-speed">سرعة العرض التلقائي</label>
+          <select class="vn-tool vn-tool--select" id="vn-speed" data-vn-speed title="سرعة العرض التلقائي">
+            <option value="4000">سريع</option>
+            <option value="7000" selected>متوسّط</option>
+            <option value="11000">بطيء</option>
+          </select>
           <button class="vn-tool" type="button" data-vn-sound aria-pressed="false" title="تشغيل صوت التقليب"><span aria-hidden="true">♪</span> الصوت</button>
           <button class="vn-tool" type="button" data-vn-fs aria-pressed="false"><span aria-hidden="true">⛶</span> ملء الشاشة</button>
         </div>
@@ -118,6 +126,21 @@
             <button class="vn-thumbs__close" type="button" data-vn-toc-close aria-label="إغلاق الفهرس">×</button>
           </div>
           <ul class="vn-toc__list" data-vn-toc-list></ul>
+        </div>
+      </div>
+
+      <!-- طبقة تكبير الصفحة (دقة أصلية · سحب وتقريب) -->
+      <div class="vn-zoom" data-vn-zoom-panel hidden role="dialog" aria-modal="true" aria-label="تكبير الصفحة">
+        <div class="vn-zoom__stage" data-vn-zoom-stage>
+          <img class="vn-zoom__img" data-vn-zoom-img alt="صفحة مكبّرة" draggable="false">
+        </div>
+        <div class="vn-zoom__bar">
+          <button class="vn-zoom__btn" type="button" data-vn-zoom-prev aria-label="الصفحة السابقة">›</button>
+          <button class="vn-zoom__btn" type="button" data-vn-zoom-out aria-label="تصغير">−</button>
+          <span class="vn-zoom__level" data-vn-zoom-level>100%</span>
+          <button class="vn-zoom__btn" type="button" data-vn-zoom-in aria-label="تكبير">+</button>
+          <button class="vn-zoom__btn" type="button" data-vn-zoom-next aria-label="الصفحة التالية">‹</button>
+          <button class="vn-zoom__btn vn-zoom__btn--close" type="button" data-vn-zoom-close aria-label="إغلاق التكبير">✕</button>
         </div>
       </div>
     </section>

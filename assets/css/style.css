@@ -7195,6 +7195,97 @@ body.vn-fs-lock {
   font-variant-numeric: tabular-nums;
 }
 
+/* ===== تكبير الصفحة ===== */
+.vn-zoom {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  background: color-mix(in srgb, var(--ink) 90%, #000);
+}
+
+.vn-zoom[hidden] {
+  display: none;
+}
+
+.vn-zoom__stage {
+  flex: 1;
+  min-block-size: 0;
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  touch-action: none;            /* نتولّى الإيماءات بأنفسنا (قرص/سحب) */
+  cursor: grab;
+}
+
+.vn-zoom__stage.is-panning {
+  cursor: grabbing;
+}
+
+.vn-zoom__img {
+  max-inline-size: 100%;
+  max-block-size: 100%;
+  inline-size: auto;
+  block-size: auto;
+  transform: translate(var(--zx, 0px), var(--zy, 0px)) scale(var(--zs, 1));
+  transform-origin: center center;
+  user-select: none;
+  -webkit-user-drag: none;
+  will-change: transform;
+  transition: transform 0.15s ease;
+}
+
+.vn-zoom__stage.is-panning .vn-zoom__img {
+  transition: none;              /* استجابة فورية أثناء السحب/القرص */
+}
+
+.vn-zoom__bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  background: color-mix(in srgb, var(--ink) 62%, #000);
+}
+
+.vn-zoom__btn {
+  display: grid;
+  place-items: center;
+  min-inline-size: 40px;
+  block-size: 40px;
+  padding: 0 12px;
+  border: 1px solid color-mix(in srgb, #fff 24%, transparent);
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.vn-zoom__btn:hover {
+  background: color-mix(in srgb, #fff 14%, transparent);
+}
+
+.vn-zoom__btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.vn-zoom__btn--close {
+  margin-inline-start: 8px;
+}
+
+.vn-zoom__level {
+  min-inline-size: 54px;
+  text-align: center;
+  color: #fff;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
 /* تابِع التوثيق */
 .vn-outro__cta {
   display: flex;
