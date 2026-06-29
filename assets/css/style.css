@@ -8166,6 +8166,134 @@ body.vn-fs-lock {
   margin-block-start: var(--space-5);
 }
 
+/* تذييل بطاقة المحطّة: محافظة + رابط التقرير + أزرار رابط/مشاركة */
+.tl-card__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-block-start: 14px;
+  padding-block-start: 12px;
+  border-block-start: 1px solid var(--border);
+}
+
+.tl-card__gov {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.tl-card__gov i {
+  color: var(--tone, var(--accent));
+}
+
+.tl-card__link {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.tl-card__link i {
+  font-size: .85em;
+  margin-inline-start: 2px;
+}
+
+.tl-card__link:hover {
+  text-decoration: underline;
+}
+
+.tl-card__actions {
+  display: inline-flex;
+  gap: 6px;
+  margin-inline-start: auto;
+}
+
+.tl-card__act {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 13px;
+  transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+
+.tl-card__act:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.tl-scene__actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-block-start: clamp(16px, 2.5vw, 22px);
+}
+
+.tl-card__act--light {
+  border-color: rgba(255, 255, 255, .25);
+  background: rgba(255, 255, 255, .06);
+  color: rgba(255, 255, 255, .8);
+}
+
+.tl-card__act--light:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, .6);
+}
+
+/* إبراز المحطّة المستهدفة عبر الرابط المباشر */
+.tl-entry.is-target .tl-card,
+.tl-scene.is-target .tl-scene__inner {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: var(--radius-lg);
+  animation: tl-target 2.4s var(--ease);
+}
+
+@keyframes tl-target {
+
+  0%,
+  18% {
+    outline-color: var(--accent);
+  }
+
+  100% {
+    outline-color: transparent;
+  }
+}
+
+/* إشعار النسخ/المشاركة */
+.tl-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translate(-50%, 14px);
+  z-index: 1300;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+
+.tl-toast.is-on {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
 /* استجابة: عمود واحد، العمود الفقري قرب الحافة (اليمنى في RTL) — يبدأ مبكّراً (≤860) كي يأخذ
    التابلت تخطيطاً مريحاً بدل عمودين مزحومين */
 @media (max-width: 860px) {
@@ -8227,4 +8355,158 @@ body.vn-fs-lock {
   .tl-spine__fill {
     transition: none;
   }
+}
+
+/* --------------------------------------------------------------------------
+   30. صفحات أدوات: نموذج التواصل (.cform) + نتائج البحث (.search-*)
+   -------------------------------------------------------------------------- */
+.cform {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cform__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.cform__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cform__label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.cform__input,
+.cform__area {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 14px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--surface-2, var(--surface));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+}
+
+.cform__area {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.7;
+}
+
+.cform__input:focus,
+.cform__area:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--ring-strong, color-mix(in srgb, var(--accent) 22%, transparent));
+}
+
+.cform__actions {
+  margin-block-start: 4px;
+}
+
+@media (max-width: 620px) {
+  .cform__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* بحث الموقع */
+.search-box {
+  margin-block-end: 16px;
+}
+
+.search-box .archive-search {
+  width: 100%;
+  max-width: 600px;
+}
+
+.search-count {
+  font-size: 14px;
+  color: var(--muted);
+  margin-block-end: clamp(16px, 2.5vw, 22px);
+}
+
+.search-count .num {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.search-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 14px;
+}
+
+.search-result {
+  display: block;
+  padding: clamp(14px, 2vw, 18px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-inline-start: 3px solid var(--tone, var(--accent));
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  box-shadow: var(--shadow-xs);
+  transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+
+.search-result:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.search-result__type {
+  display: inline-block;
+  margin-block-end: 8px;
+  padding: 2px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 999px;
+  color: var(--tone, var(--accent));
+  background: color-mix(in srgb, var(--tone, var(--accent)) 12%, var(--surface));
+}
+
+.search-result__title {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.search-result__snippet {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.header-search {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+
+.header-search:hover {
+  color: var(--accent);
+  border-color: var(--accent);
 }

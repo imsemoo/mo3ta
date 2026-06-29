@@ -3,6 +3,8 @@
    timeline.js — خطّ زمني يرسم نفسه مع التمرير: عمود فقري يتعبّأ، محطّات تنزلق
    عند الوصول إليها، ومشهدان مفصليّان كاملا العرض. كل رقم/حدث موثّق من DATA.CAL_EVENTS
    (لا أرقام مُختلقة). يحاكي بنية narrative.js (IntersectionObserver) وحساب تقدّم single.js.
+   إضافات: رابط/مشاركة لكل محطّة (deep-link #st-التاريخ)، شريحة محافظة + رابط التقرير،
+   عدّاد تصاعديّ للمشهد الفاصل، نقل تركيز عند القفز، ونطق السنة النشطة (aria-live).
    ========================================================================== */
 (function () {
   'use strict';
@@ -37,9 +39,16 @@
   };
   function toneVar(tag) { return 'var(--' + (TAG_TONE[tag] || 'accent') + ')'; }
 
+  // وسم الحدث → وجهة «اقرأ المزيد» (روابط حقيقيّة ضمن الموقع — لا روابط ميتة)
+  function destFor(tag) {
+    if (tag === 'رواية مصوّرة') return { href: 'visual_narrative.html', label: 'شاهد الرواية المصوّرة' };
+    return { href: 'single_article.html', label: 'اقرأ التقرير' };
+  }
+
   function parseKey(k) { var p = k.split('-'); return { y: +p[0], m: +p[1], d: +p[2] }; }
   function arDate(o) { return o.d + ' ' + AR_MONTHS[o.m - 1] + ' ' + o.y; }
   function isoDate(o) { return o.y + '-' + String(o.m).padStart(2, '0') + '-' + String(o.d).padStart(2, '0'); }
+  function stationId(o) { return 'st-' + isoDate(o); }
   function imgIndex(url) { for (var i = 0; i < VISUALS.length; i++) if (VISUALS[i].img === url) return i; return -1; }
 
   // النموذج: مفاتيح CAL مفروزة تصاعدياً (الأقدم أولاً — السجلّ يُكتب إلى الأمام)
@@ -48,7 +57,7 @@
     return A.y - B.y || A.m - B.m || A.d - B.d;
   });
 
-  var revealEls = [], dotEls = [], railTargets = [];
+  var revealEls = [], dotEls = [], railTargets = [], liveEl = null, lastYearSaid = null, toastEl = null, toastT = null;
 
   function buildDate(o, cls) {
     var t = h('time', cls, arDate(o));
@@ -56,9 +65,33 @@
     return t;
   }
 
+  /* ----- مشاركة/نسخ رابط المحطّة ----- */
+  function stationUrl(id) { return location.origin + location.pathname + '#' + id; }
+  function toast(msg) {
+    if (!toastEl) {
+      toastEl = h('div', 'tl-toast'); toastEl.setAttribute('role', 'status'); toastEl.setAttribute('aria-live', 'polite');
+      document.body.appendChild(toastEl);
+    }
+    toastEl.textContent = msg; toastEl.classList.add('is-on');
+    clearTimeout(toastT); toastT = setTimeout(function () { toastEl.classList.remove('is-on'); }, 2400);
+  }
+  function copyLink(id) {
+    var url = stationUrl(id);
+    try { history.replaceState(null, '', '#' + id); } catch (e) {}
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(function () { toast('نُسخ رابط المحطّة'); }, function () { toast(url); });
+    } else { toast(url); }
+  }
+  function shareStation(id, title) {
+    var url = stationUrl(id);
+    if (navigator.share) { navigator.share({ title: 'مُعطى — ' + (title || 'محطّة موثّقة'), url: url }).catch(function () {}); }
+    else { copyLink(id); }
+  }
+
   function buildEntry(key, side) {
     var o = parseKey(key), evs = CAL[key] || [];
     var li = h('li', 'tl-entry');
+    li.id = stationId(o);
     li.setAttribute('data-side', side);
     li.appendChild(h('span', 'tl-entry__node'));
     var card = h('article', 'tl-card');
@@ -82,6 +115,36 @@
       }
       card.appendChild(item);
     });
+
+    // تذييل البطاقة: محافظة (إن وُجدت) + رابط التقرير + أزرار رابط/مشاركة
+    var foot = h('div', 'tl-card__foot');
+    var gov = null; for (var gi = 0; gi < evs.length; gi++) { if (evs[gi].gov) { gov = evs[gi].gov; break; } }
+    if (gov) {
+      var gchip = h('span', 'tl-card__gov');
+      gchip.innerHTML = '<i class="fa-solid fa-location-dot" aria-hidden="true"></i> ';
+      gchip.appendChild(document.createTextNode(gov));
+      foot.appendChild(gchip);
+    }
+    var dest = destFor(evs[0] && evs[0].tag);
+    var link = h('a', 'tl-card__link'); link.href = dest.href;
+    link.appendChild(document.createTextNode(dest.label + ' '));
+    var li2 = h('i', 'fa-solid fa-arrow-left'); li2.setAttribute('aria-hidden', 'true'); link.appendChild(li2);
+    foot.appendChild(link);
+
+    var acts = h('div', 'tl-card__actions');
+    var cBtn = h('button', 'tl-card__act'); cBtn.type = 'button'; cBtn.setAttribute('aria-label', 'نسخ رابط هذه المحطّة');
+    cBtn.innerHTML = '<i class="fa-solid fa-link" aria-hidden="true"></i>';
+    cBtn.addEventListener('click', (function (id) { return function () { copyLink(id); }; })(li.id));
+    acts.appendChild(cBtn);
+    if (navigator.share) {
+      var sBtn = h('button', 'tl-card__act'); sBtn.type = 'button'; sBtn.setAttribute('aria-label', 'مشاركة هذه المحطّة');
+      sBtn.innerHTML = '<i class="fa-solid fa-share-nodes" aria-hidden="true"></i>';
+      sBtn.addEventListener('click', (function (id, t) { return function () { shareStation(id, t); }; })(li.id, evs[0] && evs[0].t));
+      acts.appendChild(sBtn);
+    }
+    foot.appendChild(acts);
+    card.appendChild(foot);
+
     li.appendChild(card);
     return li;
   }
@@ -89,6 +152,7 @@
   function buildScene(key) {
     var o = parseKey(key), sc = SCENES[key];
     var li = h('li', 'tl-scene band band--dark');
+    li.id = stationId(o);
     li.setAttribute('data-tl-scene', '');
     var inner = h('div', 'tl-scene__inner');
     inner.appendChild(h('p', 'tl-scene__eyebrow', sc.eyebrow));
@@ -96,11 +160,29 @@
     inner.appendChild(h('h2', 'tl-scene__title', sc.title));
     if (sc.metric) {
       var m = h('p', 'tl-scene__metric');
-      m.appendChild(h('span', 'num', sc.metric));
+      var mv = h('span', 'num');
+      mv.setAttribute('data-count-to', sc.metric.replace(/[^\d.]/g, ''));
+      mv.textContent = reduceMotion ? sc.metric : '0';
+      m.appendChild(mv);
       m.appendChild(document.createTextNode(' ' + sc.metricLabel));
       inner.appendChild(m);
     }
     if (sc.note) inner.appendChild(h('p', 'tl-scene__note', sc.note));
+
+    // مشاركة المشهد الفاصل أيضاً
+    var acts = h('div', 'tl-scene__actions');
+    var cBtn = h('button', 'tl-card__act tl-card__act--light'); cBtn.type = 'button'; cBtn.setAttribute('aria-label', 'نسخ رابط هذه المحطّة');
+    cBtn.innerHTML = '<i class="fa-solid fa-link" aria-hidden="true"></i>';
+    cBtn.addEventListener('click', (function (id) { return function () { copyLink(id); }; })(li.id));
+    acts.appendChild(cBtn);
+    if (navigator.share) {
+      var sBtn = h('button', 'tl-card__act tl-card__act--light'); sBtn.type = 'button'; sBtn.setAttribute('aria-label', 'مشاركة هذه المحطّة');
+      sBtn.innerHTML = '<i class="fa-solid fa-share-nodes" aria-hidden="true"></i>';
+      sBtn.addEventListener('click', (function (id, t) { return function () { shareStation(id, t); }; })(li.id, sc.title));
+      acts.appendChild(sBtn);
+    }
+    inner.appendChild(acts);
+
     li.appendChild(inner);
     return li;
   }
@@ -138,23 +220,47 @@
       dot.appendChild(h('span', 'tl-rail__year', String(t.year)));
       dot.addEventListener('click', function () {
         t.el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+        t.el.setAttribute('tabindex', '-1');
+        try { t.el.focus({ preventScroll: true }); } catch (e) {}
       });
       dotEls.push(dot); rail.appendChild(dot);
     });
   }
 
+  // عدّاد تصاعديّ لرقم المشهد عند ظهوره
+  function countOne(el) {
+    var to = parseFloat(el.getAttribute('data-count-to')); if (isNaN(to)) return;
+    if (el.getAttribute('data-counted')) return; el.setAttribute('data-counted', '1');
+    if (reduceMotion) { el.textContent = fmt(to); return; }
+    var dur = 1100, start = null;
+    function tick(now) {
+      if (start === null) start = now;
+      var p = Math.min(1, (now - start) / dur); p = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(to * p);
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
   // كشف العناصر مع التمرير (يحاكي reveal في main.js)
   function wireReveal() {
-    if (!hasIO || reduceMotion) { revealEls.forEach(function (e) { e.classList.add('is-visible'); }); return; }
+    if (!hasIO || reduceMotion) {
+      revealEls.forEach(function (e) { e.classList.add('is-visible'); var n = e.querySelector('[data-count-to]'); if (n) countOne(n); });
+      return;
+    }
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+        if (e.isIntersecting) {
+          e.target.classList.add('is-visible');
+          var n = e.target.querySelector('[data-count-to]'); if (n) countOne(n);
+          io.unobserve(e.target);
+        }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     revealEls.forEach(function (e) { io.observe(e); });
   }
 
-  // إبراز العنصر المتوسّط + مزامنة نقاط السنوات (يحاكي setActiveStep في narrative.js)
+  // إبراز العنصر المتوسّط + مزامنة نقاط السنوات + نطق السنة (يحاكي setActiveStep في narrative.js)
   function wireActive() {
     if (!hasIO || reduceMotion || !revealEls.length) return;
     var io = new IntersectionObserver(function (entries) {
@@ -162,6 +268,7 @@
         if (!e.isIntersecting) return;
         revealEls.forEach(function (el) { el.classList.toggle('is-active', el === e.target); });
         var activeYear = nearestYear(e.target);
+        if (activeYear && activeYear !== lastYearSaid && liveEl) { liveEl.textContent = 'السنة ' + activeYear; lastYearSaid = activeYear; }
         dotEls.forEach(function (d, i) {
           var on = railTargets[i] && railTargets[i].year === activeYear;
           d.classList.toggle('is-on', on);
@@ -200,13 +307,31 @@
     update();
   }
 
+  // فتح رابطٍ مباشر لمحطّة (#st-التاريخ): تمرير + إبراز + تركيز
+  function gotoHash() {
+    var id = (location.hash || '').replace('#', '');
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (!el || !el.classList || el.className.indexOf('tl-') < 0) return;
+    el.classList.add('is-visible', 'is-target');
+    var n = el.querySelector('[data-count-to]'); if (n) countOne(n);
+    el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+    el.setAttribute('tabindex', '-1');
+    setTimeout(function () { try { el.focus({ preventScroll: true }); } catch (e) {} }, reduceMotion ? 0 : 420);
+    setTimeout(function () { el.classList.remove('is-target'); }, 2600);
+  }
+
   function init() {
     if (!slot('track')) return;
+    liveEl = h('div', 'visually-hidden'); liveEl.setAttribute('aria-live', 'polite');
+    document.body.appendChild(liveEl);
     renderTrack();
     renderRail();
     wireReveal();
     wireActive();
     wireSpine();
+    if (location.hash) setTimeout(gotoHash, 60);
+    window.addEventListener('hashchange', gotoHash);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
