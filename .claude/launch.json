@@ -4,7 +4,7 @@
     {
       "name": "mo3ta",
       "runtimeExecutable": "C:\\Users\\Msi\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
-      "runtimeArgs": ["-m", "http.server", "5599"],
+      "runtimeArgs": ["C:\\Users\\Msi\\AppData\\Local\\Temp\\claude\\D--MY-work-TakTek-2026-mo3ta\\c0b0ce4a-86a4-4eef-bc0a-c73cd9bea172\\scratchpad\\nocache5599.py"],
       "port": 5599
     }
   ]

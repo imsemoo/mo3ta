@@ -79,66 +79,145 @@
       <span class="breadcrumb__current" data-render="crumb">نابلس</span>
     </nav>
 
-    <!-- بطاقة المحافظة (الهيرو) -->
+    <!-- 1) البطل السرديّ -->
     <section class="gov-hero rv" data-st>
-      <p class="gov-hero__eyebrow"><span class="fa-solid fa-location-dot" aria-hidden="true"></span> محافظة فلسطينية</p>
-      <h1 class="gov-hero__title" data-render="hero-name">نابلس</h1>
-      <div class="gov-hero__meta">
-        <span class="gov-hero__chip" data-render="hero-region">الضفة الغربية</span>
-        <span class="gov-hero__chip" data-render="hero-rank">المرتبة #1 وطنياً حسب كثافة الأحداث</span>
-        <span class="gov-hero__chip" data-render="hero-coords">32.221°N، 35.261°E</span>
+      <div class="gov-hero__layout">
+        <div class="gov-hero__content">
+          <p class="gov-hero__eyebrow"><span class="fa-solid fa-location-dot" aria-hidden="true"></span> <span data-render="hero-eyebrow">محافظة فلسطينية</span></p>
+          <h1 class="gov-hero__title" data-render="hero-name">نابلس</h1>
+          <div class="gov-hero__meta">
+            <span class="gov-hero__chip" data-render="hero-region">الضفة الغربية</span>
+            <span class="gov-hero__chip" data-render="hero-rank">المرتبة #1 من 12 محافظة</span>
+          </div>
+          <p class="gov-hero__desc" data-render="hero-desc"></p>
+          <div class="gov-hero__headline">
+            <div class="gov-hero__total">
+              <span class="gov-hero__total-value num" data-render="hero-total">0</span>
+              <span class="gov-hero__total-label">إجمالي الأحداث المرصودة</span>
+            </div>
+            <span class="rbadge rbadge--accent gov-hero__badge">حصيلة تراكمية مرصودة</span>
+          </div>
+          <p class="gov-hero__updated" data-render="hero-updated"></p>
+        </div>
+        <div class="gov-hero__visual" data-render="hero-silhouette"></div>
       </div>
-      <div class="gov-hero__kpis" data-render="hero-kpis"></div>
     </section>
 
-    <!-- مؤشّرات تمثيليّة -->
-    <section class="section rv">
-      <h2 class="section__title">مؤشّرات تمثيليّة</h2>
-      <p class="section__sub">أرقامٌ مشتقّة لأغراض العرض — لا تمثّل إحصاءات مؤكّدة لكل محافظة على حدة.</p>
-      <div class="counters" data-render="statband"></div>
-      <p class="gov-note" data-render="statband-note"></p>
+    <!-- 2) أهم المؤشرات (شبكة هرميّة) -->
+    <section class="section section--lead rv">
+      <h2 class="section__title">أهم المؤشرات</h2>
+      <p class="section__sub">الرقم الموثّق الوحيد هو إجمالي الأحداث المرصودة؛ المرتبة والنسبة محسوبتان، والفئات تقديريّة مشتقّة.</p>
+      <div class="gov-metrics" data-render="gov-metrics"></div>
     </section>
 
-    <!-- خريطة المحافظة -->
-    <section class="section rv">
-      <h2 class="section__title">خريطة المحافظة</h2>
-      <p class="section__sub" data-render="map-sub">حدود محافظة نابلس وموقعها ضمن فلسطين · كثافة التلوين تعكس حجم الأحداث الموثّقة.</p>
+    <!-- 3) الموقع والتكوين (شريط كامل العرض) -->
+    <section class="section band band--surface gov-locate rv" aria-labelledby="loc-h">
+      <h2 class="section__title" id="loc-h">الموقع والتكوين</h2>
+      <p class="section__sub" data-render="map-sub">حدود المحافظة وموقعها ضمن فلسطين.</p>
       <div class="map-layout">
         <div class="map-panel" data-st>
-          <div class="map-leaflet" data-map role="application" aria-label="خريطة محافظة نابلس ضمن خريطة فلسطين التفاعلية — استخدم القائمة الجانبية كبديل نصّي"></div>
+          <div class="map-leaflet" data-map role="application" aria-label="خريطة المحافظة ضمن فلسطين التفاعلية — الحقائق المجاورة بديلٌ نصّي"></div>
         </div>
         <div class="map-side">
-          <p class="map-side__title">محافظات أخرى</p>
-          <div class="rank-list" data-render="other-govs"></div>
+          <div class="panel gov-locate__panel" data-st>
+            <p class="panel__title">أبرز المدن والمخيّمات</p>
+            <div class="gov-cities" data-render="gov-cities"></div>
+            <p class="gov-note">الأسماء للتعريف فقط — لا تُنسب إليها أعداد أحداث أو سكّان.</p>
+          </div>
+          <div class="panel gov-locate__panel" data-st>
+            <p class="panel__title">الجغرافيا والسكّان</p>
+            <div class="gov-facts" data-render="facts"></div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- الجغرافيا والسكّان -->
+    <!-- 4) التحليلات -->
     <section class="section rv">
-      <div class="panel" data-st>
-        <p class="panel__title">الجغرافيا والسكّان</p>
-        <p class="panel__sub">بيانات تعريفية عامة</p>
-        <div class="gov-facts" data-render="facts"></div>
+      <h2 class="section__title">التحليلات</h2>
+      <p class="section__sub">قصّةٌ من العام إلى الخاص: توزّع الفئات، ثم تفصيلاتها، ثم موقع المحافظة رقميّاً.</p>
+      <div class="gov-grid">
+        <div class="panel" data-st>
+          <p class="panel__title">توزّع الفئات <span class="gov-note">(تمثيلي)</span></p>
+          <div data-render="donut"></div>
+        </div>
+        <div class="panel" data-st>
+          <p class="panel__title"><span class="rbadge rbadge--resistance">مقاومة نوعية</span> <span class="gov-note">(تقديري)</span></p>
+          <div class="bd-tiles" data-render="bd-qualitative"></div>
+          <p class="panel__title gov-panel__sep"><span class="rbadge rbadge--accent">مقاومة شعبية</span></p>
+          <div data-render="bd-popular"></div>
+        </div>
       </div>
+      <div class="panel gov-panel__below" data-st>
+        <p class="panel__title"><span class="rbadge rbadge--violations">انتهاكات الاحتلال</span> <span class="gov-note">(تقديري)</span></p>
+        <div data-render="bd-violations"></div>
+      </div>
+      <div class="panel gov-panel__below" data-st>
+        <p class="panel__title">مقارنة المقياس بأرقام الأحداث المرصودة <span class="gov-note">(مرصود · ترتيب نسبيّ)</span></p>
+        <div data-render="gov-compare"></div>
+      </div>
+      <p class="gov-note">الدونات والتفصيلات أرقامٌ تمثيليّة/تقديريّة مشتقّة؛ كتلة المقارنة وحدها تستند لأعداد الأحداث المرصودة الحقيقيّة.</p>
     </section>
 
-    <!-- أبرز الأحداث الموثّقة -->
-    <section class="section rv">
+    <!-- 5) أنماط الوقائع (معاينة + مستكشف كامل مطويّ) — شريط أبيض لإيقاع الخلفيّة -->
+    <section class="section band band--surface rv">
       <div class="section__head">
         <div>
-          <h2 class="section__title">نماذج من الوقائع الميدانية</h2>
-          <p class="section__sub" data-render="feed-sub">أمثلة توضيحية تعكس أنماط الوقائع الميدانية في محافظة نابلس</p>
+          <h2 class="section__title">أنماط الوقائع الميدانية</h2>
+          <p class="section__sub">أمثلةٌ توضيحيّة تعكس أنماط الوقائع — لا تمثّل بلاغات موثّقة من جهات بعينها، والتواريخ توضيحيّة.</p>
         </div>
       </div>
-      <div class="gov-feed" data-render="feed"></div>
-      <p class="gov-note">هذه نماذج توضيحية لأغراض العرض ولا تمثّل بلاغات موثّقة من جهات بعينها.</p>
+      <div data-render="latest-preview"></div>
+      <div class="gov-latest__more">
+        <button class="btn btn--soft" type="button" data-explorer-toggle aria-expanded="false" aria-controls="gov-explorer">
+          <span data-toggle-label>عرض جميع الأحداث</span> <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="gov-explorer-wrap" id="gov-explorer" data-explorer-wrap hidden>
+        <div class="explorer" data-st>
+          <div class="explorer__head">
+            <div class="explorer__heading">
+              <h3 class="explorer__title">مستكشف أحداث المحافظة</h3>
+              <span class="explorer__count" data-render="exp-count" role="status" aria-live="polite"></span>
+            </div>
+            <div class="explorer__tools">
+              <span class="archive-search">
+                <span class="archive-search__icon fa-solid fa-magnifying-glass" aria-hidden="true"></span>
+                <input class="archive-search__input" type="search" data-search placeholder="ابحث في الأحداث…" aria-label="بحث في أحداث المحافظة">
+              </span>
+              <div class="chip-row chip-row--inline" role="group" aria-label="نوع الحدث" data-render="exp-typefilters"></div>
+              <div class="seg seg--soft" role="group" aria-label="نمط العرض">
+                <button class="seg__btn is-active" type="button" data-view="table" aria-pressed="true">جدول</button>
+                <button class="seg__btn" type="button" data-view="cards" aria-pressed="false">بطاقات</button>
+              </div>
+              <button class="btn btn--soft" type="button" data-export aria-label="تصدير CSV"><i class="fa-solid fa-download" aria-hidden="true"></i> CSV</button>
+            </div>
+          </div>
+          <div data-render="explorer"></div>
+          <div class="explorer__more"><button class="btn btn--soft" type="button" data-loadmore>تحميل المزيد <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button></div>
+        </div>
+      </div>
     </section>
 
-    <!-- محافظات أخرى -->
+    <!-- 6) التطوّر الزمني (سياق وطنيّ) -->
     <section class="section rv">
-      <h2 class="section__title">محافظات أخرى</h2>
-      <div class="gov-related" data-render="related"></div>
+      <h2 class="section__title">التطوّر الزمني</h2>
+      <p class="section__sub">سياقٌ وطنيّ موثّق من سجلّ مُعطى — ليست سلسلة زمنيّة خاصّة بهذه المحافظة.</p>
+      <div data-render="gov-timeline"></div>
+    </section>
+
+    <!-- 7) المقارنة (شريط كامل العرض) -->
+    <section class="section band band--tint rv" aria-labelledby="cmp-h">
+      <h2 class="section__title" id="cmp-h">المقارنة بالمحافظات</h2>
+      <p class="section__sub">ترتيب المحافظات بأعداد الأحداث المرصودة — مرّر أفقيّاً، ومحافظتك مميّزة بإطار.</p>
+      <div class="gov-carousel" data-render="gov-carousel"></div>
+    </section>
+
+    <!-- 8) في مثل هذا اليوم -->
+    <section class="section rv">
+      <h2 class="section__title">في مثل هذا اليوم</h2>
+      <p class="section__sub">أحداثٌ موثّقة وقعت في مثل تاريخ اليوم من أعوام سابقة، من سجلّ مُعطى الوطني.</p>
+      <div class="gov-feed" data-render="today"></div>
     </section>
 
   </main>

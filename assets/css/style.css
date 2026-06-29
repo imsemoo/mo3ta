@@ -1585,7 +1585,7 @@ h4 {
 .bar-list {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: var(--space-4);
 }
 
 .bar-row {
@@ -1597,7 +1597,7 @@ h4 {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 7px;
+  margin-bottom: var(--space-1);
 }
 
 .bar-row__name {
@@ -1977,8 +1977,8 @@ h4 {
 .legend {
   display: flex;
   flex-direction: column;
-  gap: 11px;
-  margin-top: 22px;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
 }
 
 .legend__item {
@@ -4836,7 +4836,7 @@ body.lb-open {
 .counter__label {
   font-size: 13px;
   color: var(--muted);
-  margin-top: 8px;
+  margin-top: var(--space-2);
 }
 
 .explorer {
@@ -5062,8 +5062,8 @@ body.lb-open {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
 }
 
 .dcard__date {
@@ -5082,7 +5082,7 @@ body.lb-open {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: var(--space-2);
   flex-wrap: wrap;
 }
 
@@ -5113,14 +5113,14 @@ body.lb-open {
   font-size: 24px;
   font-weight: 800;
   color: var(--ink);
-  margin-top: 6px;
+  margin-top: var(--space-1);
   letter-spacing: -.02em;
 }
 
 .bd-tile__label {
   font-size: 12.5px;
   color: var(--muted);
-  margin-top: 3px;
+  margin-top: var(--space-1);
 }
 
 .bd-tile__track {
@@ -5153,7 +5153,7 @@ body.lb-open {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 7px;
+  margin-bottom: var(--space-1);
 }
 
 .bd-row__name {
@@ -5363,7 +5363,7 @@ body.lb-open {
    -------------------------------------------------------------------------- */
 .gov-region {
   display: block;
-  margin-block: clamp(40px, 6vw, 72px) 0;
+  margin-block: clamp(40px, 6vw, 72px) ;
 }
 
 .gov-region__head {
@@ -5518,10 +5518,11 @@ body.lb-open {
 
 .gov-hero__title {
   margin: 0;
-  font-size: clamp(28px, 5vw, 44px);
-  font-weight: 700;
+  font-size: clamp(34px, 5.8vw, 54px);
+  font-weight: 800;
   color: var(--ink);
-  line-height: 1.15;
+  line-height: 1.1;
+  letter-spacing: -.02em;
 }
 
 .gov-hero__meta {
@@ -8908,4 +8909,426 @@ body.vn-fs-lock {
 .control-sort__dir:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   33. لوحة المحافظة: مفتاح الدونات + شريط الفترات + أزرار معطّلة
+   -------------------------------------------------------------------------- */
+.gov-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 16px;
+  margin-block-start: 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.gov-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gov-legend__swatch {
+  inline-size: 11px;
+  block-size: 11px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.gov-period {
+  position: static;
+  margin-bottom: clamp(20px, 3vw, 28px);
+}
+
+.seg__btn.is-disabled,
+.seg__btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   34. فهرس المحافظات: مؤشّرات مصغّرة في البطاقة + ألوان مناطق + شريط فلاتر
+   -------------------------------------------------------------------------- */
+.govx-card--jeru::before {
+  background: var(--olive);
+}
+
+.govx-card__ministats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-block-start: 2px;
+}
+
+.govx-card__ministat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 7px 9px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+.govx-card__ministat-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--tone, var(--ink));
+  line-height: 1.1;
+}
+
+.govx-card__ministat-label {
+  font-size: 10.5px;
+  color: var(--muted);
+}
+
+.gov-list-controls {
+  position: static;
+  margin-bottom: clamp(20px, 3vw, 28px);
+}
+
+/* --------------------------------------------------------------------------
+   35. الملف المعلوماتي للمحافظة — بطل سرديّ + مؤشرات هرميّة + خطّ زمني + كاروسيل
+   -------------------------------------------------------------------------- */
+.gov-hero__layout {
+  display: grid;
+  grid-template-columns: 1.35fr .65fr;
+  gap: clamp(20px, 4vw, 48px);
+  align-items: center;
+}
+
+.gov-hero__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.gov-hero__desc {
+  color: var(--muted);
+  font-size: clamp(14px, 1.6vw, 16px);
+  line-height: 1.8;
+  max-width: 52ch;
+  margin: 0;
+}
+
+.gov-hero__headline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-block-start: var(--space-2);
+}
+
+.gov-hero__total {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.gov-hero__total-value {
+  font-size: clamp(38px, 6.5vw, 62px);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.gov-hero__total-label {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.gov-hero__updated {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.gov-hero__visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gov-silhouette__svg {
+  width: 100%;
+  max-width: 220px;
+  max-height: 280px;
+  height: auto;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, .08));
+}
+
+.gov-metrics {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-areas:
+    "lead lead lead lead lead lead"
+    "rank rank rank share share share"
+    "c1 c1 c2 c2 c3 c3";
+  gap: var(--space-4);
+}
+
+.counter--lead {
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--border));
+  box-shadow: var(--shadow-sm);
+}
+
+.counter--lead .counter__value {
+  font-size: clamp(34px, 6vw, 54px);
+}
+
+.counter--sec .counter__value {
+  font-size: clamp(22px, 3.4vw, 32px);
+}
+
+.counter--cat {
+  background: var(--surface-2);
+}
+
+.counter--cat .counter__value {
+  font-size: clamp(18px, 2.6vw, 26px);
+  color: var(--tone, var(--ink));
+}
+
+.gov-metrics .rbadge {
+  margin-block-start: var(--space-2);
+}
+
+@media (max-width: 640px) {
+  .gov-metrics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-areas:
+      "lead lead lead"
+      "rank rank rank"
+      "share share share"
+      "c1 c2 c3";
+  }
+}
+
+@media (max-width: 780px) {
+  .gov-hero__layout {
+    grid-template-columns: 1fr;
+  }
+  .gov-silhouette__svg {
+    max-height: 240px;
+  }
+}
+
+.gov-locate .map-side {
+  gap: var(--space-5);
+}
+
+.gov-locate__panel {
+  margin: 0;
+}
+
+.gov-cities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-block: var(--space-1) var(--space-3);
+}
+
+.gov-cities__chip {
+  font-size: 12.5px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--ink);
+}
+
+.gov-panel__sep {
+  margin-block-start: var(--space-5);
+}
+
+.gov-panel__below {
+  margin-block-start: var(--space-5);
+}
+
+.bd-row__name.is-current {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.gov-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  padding-inline-start: 22px;
+}
+
+.gov-timeline::before {
+  content: "";
+  position: absolute;
+  inset-block: 6px;
+  inset-inline-start: 5px;
+  width: 2px;
+  background: var(--border);
+}
+
+.gov-timeline__item {
+  position: relative;
+  padding-block: 0 22px;
+}
+
+.gov-timeline__item::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: -22px;
+  inset-block-start: 5px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--tone, var(--accent));
+  box-shadow: 0 0 0 3px var(--bg);
+}
+
+.gov-timeline__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-block-end: 4px;
+}
+
+.gov-timeline__date {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.gov-timeline__text {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+.gov-carousel {
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  scroll-snap-type: inline mandatory;
+  scroll-padding-inline: var(--space-4);
+  padding-block-end: var(--space-3);
+  -webkit-overflow-scrolling: touch;
+}
+
+.gov-carousel .govx-card {
+  flex: 0 0 clamp(220px, 70vw, 262px);
+  scroll-snap-align: start;
+}
+
+.gov-carousel .govx-card.is-current {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.gov-latest__more {
+  display: flex;
+  justify-content: center;
+  margin-block-start: var(--space-5);
+}
+
+.gov-explorer-wrap {
+  margin-block-start: var(--space-5);
+}
+
+/* --------------------------------------------------------------------------
+   35ب. تكثيف المساحات الفارغة — إطار السيلويت + مؤشّر بطل أفقيّ + خطّ زمنيّ عمودان
+   -------------------------------------------------------------------------- */
+.gov-hero__visual {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: clamp(16px, 2.4vw, 28px);
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gov-silhouette__svg {
+  max-width: 320px;
+  max-height: 340px;
+}
+
+.gov-hero__visual-cap {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.counter--lead {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 3vw, 36px);
+  text-align: start;
+  flex-wrap: wrap;
+}
+
+.counter--lead .counter__value {
+  font-size: clamp(40px, 7vw, 64px);
+  line-height: 1;
+  flex: none;
+}
+
+.counter--lead__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  flex: 1;
+  min-width: 240px;
+}
+
+.counter--lead__note {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 54ch;
+}
+
+.gov-timeline {
+  column-count: 2;
+  column-gap: clamp(32px, 5vw, 56px);
+  padding-inline-start: 0;
+}
+
+.gov-timeline::before {
+  display: none;
+}
+
+.gov-timeline__item {
+  break-inside: avoid;
+  border-inline-start: 2px solid var(--border);
+  padding-inline-start: 16px;
+  padding-block: var(--space-1) var(--space-5);
+}
+
+.gov-timeline__item::before {
+  inset-inline-start: -7px;
+  inset-block-start: 5px;
+}
+
+@media (max-width: 720px) {
+  .gov-timeline {
+    column-count: 1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   35ج. تلميع نهائيّ — الخريطة بطل قسمها (ديسكتوب فقط؛ يُبقي انهيار 980px)
+   -------------------------------------------------------------------------- */
+@media (min-width: 981px) {
+  .gov-locate .map-layout {
+    grid-template-columns: 1.35fr .65fr;
+  }
+  .gov-locate .map-panel {
+    height: clamp(460px, 50vw, 580px);
+  }
 }

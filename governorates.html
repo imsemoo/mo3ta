@@ -25,6 +25,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -85,6 +86,45 @@
     </header>
 
     <section class="trust rv" data-render="summary" aria-label="ملخّص عام"></section>
+
+    <!-- خريطة التوزّع -->
+    <section class="section section--map rv">
+      <h2 class="section__title">خريطة توزّع الأحداث</h2>
+      <p class="section__sub">كثافة التلوين تعكس حجم الأحداث الموثّقة في كل محافظة · مرّر فوق محافظة لعدد أحداثها، وانقرها للتقريب، واختر بطاقتها أدناه لملفّها الكامل.</p>
+      <div class="map-panel" data-st>
+        <div class="map-leaflet" data-map role="application" aria-label="خريطة فلسطين التفاعلية موزّعةً على المحافظات حسب كثافة الأحداث الموثّقة — البطاقات أدناه بديلٌ نصّي كامل"></div>
+      </div>
+    </section>
+
+    <!-- شريط الفلاتر -->
+    <section class="control-bar gov-list-controls rv" data-st aria-label="تصفية المحافظات">
+      <div class="control-bar__row">
+        <div class="control-field control-field--grow">
+          <label class="control-field__label" for="gl-search">بحث</label>
+          <span class="archive-search">
+            <span class="archive-search__icon fa-solid fa-magnifying-glass" aria-hidden="true"></span>
+            <input class="archive-search__input" id="gl-search" type="search" data-search placeholder="ابحث باسم المحافظة…" aria-label="بحث باسم المحافظة">
+          </span>
+        </div>
+        <div class="control-field">
+          <span class="control-field__label">المنطقة</span>
+          <div class="chip-row chip-row--inline" role="group" aria-label="المنطقة" data-render="region-filter"></div>
+        </div>
+        <div class="control-field">
+          <label class="control-field__label" for="gl-sort">الترتيب</label>
+          <span class="control-select"><select id="gl-sort" data-sort aria-label="الترتيب حسب"><option value="rank">الأكثر توثيقاً</option><option value="alpha">أبجدي</option><option value="region">المنطقة</option></select><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- نتائج التصفية (تظهر عند البحث/الفرز/التصفية) -->
+    <section class="gov-region rv" data-render="flat-wrap" hidden>
+      <header class="gov-region__head">
+        <h2 class="gov-region__title">نتائج التصفية</h2>
+        <span class="gov-region__total" data-render="flat-count"></span>
+      </header>
+      <div class="gov-grid" data-render="flat"></div>
+    </section>
 
     <section class="gov-region rv" id="region-wb" aria-labelledby="rh-wb">
       <header class="gov-region__head">
@@ -195,6 +235,8 @@
     </div>
   </div>
 
+  <script src="assets/vendor/leaflet/leaflet.js" defer></script>
+  <script src="assets/data/palestine-governorates.js" defer></script>
   <script src="assets/js/main.js" defer></script>
   <script src="assets/js/governorates.js" defer></script>
 </body>
