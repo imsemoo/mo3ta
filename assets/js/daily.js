@@ -82,6 +82,11 @@
     return out;
   }
   var INCIDENTS = buildIncidents();
+  var UNIQUE_TYPES = (function () {
+    var out = [], seen = {};
+    INCIDENTS.forEach(function (r) { if (!seen[r.type]) { seen[r.type] = 1; out.push(r.type); } });
+    return out.sort(function (a, b) { return new Intl.Collator('ar').compare(a, b); });
+  })();
 
   var BREAKDOWN = {
     qualitative: { total: 8217, items: [{ n: 'إطلاق نار', v: 4580, icon: 'fa-solid fa-crosshairs' }, { n: 'عبوات ناسفة', v: 2127, icon: 'fa-solid fa-bomb' }, { n: 'عمليات طعن', v: 266, icon: 'fa-solid fa-burst' }, { n: 'عمليات دهس', v: 139, icon: 'fa-solid fa-car-burst' }] },
@@ -89,7 +94,7 @@
   };
 
   // ===== الحالة =====
-  var state = { region: 'all', type: 'all', range: 'all', q: '', sort: 'date', dir: 'desc', view: 'table', shown: 10 };
+  var state = { region: 'all', type: 'all', gov: 'all', eventType: 'all', source: 'all', range: 'all', q: '', sort: 'date', dir: 'desc', view: 'table', shown: 10 };
   var PER = 10;
   var coll = new Intl.Collator('ar');
 
@@ -105,6 +110,9 @@
     var list = INCIDENTS.filter(function (r) {
       if (govs && govs.indexOf(r.gov) < 0) return false;
       if (state.type !== 'all' && r.cat !== state.type) return false;
+      if (state.gov !== 'all' && r.gov !== state.gov) return false;
+      if (state.eventType !== 'all' && r.type !== state.eventType) return false;
+      if (state.source !== 'all' && r.source !== state.source) return false;
       if (r.ts < floor) return false;
       if (state.q && (r.desc + ' ' + r.gov + ' ' + r.type).indexOf(state.q) < 0) return false;
       return true;
@@ -148,6 +156,18 @@
         tbox.appendChild(b);
       });
     }
+    // القوائم المنسدلة + الترتيب
+    fillSelect('govselect', [{ v: 'all', label: 'كل المحافظات' }].concat(GOVS.map(function (g) { return { v: g, label: g }; })), state.gov);
+    fillSelect('typeselect', [{ v: 'all', label: 'كل الأنواع' }].concat(UNIQUE_TYPES.map(function (t) { return { v: t, label: t }; })), state.eventType);
+    fillSelect('sourceselect', [{ v: 'all', label: 'كل المصادر' }].concat(SOURCES.map(function (s) { return { v: s, label: s }; })), state.source);
+    fillSelect('sortselect', SORT_OPTS, state.sort);
+    var dirBtn = $('[data-sort-dir]');
+    if (dirBtn) {
+      var di = dirBtn.querySelector('i');
+      if (di) di.className = 'fa-solid ' + (state.dir === 'asc' ? 'fa-arrow-up-short-wide' : 'fa-arrow-down-wide-short');
+      dirBtn.setAttribute('aria-label', (state.dir === 'asc' ? 'ترتيب تصاعدي' : 'ترتيب تنازلي') + ' — اضغط للعكس');
+    }
+
     // رقائق الفلاتر الفعّالة
     var chips = slot('activefilters');
     if (chips) {
@@ -155,6 +175,9 @@
       var active = [];
       if (state.region !== 'all') active.push({ label: 'المنطقة: ' + labelOf(REGIONS, state.region), clear: function () { state.region = 'all'; } });
       if (state.type !== 'all') active.push({ label: labelOf(TYPE_FILTERS, state.type), clear: function () { state.type = 'all'; } });
+      if (state.gov !== 'all') active.push({ label: 'المحافظة: ' + state.gov, clear: function () { state.gov = 'all'; } });
+      if (state.eventType !== 'all') active.push({ label: 'النوع: ' + state.eventType, clear: function () { state.eventType = 'all'; } });
+      if (state.source !== 'all') active.push({ label: 'المصدر: ' + state.source, clear: function () { state.source = 'all'; } });
       if (state.range !== 'all') active.push({ label: state.range === '7' ? 'آخر 7 أيام' : 'آخر 30 يوماً', clear: function () { state.range = 'all'; } });
       if (state.q) active.push({ label: 'بحث: ' + state.q, clear: function () { state.q = ''; var s = $('[data-search]'); if (s) s.value = ''; } });
       active.forEach(function (a) {
@@ -169,12 +192,28 @@
     }
   }
   function labelOf(arr, k) { for (var i = 0; i < arr.length; i++) if (arr[i].k === k) return arr[i].label; return k; }
+  function fillSelect(name, opts, current) {
+    var sel = slot(name); if (!sel) return;
+    clear(sel);
+    opts.forEach(function (o) {
+      var op = h('option', null, o.label); op.value = o.v;
+      if (String(o.v) === String(current)) op.selected = true;
+      sel.appendChild(op);
+    });
+  }
+  var SORT_OPTS = [{ v: 'date', label: 'التاريخ' }, { v: 'gov', label: 'المحافظة' }, { v: 'type', label: 'النوع' }];
 
   // ===== عدّادات الفئات =====
   function renderCounters() {
     var box = slot('counters'); if (!box) return;
     var govs = regionGovs(), floor = rangeFloor();
-    var base = INCIDENTS.filter(function (r) { return (!govs || govs.indexOf(r.gov) >= 0) && r.ts >= floor; });
+    var base = INCIDENTS.filter(function (r) {
+      if (govs && govs.indexOf(r.gov) < 0) return false;
+      if (state.gov !== 'all' && r.gov !== state.gov) return false;
+      if (state.source !== 'all' && r.source !== state.source) return false;
+      if (state.q && (r.desc + ' ' + r.gov + ' ' + r.type).indexOf(state.q) < 0) return false;
+      return r.ts >= floor;
+    });
     var defs = [
       { label: 'إجمالي الأحداث', n: base.length, tone: 'accent' },
       { label: 'انتهاكات الاحتلال', n: base.filter(function (r) { return r.cat === 'violations'; }).length, tone: 'violations' },
@@ -228,7 +267,7 @@
     th.tabIndex = 0;
     th.appendChild(document.createTextNode(label + ' '));
     var sortIc = h('span', 'dtable__sort fa-solid ' + (state.sort === key ? (state.dir === 'asc' ? 'fa-caret-up' : 'fa-caret-down') : 'fa-sort')); sortIc.setAttribute('aria-hidden', 'true'); th.appendChild(sortIc);
-    function go() { if (state.sort === key) state.dir = state.dir === 'asc' ? 'desc' : 'asc'; else { state.sort = key; state.dir = 'desc'; } renderExplorer(); }
+    function go() { if (state.sort === key) state.dir = state.dir === 'asc' ? 'desc' : 'asc'; else { state.sort = key; state.dir = 'desc'; } renderControls(); renderExplorer(); }
     th.addEventListener('click', go);
     th.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
     return th;
@@ -362,7 +401,7 @@
   function renderAll() { renderCounters(); renderExplorer(); }
 
   function resetAll() {
-    state.region = 'all'; state.type = 'all'; state.range = 'all'; state.q = ''; state.shown = PER;
+    state.region = 'all'; state.type = 'all'; state.gov = 'all'; state.eventType = 'all'; state.source = 'all'; state.range = 'all'; state.q = ''; state.shown = PER;
     var s = $('[data-search]'); if (s) s.value = '';
     setActive('[data-range]', 'data-range', state.range);
     renderControls(); renderAll();
@@ -387,7 +426,20 @@
 
     // بحث
     var search = $('[data-search]');
-    if (search) { var t = null; search.addEventListener('input', function () { clearTimeout(t); t = setTimeout(function () { state.q = search.value.trim(); state.shown = PER; renderControls(); renderExplorer(); }, 200); }); }
+    if (search) { var t = null; search.addEventListener('input', function () { clearTimeout(t); t = setTimeout(function () { state.q = search.value.trim(); state.shown = PER; renderControls(); renderAll(); }, 200); }); }
+
+    // القوائم المنسدلة (المحافظة/النوع/المصدر) + الترتيب
+    function onSelect(name, key) {
+      var sel = slot(name); if (!sel) return;
+      sel.addEventListener('change', function () { state[key] = sel.value; state.shown = PER; renderControls(); renderAll(); });
+    }
+    onSelect('govselect', 'gov');
+    onSelect('typeselect', 'eventType');
+    onSelect('sourceselect', 'source');
+    var sortSel = slot('sortselect');
+    if (sortSel) sortSel.addEventListener('change', function () { state.sort = sortSel.value; renderControls(); renderExplorer(); });
+    var sortDir = $('[data-sort-dir]');
+    if (sortDir) sortDir.addEventListener('click', function () { state.dir = state.dir === 'asc' ? 'desc' : 'asc'; renderControls(); renderExplorer(); });
 
     var more = $('[data-loadmore]'); if (more) more.addEventListener('click', function () { state.shown += PER; renderExplorer(); });
     var reset = $('[data-reset]'); if (reset) reset.addEventListener('click', resetAll);

@@ -5,6 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#1f2147">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="apple-touch-icon" href="assets/img/favicon.png">
+  <link rel="canonical" href="https://mo3ta.taktek.co/visual_narrative.html">
     <meta name="description"
       content="الرواية المصوّرة — الإصدار المصوّر السنوي من مركز معلومات فلسطين «مُعطى». اقرأ العدد كاملاً واطّلع على الحصاد البصري الموثّق.">
   <meta property="og:type" content="website">
@@ -13,11 +17,11 @@
   <meta property="og:title" content="الرواية المصوّرة — مُعطى">
   <meta property="og:description" content="الرواية المصوّرة — الإصدار المصوّر السنوي من مركز معلومات فلسطين «مُعطى». اقرأ العدد كاملاً واطّلع على الحصاد البصري الموثّق.">
   <meta property="og:url" content="https://mo3ta.taktek.co/visual_narrative.html">
-  <meta property="og:image" content="https://mo3ta.taktek.co/assets/img/logo.webp">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://mo3ta.taktek.co/assets/img/og-cover.jpg">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="الرواية المصوّرة — مُعطى">
   <meta name="twitter:description" content="الرواية المصوّرة — الإصدار المصوّر السنوي من مركز معلومات فلسطين «مُعطى». اقرأ العدد كاملاً واطّلع على الحصاد البصري الموثّق.">
-  <meta name="twitter:image" content="https://mo3ta.taktek.co/assets/img/logo.webp">
+  <meta name="twitter:image" content="https://mo3ta.taktek.co/assets/img/og-cover.jpg">
     <title>الرواية المصوّرة — مُعطى</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,13 +33,13 @@
 
   <body>
 
-    <a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
-
     <!-- ===================== الرأس ===================== -->
     <header class="site-header" data-st>
-      <a class="brand" href="index.html" aria-label="مُعطى — الصفحة الرئيسية">
-        <img class="brand__logo" src="assets/img/logo.webp" alt="" width="160" height="46">
-      </a>
+    <a class="brand" href="index.html" aria-label="مُعطى — الصفحة الرئيسية">
+      <img class="brand__logo" src="assets/img/logo.webp" alt="" width="160" height="46">
+    </a>
+
+    <div class="site-menu" id="site-menu" data-nav-menu>
       <nav class="main-nav" aria-label="التنقّل الرئيسي">
         <a class="main-nav__link" href="index.html">الرئيسية</a>
         <a class="main-nav__link" href="daily_mo3ta.html">منذ 7 أكتوبر</a>
@@ -46,16 +50,27 @@
         <a class="main-nav__link" href="about_us.html">من نحن</a>
       </nav>
       <div class="header-controls">
-        <div class="seg" role="group" aria-label="الاتجاه التحريري">
-          <button class="seg__btn" type="button" data-dir-set="conservative" title="محافظ">محافظ</button>
-          <button class="seg__btn is-active" type="button" data-dir-set="editorial" title="تحريري">تحريري</button>
-          <button class="seg__btn" type="button" data-dir-set="bold" title="جريء">جريء</button>
-        </div>
         <a class="header-search" href="search.html" title="بحث في الموقع" aria-label="بحث في الموقع"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></a>
-        <button class="theme-toggle" type="button" data-theme-toggle title="تبديل السمة" aria-label="تبديل السمة"><span
-            class="theme-toggle__icon fa-solid fa-moon" aria-hidden="true"></span></button>
       </div>
-    </header>
+    </div>
+
+    <div class="header-actions">
+      <button class="theme-switch" type="button" data-theme-toggle role="switch" aria-checked="false" aria-label="تبديل بين الوضع الفاتح والداكن" title="تبديل السمة">
+        <span class="theme-switch__thumb" aria-hidden="true">
+          <i class="fa-solid fa-sun theme-switch__sun"></i>
+          <i class="fa-solid fa-moon theme-switch__moon"></i>
+        </span>
+      </button>
+      <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-menu" aria-label="فتح القائمة">
+        <span class="nav-toggle__box" aria-hidden="true">
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+        </span>
+      </button>
+    </div>
+  </header>
+  <div class="nav-backdrop" data-nav-backdrop></div>
 
     <main class="container" id="main" tabindex="-1">
 
@@ -439,6 +454,18 @@
         </div>
       </div>
     </footer>
+
+  <!-- منتقي لون الواجهة -->
+  <div class="theme-picker" data-theme-picker>
+    <button class="theme-picker__toggle" type="button" data-theme-picker-toggle aria-expanded="false" aria-controls="theme-swatches" aria-label="اختيار لون الواجهة" title="لون الواجهة">
+      <i class="fa-solid fa-palette" aria-hidden="true"></i>
+    </button>
+    <div class="theme-picker__panel" id="theme-swatches" role="group" aria-label="ألوان الواجهة">
+      <button class="theme-picker__swatch" type="button" data-dir-set="conservative" data-swatch="conservative" aria-label="اللون النيليّ" title="نيليّ"></button>
+      <button class="theme-picker__swatch" type="button" data-dir-set="editorial" data-swatch="editorial" aria-label="اللون الفيروزيّ" title="فيروزيّ"></button>
+      <button class="theme-picker__swatch" type="button" data-dir-set="bold" data-swatch="bold" aria-label="اللون الطوبيّ" title="طوبيّ"></button>
+    </div>
+  </div>
 
     <script src="assets/js/main.js" defer></script>
     <script src="assets/vendor/page-flip/page-flip.browser.js" defer></script>

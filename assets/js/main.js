@@ -1394,18 +1394,82 @@
     });
   }
 
+  // قائمة الموبايل المنسدلة: فتح/إغلاق + إدارة التركيز + Esc + خلفية + إغلاق عند التنقّل/التكبير
+  function wireNav() {
+    var btn = $('[data-nav-toggle]');
+    var menu = $('[data-nav-menu]');
+    var backdrop = $('[data-nav-backdrop]');
+    if (!btn || !menu) return;
+    var lastFocus = null;
+    function isOpen() { return root.classList.contains('is-nav-open'); }
+    function focusables() {
+      return Array.prototype.slice.call(menu.querySelectorAll('a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])'))
+        .filter(function (el) { return el.offsetParent !== null; });
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') { e.preventDefault(); close(); try { btn.focus(); } catch (x) {} return; }
+      if (e.key !== 'Tab') return;
+      var f = focusables(); if (!f.length) return;
+      var first = f[0], last = f[f.length - 1], a = document.activeElement;
+      if (e.shiftKey && (a === first)) { e.preventDefault(); btn.focus(); }
+      else if (e.shiftKey && (a === btn)) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && (a === last)) { e.preventDefault(); btn.focus(); }
+      else if (!e.shiftKey && (a === btn)) { e.preventDefault(); first.focus(); }
+    }
+    function open() {
+      lastFocus = document.activeElement;
+      root.classList.add('is-nav-open');
+      btn.setAttribute('aria-expanded', 'true');
+      btn.setAttribute('aria-label', 'إغلاق القائمة');
+      var f = focusables(); if (f.length) f[0].focus();
+      document.addEventListener('keydown', onKey, true);
+    }
+    function close() {
+      if (!isOpen()) return;
+      root.classList.remove('is-nav-open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'فتح القائمة');
+      document.removeEventListener('keydown', onKey, true);
+      if (lastFocus && lastFocus.focus) { try { lastFocus.focus(); } catch (x) {} }
+    }
+    btn.addEventListener('click', function () { isOpen() ? close() : open(); });
+    if (backdrop) backdrop.addEventListener('click', close);
+    menu.addEventListener('click', function (e) {
+      var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+      if (a) close();
+    });
+    var mq = window.matchMedia('(min-width: 921px)');
+    var onMq = function () { if (mq.matches) close(); };
+    if (mq.addEventListener) mq.addEventListener('change', onMq);
+    else if (mq.addListener) mq.addListener(onMq);
+  }
+
+  // منتقي لون الواجهة: فتح/إغلاق اللوحة (اختيار اللون يتولّاه معالج data-dir-set القائم)
+  function wirePicker() {
+    var picker = $('[data-theme-picker]');
+    if (!picker) return;
+    var btn = $('[data-theme-picker-toggle]', picker);
+    function isOpen() { return picker.classList.contains('is-open'); }
+    function openP() { picker.classList.add('is-open'); if (btn) btn.setAttribute('aria-expanded', 'true'); }
+    function closeP() { picker.classList.remove('is-open'); if (btn) btn.setAttribute('aria-expanded', 'false'); }
+    if (btn) btn.addEventListener('click', function (e) { e.stopPropagation(); isOpen() ? closeP() : openP(); });
+    picker.addEventListener('click', function (e) { if (e.target && e.target.closest && e.target.closest('[data-dir-set]')) closeP(); });
+    document.addEventListener('click', function (e) { if (isOpen() && !picker.contains(e.target)) closeP(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && isOpen()) { closeP(); if (btn) { try { btn.focus(); } catch (x) {} } } });
+  }
+
   function bindEvents() {
     // تبديل الوضع (فاتح / داكن)
     var toggle = $('[data-theme-toggle]');
     if (toggle) toggle.addEventListener('click', function () {
       var dark = root.getAttribute('data-mode') === 'dark';
       root.setAttribute('data-mode', dark ? 'light' : 'dark');
-      var icon = toggle.querySelector('.theme-toggle__icon') || toggle;
-      icon.classList.remove('fa-moon', 'fa-sun');
-      icon.classList.add('fa-solid', dark ? 'fa-moon' : 'fa-sun');
+      toggle.setAttribute('aria-checked', dark ? 'false' : 'true');
       try { localStorage.setItem('m3-mode', root.getAttribute('data-mode')); } catch (e) {}
       renderThemed();
     });
+    wireNav();
+    wirePicker();
 
     // الاتجاه التحريري (يغيّر اللون المميّز)
     var dirBtns = $$('[data-dir-set]');
@@ -1514,11 +1578,7 @@
       if (dir) root.setAttribute('data-dir', dir);
     } catch (e) {}
     var toggle = $('[data-theme-toggle]');
-    if (toggle) {
-      var icon = toggle.querySelector('.theme-toggle__icon') || toggle;
-      icon.classList.remove('fa-moon', 'fa-sun');
-      icon.classList.add('fa-solid', root.getAttribute('data-mode') === 'dark' ? 'fa-sun' : 'fa-moon');
-    }
+    if (toggle) toggle.setAttribute('aria-checked', root.getAttribute('data-mode') === 'dark' ? 'true' : 'false');
     var v = root.getAttribute('data-dir');
     setActive($$('[data-dir-set]'), 'data-dir-set', v);
   }
