@@ -1,8 +1,8 @@
 /* ==========================================================================
-   مُعطى — فهرس المحافظات (governorates.html)
-   governorates.js — ملخّص + شبكة بطاقات أغنى (مؤشّرات مصغّرة مشتقّة «تقديري» + لون
-   إقليم) + بحث/فرز/تصفية بحالة قابلة للمشاركة (?q=&sort=&region=). الرقم الموثّق
-   الوحيد = GOV[i].v؛ المؤشّرات المصغّرة مشتقّة بصيغة الموقع وتُوسَم «تقديري».
+   مُعطى — منصّة استكشاف المحافظات (governorates.html)
+   governorates.js — هيرو غنيّ (6 مؤشّرات) + خريطة مهيمنة بقائمة رتب + إحصاءات
+   عامّة + محافظة مميّزة (#1) + شبكة موحّدة بحث/فرز/تصفية (?q=&sort=&region=) +
+   مقارنة أقاليم. الموثّق الوحيد = GOV[i].v ومجاميعها؛ المشتقّ (derive) موسوم «تقديري».
    يقرأ window.M3 للقراءة فقط.
    ========================================================================== */
 (function () {
@@ -16,6 +16,7 @@
 
   var M3 = window.M3 || {};
   var GOV = (M3.DATA && M3.DATA.GOV) || [];
+  var CAL = (M3.DATA && M3.DATA.CAL_EVENTS) || {};
   var fmt = M3.fmt || function (n) { return Math.round(n).toLocaleString('en-US'); };
   var coll = new Intl.Collator('ar');
 
@@ -37,6 +38,7 @@
 
   var state = { q: '', sort: 'rank', region: 'all' };
 
+  /* ===== بطاقة محافظة (الشبكة) ===== */
   function buildCard(i) {
     var g = GOV[i], reg = regionOf(i);
     var card = h('a', 'govx-card govx-card--' + reg.k + (g.gaza ? ' govx-card--gaza' : ''));
@@ -72,18 +74,124 @@
     return card;
   }
 
-  /* ===== الملخّص ===== */
-  function renderSummary() {
-    var box = slot('summary'); if (!box) return; clear(box);
-    var top = GOV.reduce(function (a, g) { return g.v > a.v ? g : a; }, GOV[0] || { v: 0, n: '—' });
-    function item(value, label) { var it = h('div', 'trust__item'); it.appendChild(h('div', 'trust__value', value)); it.appendChild(h('div', 'trust__label', label)); return it; }
-    box.appendChild(item('12', 'محافظة'));
-    box.appendChild(h('div', 'trust__sep'));
-    box.appendChild(item(fmt(total), 'حدث موثّق إجمالاً'));
-    box.appendChild(h('div', 'trust__sep'));
-    box.appendChild(item(top.n, 'الأكثر توثيقاً'));
-    box.appendChild(h('div', 'trust__sep'));
-    box.appendChild(item(fmt(total / (GOV.length || 1)), 'متوسّط لكل محافظة'));
+  /* ===== 1) الهيرو — 6 مؤشّرات قياديّة ===== */
+  function renderHeroStats() {
+    var box = slot('hero-stats'); if (!box) return; clear(box);
+    var top = GOV.reduce(function (a, g) { return g.v > a.v ? g : a; }, GOV[0]);
+    var bottom = GOV.reduce(function (a, g) { return g.v < a.v ? g : a; }, GOV[0]);
+    // آخر تحديث: أحدث مفتاح CAL عبر مقارنة رقميّة (لا فرز نصّيّ يخطئ 10 مقابل 9)
+    var last = Object.keys(CAL).reduce(function (best, k) {
+      var p = k.split('-').map(Number);
+      var b = best ? best.split('-').map(Number) : [0, 0, 0];
+      return (p[0] * 10000 + p[1] * 100 + p[2]) > (b[0] * 10000 + b[1] * 100 + b[2]) ? k : best;
+    }, '') || '2025-10-2';
+    var lastFmt = last.split('-').slice(0, 2).reverse().join('/');
+    function numSpan(t) { return h('span', 'num', t); }
+    function stat(node, label) {
+      var s = h('div', 'hero-stat');
+      var val = h('div', 'hero-stat__value'); val.appendChild(node); s.appendChild(val);
+      s.appendChild(h('div', 'hero-stat__label', label));
+      return s;
+    }
+    box.appendChild(stat(numSpan(fmt(GOV.length)), 'محافظة'));
+    box.appendChild(stat(numSpan(fmt(total)), 'حدثاً موثّقاً'));
+    box.appendChild(stat(document.createTextNode(top.n), 'الأكثر توثيقاً · #1'));
+    box.appendChild(stat(document.createTextNode(bottom.n), 'الأقلّ توثيقاً · #' + GOV.length));
+    box.appendChild(stat(numSpan(fmt(total / (GOV.length || 1))), 'المتوسّط'));
+    box.appendChild(stat(numSpan(lastFmt), 'آخر تحديث'));
+  }
+
+  /* ===== 2) قائمة رتب الخريطة الجانبيّة ===== */
+  function renderRankList() {
+    var box = slot('rank-list'); if (!box) return; clear(box);
+    GOV.map(function (g, i) { return { i: i, g: g }; }).sort(function (a, b) { return b.g.v - a.g.v; }).forEach(function (o) {
+      var li = h('li', 'rank-list__item');
+      var a = h('a', 'rank-list__link'); a.href = 'city_town_info.html?gov=' + o.i;
+      a.setAttribute('aria-label', o.g.n + ' — المرتبة ' + rankOf[o.i] + ' — ' + fmt(o.g.v) + ' حدثاً — استعراض الملف');
+      a.appendChild(h('span', 'rank-list__rank', '#' + rankOf[o.i]));
+      a.appendChild(h('span', 'rank-list__name', o.g.n));
+      a.appendChild(h('span', 'rank-list__value num', fmt(o.g.v)));
+      var track = h('span', 'rank-list__bar');
+      var fill = h('span', 'rank-list__bar-fill');
+      fill.style.width = (maxV ? o.g.v / maxV * 100 : 0) + '%';
+      if (o.g.gaza) fill.style.background = 'var(--red)';
+      track.appendChild(fill); a.appendChild(track);
+      li.appendChild(a); box.appendChild(li);
+    });
+  }
+
+  /* ===== 3) الصورة العامّة — 4 بطاقات ===== */
+  function renderOverview() {
+    var box = slot('overview'); if (!box) return; clear(box);
+    var top = GOV.reduce(function (a, g) { return g.v > a.v ? g : a; }, GOV[0]);
+    var bottom = GOV.reduce(function (a, g) { return g.v < a.v ? g : a; }, GOV[0]);
+    function card(label, val, note) {
+      var c = h('div', 'stat-card');
+      c.appendChild(h('div', 'stat-card__label', label));
+      c.appendChild(h('div', 'stat-card__value num', val));
+      c.appendChild(h('div', 'stat-card__note', note));
+      return c;
+    }
+    box.appendChild(card('إجمالي الأحداث', fmt(total), 'مجموع الـ12 محافظة'));
+    box.appendChild(card('الأكثر توثيقاً', fmt(top.v), top.n + ' · #1'));
+    box.appendChild(card('الأقلّ توثيقاً', fmt(bottom.v), bottom.n + ' · #' + GOV.length));
+    box.appendChild(card('المتوسّط', fmt(total / (GOV.length || 1)), 'لكل محافظة'));
+  }
+
+  /* ===== 4) المحافظة المميّزة — نابلس (#1) ===== */
+  function renderFeatured() {
+    var box = slot('featured'); if (!box || !GOV[0]) return; clear(box);
+    var g = GOV[0], reg = regionOf(0), share = (g.v / total * 100).toFixed(1);
+    var card = h('div', 'featured-gov-card');
+    card.appendChild(h('span', 'featured-gov-card__rank', '#1 الأكثر توثيقاً'));
+    card.appendChild(h('span', 'featured-gov-card__name', g.n));
+    card.appendChild(h('span', 'featured-gov-card__region', reg.label));
+    card.appendChild(h('span', 'featured-gov-card__value num', fmt(g.v)));
+    card.appendChild(h('span', 'featured-gov-card__label', 'حدثاً موثّقاً'));
+    var mini = h('div', 'featured-gov-card__ministats');
+    [
+      { v: fmt(derive(g.v, 'viol')), l: 'انتهاكات (تقديري)', t: 'violations' },
+      { v: fmt(derive(g.v, 'res')), l: 'مقاومة (تقديري)', t: 'resistance' },
+      { v: share + '%', l: 'من الإجمالي', t: null },
+      { v: '#1', l: 'وطنيّاً', t: null }
+    ].forEach(function (m) {
+      var s = h('div', 'featured-gov-card__ministat');
+      var val = h('span', 'featured-gov-card__ministat-value num', m.v); if (m.t) val.style.setProperty('--tone', 'var(--' + m.t + ')');
+      s.appendChild(val);
+      s.appendChild(h('span', 'featured-gov-card__ministat-label', m.l));
+      mini.appendChild(s);
+    });
+    card.appendChild(mini);
+    var track = h('div', 'bar-track'); track.setAttribute('aria-hidden', 'true');
+    var fill = h('div', 'bar-fill bar-fill--tone'); fill.style.setProperty('--w', '100%'); fill.style.setProperty('--tone', 'var(--accent)');
+    track.appendChild(fill); card.appendChild(track);
+    var cta = h('a', 'btn btn--primary featured-gov-card__cta', 'استعرض الملف الكامل'); cta.href = 'city_town_info.html?gov=0';
+    card.appendChild(cta);
+    box.appendChild(card);
+    var aside = h('div', 'featured-aside');
+    aside.appendChild(h('p', 'featured-aside__text', 'تتصدّر نابلس التوثيق الميدانيّ في الضفة الغربية، وتمثّل أعلى كثافة أحداث موثّقة بين المحافظات الاثنتي عشرة.'));
+    box.appendChild(aside);
+  }
+
+  /* ===== 6) مقارنة الأقاليم ===== */
+  function renderRegional() {
+    var box = slot('regional'); if (!box) return; clear(box);
+    var max = REGIONS.reduce(function (m, r) { var s = r.idx.reduce(function (a, i) { return a + (GOV[i] ? GOV[i].v : 0); }, 0); return Math.max(m, s); }, 0);
+    REGIONS.forEach(function (r) {
+      var sum = r.idx.reduce(function (a, i) { return a + (GOV[i] ? GOV[i].v : 0); }, 0);
+      var share = (sum / total * 100).toFixed(1);
+      var c = h('div', 'region-card region-card--' + r.k);
+      c.appendChild(h('div', 'region-card__name', r.label));
+      c.appendChild(h('div', 'region-card__count', r.idx.length + (r.idx.length > 1 ? ' محافظات' : ' محافظة')));
+      c.appendChild(h('div', 'region-card__total num', fmt(sum)));
+      c.appendChild(h('div', 'region-card__share', share + '% من الإجمالي'));
+      var track = h('div', 'bar-track'); track.setAttribute('aria-hidden', 'true');
+      var fill = h('div', 'bar-fill bar-fill--tone');
+      fill.style.setProperty('--w', (max ? sum / max * 100 : 0) + '%');
+      fill.style.setProperty('--tone', r.k === 'gaza' ? 'var(--red)' : r.k === 'jeru' ? 'color-mix(in srgb, var(--accent) 55%, var(--surface-2))' : 'var(--accent)');
+      track.appendChild(fill); c.appendChild(track);
+      box.appendChild(c);
+    });
   }
 
   /* ===== الفلاتر ===== */
@@ -111,41 +219,48 @@
     return list;
   }
 
-  function setRegionSectionsHidden(hidden) {
-    ['region-wb', 'region-jeru', 'region-gaza'].forEach(function (id) { var s = document.getElementById(id); if (s) s.hidden = hidden; });
-  }
-
-  function renderRegionSections() {
-    REGIONS.forEach(function (r) {
-      var grid = slot('region-' + r.k);
-      if (grid) { clear(grid); r.idx.forEach(function (i) { grid.appendChild(buildCard(i)); }); }
-      var totalEl = slot('region-total-' + r.k);
-      if (totalEl) { var sum = r.idx.reduce(function (s, i) { return s + (GOV[i] ? GOV[i].v : 0); }, 0); clear(totalEl); totalEl.appendChild(h('span', 'num', fmt(sum))); totalEl.appendChild(document.createTextNode(' حدثاً موثّقاً')); }
-    });
+  /* ===== 5) الشبكة الموحّدة + التصفية ===== */
+  function renderAllGovs() {
+    var grid = slot('all-govs'); if (!grid) return; clear(grid);
+    GOV.map(function (g, i) { return i; }).sort(function (a, b) { return GOV[b].v - GOV[a].v; }).forEach(function (i) { grid.appendChild(buildCard(i)); });
   }
 
   function renderFlat() {
-    var wrap = slot('flat-wrap'), grid = slot('flat'), countEl = slot('flat-count');
-    if (!grid) return;
+    var grid = slot('flat'), empty = slot('flat-empty'); if (!grid) return;
     var list = filteredIdx();
-    if (countEl) { clear(countEl); countEl.appendChild(h('span', 'num', String(list.length))); countEl.appendChild(document.createTextNode(' محافظة')); }
     clear(grid);
     if (!list.length) {
-      var empty = h('div', 'archive-empty');
-      var ic = h('div', 'archive-empty__icon fa-solid fa-magnifying-glass'); ic.setAttribute('aria-hidden', 'true'); empty.appendChild(ic);
-      empty.appendChild(h('p', 'archive-empty__title', 'لا توجد محافظة مطابقة'));
-      empty.appendChild(h('p', 'archive-empty__text', 'جرّب اسماً آخر أو امسح الفلاتر.'));
-      var rb = h('button', 'btn btn--primary', 'مسح الفلاتر'); rb.type = 'button'; rb.addEventListener('click', resetFilters);
-      empty.appendChild(rb); grid.appendChild(empty);
-    } else {
-      list.forEach(function (i) { grid.appendChild(buildCard(i)); });
+      grid.hidden = true;
+      if (empty) {
+        clear(empty);
+        var box = h('div', 'archive-empty');
+        var ic = h('div', 'archive-empty__icon fa-solid fa-magnifying-glass'); ic.setAttribute('aria-hidden', 'true'); box.appendChild(ic);
+        box.appendChild(h('p', 'archive-empty__title', 'لا توجد محافظة مطابقة'));
+        box.appendChild(h('p', 'archive-empty__text', 'جرّب اسماً آخر أو امسح الفلاتر.'));
+        var rb = h('button', 'btn btn--primary', 'مسح الفلاتر'); rb.type = 'button'; rb.addEventListener('click', resetFilters);
+        box.appendChild(rb); empty.appendChild(box); empty.hidden = false;
+      }
+      return;
     }
-    if (wrap) wrap.hidden = false;
+    if (empty) empty.hidden = true;
+    grid.hidden = false;
+    list.forEach(function (i) { grid.appendChild(buildCard(i)); });
   }
 
   function render() {
-    if (isFiltering()) { setRegionSectionsHidden(true); renderFlat(); }
-    else { var wrap = slot('flat-wrap'); if (wrap) wrap.hidden = true; setRegionSectionsHidden(false); renderRegionSections(); }
+    var all = slot('all-govs'), flat = slot('flat'), empty = slot('flat-empty');
+    var featSec = document.querySelector('.section--featured');
+    var featBand = featSec ? featSec.closest('.band') : null;
+    var filtering = isFiltering();
+    if (featBand) featBand.hidden = filtering;
+    if (filtering) {
+      if (all) all.hidden = true;
+      renderFlat();
+    } else {
+      if (all) { all.hidden = false; renderAllGovs(); }
+      if (flat) { clear(flat); flat.hidden = true; }
+      if (empty) empty.hidden = true;
+    }
   }
 
   function resetFilters() {
@@ -185,7 +300,11 @@
   function init() {
     if (!GOV.length) return;
     readUrl();
-    renderSummary();
+    renderHeroStats();
+    renderRankList();
+    renderOverview();
+    renderFeatured();
+    renderRegional();
     renderRegionFilter();
     bind();
     render();

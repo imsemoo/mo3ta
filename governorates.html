@@ -77,103 +77,77 @@
       <span class="breadcrumb__current">المحافظات</span>
     </nav>
 
-    <header class="page-head rv">
-      <div>
-        <h1 class="page-head__title">المحافظات الفلسطينية</h1>
-        <p class="page-head__sub">اثنتا عشرة محافظةً تمتدّ من شمال الضفة الغربية إلى القدس وقطاع غزة — لكلٍّ منها سجلٌّ موثّق من الأحداث الميدانية. اختر محافظةً لاستعراض ملفّها.</p>
-      </div>
-      <span class="page-head__count"><strong class="num" data-count="12">0</strong> محافظة</span>
+    <!-- 1) الهيرو — مدخل منصّة الاستكشاف -->
+    <header class="gov-hero-head rv">
+      <p class="gov-hero-head__eyebrow">منصّة استكشاف المحافظات</p>
+      <h1 class="page-head__title">المحافظات الفلسطينية</h1>
+      <p class="page-head__sub">اثنتا عشرة محافظةً تمتدّ من شمال الضفة الغربية إلى القدس وقطاع غزة — لكلٍّ منها سجلٌّ موثّق من الأحداث الميدانية. استعرض الخريطة أدناه أو ابحث عن محافظتك.</p>
+      <div class="hero-stats" data-render="hero-stats"></div>
     </header>
 
-    <section class="trust rv" data-render="summary" aria-label="ملخّص عام"></section>
-
-    <!-- خريطة التوزّع -->
+    <!-- 2) الخريطة المهيمنة + قائمة الرتب -->
     <section class="section section--map rv">
       <h2 class="section__title">خريطة توزّع الأحداث</h2>
-      <p class="section__sub">كثافة التلوين تعكس حجم الأحداث الموثّقة في كل محافظة · مرّر فوق محافظة لعدد أحداثها، وانقرها للتقريب، واختر بطاقتها أدناه لملفّها الكامل.</p>
-      <div class="map-panel" data-st>
-        <div class="map-leaflet" data-map role="application" aria-label="خريطة فلسطين التفاعلية موزّعةً على المحافظات حسب كثافة الأحداث الموثّقة — البطاقات أدناه بديلٌ نصّي كامل"></div>
+      <p class="section__sub">كثافة التلوين تعكس حجم الأحداث الموثّقة في كل محافظة · مرّر فوق محافظة لعدد أحداثها، وانقرها للتقريب، واختر من القائمة أو البطاقات أدناه لملفّها الكامل.</p>
+      <div class="map-layout">
+        <div class="map-panel" data-st>
+          <div class="map-leaflet" data-map role="application" aria-label="خريطة فلسطين التفاعلية موزّعةً على المحافظات حسب كثافة الأحداث الموثّقة — قائمة الرتب والبطاقات أدناه بديلٌ نصّي كامل"></div>
+        </div>
+        <aside class="map-side">
+          <h3 class="map-side__title">ترتيب المحافظات</h3>
+          <ol class="rank-list" data-render="rank-list"></ol>
+        </aside>
       </div>
     </section>
 
-    <!-- شريط الفلاتر -->
-    <section class="control-bar gov-list-controls rv" data-st aria-label="تصفية المحافظات">
-      <div class="control-bar__row">
-        <div class="control-field control-field--grow">
-          <label class="control-field__label" for="gl-search">بحث</label>
-          <span class="archive-search">
-            <span class="archive-search__icon fa-solid fa-magnifying-glass" aria-hidden="true"></span>
-            <input class="archive-search__input" id="gl-search" type="search" data-search placeholder="ابحث باسم المحافظة…" aria-label="بحث باسم المحافظة">
-          </span>
-        </div>
-        <div class="control-field">
-          <span class="control-field__label">المنطقة</span>
-          <div class="chip-row chip-row--inline" role="group" aria-label="المنطقة" data-render="region-filter"></div>
-        </div>
-        <div class="control-field">
-          <label class="control-field__label" for="gl-sort">الترتيب</label>
-          <span class="control-select"><select id="gl-sort" data-sort aria-label="الترتيب حسب"><option value="rank">الأكثر توثيقاً</option><option value="alpha">أبجدي</option><option value="region">المنطقة</option></select><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></span>
+    <!-- 3) الصورة العامّة -->
+    <section class="section section--overview rv">
+      <h2 class="section__title">الصورة العامّة</h2>
+      <div class="stat-cards" data-render="overview"></div>
+    </section>
+
+    <!-- 4) المحافظة المميّزة (#1) -->
+    <section class="section band band--tint section--featured rv">
+      <h2 class="section__title">المحافظة الأكثر توثيقاً</h2>
+      <p class="section__sub">الأكثر توثيقاً وطنيّاً — ثابتة لا تتأثّر بفلاتر الشبكة أدناه.</p>
+      <div class="featured-layout" data-render="featured"></div>
+    </section>
+
+    <!-- 5) الشبكة الموحّدة + الفلاتر كرأس-لوحة -->
+    <section class="section section--grid band rv">
+      <h2 class="section__title">استعرض كل المحافظات</h2>
+      <p class="section__sub">حسّن الشبكة أدناه بالبحث أو المنطقة أو الترتيب.</p>
+      <div class="control-bar gov-list-controls" data-st aria-label="تصفية المحافظات">
+        <div class="control-bar__row">
+          <div class="control-field control-field--grow">
+            <label class="control-field__label" for="gl-search">بحث</label>
+            <span class="archive-search">
+              <span class="archive-search__icon fa-solid fa-magnifying-glass" aria-hidden="true"></span>
+              <input class="archive-search__input" id="gl-search" type="search" data-search placeholder="ابحث باسم المحافظة…" aria-label="بحث باسم المحافظة">
+            </span>
+          </div>
+          <div class="control-field">
+            <span class="control-field__label">المنطقة</span>
+            <div class="chip-row chip-row--inline" role="group" aria-label="المنطقة" data-render="region-filter"></div>
+          </div>
+          <div class="control-field">
+            <label class="control-field__label" for="gl-sort">الترتيب</label>
+            <span class="control-select"><select id="gl-sort" data-sort aria-label="الترتيب حسب"><option value="rank">الأكثر توثيقاً</option><option value="alpha">أبجدي</option><option value="region">المنطقة</option></select><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></span>
+          </div>
         </div>
       </div>
+      <div class="gov-grid" data-render="all-govs"></div>
+      <div class="gov-grid" data-render="flat" hidden></div>
+      <div data-render="flat-empty" hidden></div>
     </section>
 
-    <!-- نتائج التصفية (تظهر عند البحث/الفرز/التصفية) -->
-    <section class="gov-region rv" data-render="flat-wrap" hidden>
-      <header class="gov-region__head">
-        <h2 class="gov-region__title">نتائج التصفية</h2>
-        <span class="gov-region__total" data-render="flat-count"></span>
-      </header>
-      <div class="gov-grid" data-render="flat"></div>
-    </section>
-
-    <section class="gov-region rv" id="region-wb" aria-labelledby="rh-wb">
-      <header class="gov-region__head">
-        <h2 class="gov-region__title" id="rh-wb">الضفة الغربية</h2>
-        <p class="gov-region__sub">عشر محافظات</p>
-        <span class="gov-region__total" data-render="region-total-wb"></span>
-      </header>
-      <div class="gov-grid" data-render="region-wb"></div>
-    </section>
-
-    <section class="gov-region rv" id="region-jeru" aria-labelledby="rh-jeru">
-      <header class="gov-region__head">
-        <h2 class="gov-region__title" id="rh-jeru">القدس</h2>
-        <p class="gov-region__sub">محافظة القدس</p>
-        <span class="gov-region__total" data-render="region-total-jeru"></span>
-      </header>
-      <div class="gov-grid" data-render="region-jeru"></div>
-    </section>
-
-    <section class="gov-region rv" id="region-gaza" aria-labelledby="rh-gaza">
-      <header class="gov-region__head">
-        <h2 class="gov-region__title" id="rh-gaza">قطاع غزة</h2>
-        <p class="gov-region__sub">القطاع المحاصَر</p>
-        <span class="gov-region__total" data-render="region-total-gaza"></span>
-      </header>
-      <div class="gov-grid" data-render="region-gaza"></div>
+    <!-- 6) مقارنة الأقاليم -->
+    <section class="section band band--tint section--regional rv">
+      <h2 class="section__title">المحافظات حسب الإقليم</h2>
+      <div class="region-cards" data-render="regional"></div>
     </section>
 
   </main>
-
-  <!-- ===================== بانر النشرة البريدية ===================== -->
-  <section class="news-band rv" data-st>
-    <div class="news-band__inner">
-      <div class="news-band__intro">
-        <h2 class="news-band__title">ابقَ على اطّلاع بالتوثيق</h2>
-        <p class="news-band__text">اشترك لتصلك أبرز التقارير الدورية والتحديثات الموثّقة أولاً بأول.</p>
-      </div>
-      <form class="news-band__form" onsubmit="return false">
-        <label class="visually-hidden" for="news-band-email">بريدك الإلكتروني</label>
-        <input class="news-band__input" id="news-band-email" type="email" placeholder="بريدك الإلكتروني" autocomplete="email">
-        <button class="btn btn--primary news-band__btn" type="submit">اشترك الآن</button>
-      </form>
-      <div class="news-band__links">
-        <a class="news-band__chip" href="#">القرى الفلسطينية <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i></a>
-        <a class="news-band__chip" href="#">مرصد شيرين <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i></a>
-        <a class="news-band__chip" href="visual_narrative.html">الرواية المصوّرة <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i></a>
-      </div>
-    </div>
-  </section>
 
   <!-- ===================== التذييل ===================== -->
   <footer class="site-footer" data-st>
