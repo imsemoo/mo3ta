@@ -1,6 +1,7 @@
 /* ==========================================================================
    مُعطى — صفحة «من نحن» (about_us.html)
-   about.js — يملأ شريط الحصيلة الموثّقة من بيانات window.M3 الحيّة (قيم نهائية).
+   about.js — يبني قسم «أثر مُعطى»: ترويسة سرديّة + شريط 4 مؤشّرات موثّقة من
+   window.M3 الحيّة + رابط للّوحة. لا يُختلَق أي رقم («عدد التقارير» نصّ بلا عدد).
    ========================================================================== */
 (function () {
   'use strict';
@@ -21,21 +22,35 @@
     return 0;
   }
 
-  function renderTrust() {
+  function renderImpact() {
     var box = slot('about-trust'); if (!box) return; clear(box);
+    var events = fmt(heroTarget('events') || 434505);
+    var govs = String(GOV.length || 12);
+
+    // (أ) ترويسة سرديّة — تؤكّد الاستمراريّة بقدر الحجم؛ «التقارير» نصٌّ بلا عدد مختلق
+    var head = h('div', 'trust__head');
+    head.appendChild(h('p', 'trust__head-title', 'منذ يناير 2018، لم نتوقّف.'));
+    head.appendChild(h('p', 'trust__head-text',
+      'على مدى 102 شهراً متواصلاً، وثّقنا ' + events + ' حدثاً عبر ' + govs +
+      ' محافظة، من أكثر من 50 مصدراً موثوقاً، نضعها في تقارير دوريّة ومتخصّصة. كلّ رقمٍ هنا حدٌّ أدنى متحقَّق منه، لا تقدير.'));
+    box.appendChild(head);
+
+    // (ب) شريط 4 مؤشّرات رقميّة موثّقة فقط
+    var row = h('div', 'trust');
     function item(v, l) { var it = h('div', 'trust__item'); it.appendChild(h('div', 'trust__value', v)); it.appendChild(h('div', 'trust__label', l)); return it; }
-    box.appendChild(item(fmt(heroTarget('events') || 434505), 'حدثاً موثّقاً'));
-    box.appendChild(h('div', 'trust__sep'));
-    box.appendChild(item(String(GOV.length || 12), 'محافظة'));
-    box.appendChild(h('div', 'trust__sep'));
-    box.appendChild(item('102', 'شهراً متواصلاً'));
-    box.appendChild(h('div', 'trust__sep'));
-    box.appendChild(item('+50', 'مصدراً موثوقاً'));
-    var link = h('a', 'trust__link'); link.innerHTML = 'استعرض اللوحة <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>'; link.href = 'index.html';
-    box.appendChild(link);
+    row.appendChild(item(events, 'حدثاً موثّقاً'));
+    row.appendChild(h('div', 'trust__sep'));
+    row.appendChild(item(govs, 'محافظة'));
+    row.appendChild(h('div', 'trust__sep'));
+    row.appendChild(item('102', 'شهراً متواصلاً'));
+    row.appendChild(h('div', 'trust__sep'));
+    row.appendChild(item('+50', 'مصدراً موثوقاً'));
+    var link = h('a', 'trust__link'); link.innerHTML = 'استعرض اللوحة الحيّة <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>'; link.href = 'index.html';
+    row.appendChild(link);
+    box.appendChild(row);
   }
 
-  function init() { renderTrust(); }
+  function init() { renderImpact(); }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();

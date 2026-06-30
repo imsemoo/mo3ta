@@ -9811,3 +9811,137 @@ body.vn-fs-lock {
     grid-template-columns: 1fr;
   }
 }
+
+/* --------------------------------------------------------------------------
+   37. «من نحن» السرديّة — eyebrow البطل + ترويسة قسم الأثر (توكنز موجودة فقط)
+   -------------------------------------------------------------------------- */
+.page-head__eyebrow {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: .04em;
+  margin-block-end: var(--space-2);
+}
+
+.trust__head {
+  max-width: 72ch;
+  margin-inline: auto;
+  margin-block-end: var(--space-6);
+  text-align: center;
+}
+
+.trust__head-title {
+  font-size: clamp(18px, 2.4vw, 24px);
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -.01em;
+}
+
+.trust__head-text {
+  margin-block-start: var(--space-3);
+  font-size: 15px;
+  color: var(--muted);
+  line-height: var(--lh-body);
+}
+
+/* --------------------------------------------------------------------------
+   38. «من نحن» — أشرطة أضيق + شبكات متماثلة + محطّات/قيم أغنى
+   -------------------------------------------------------------------------- */
+.about-band {
+  padding-block: clamp(48px, 5.5vw, 68px);
+}
+
+.about-genesis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+.about-milestone {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-7) var(--space-5) var(--space-6);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+}
+
+.about-milestone::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 3px;
+  background: var(--accent);
+}
+
+.about-milestone__year {
+  display: block;
+  font-size: clamp(30px, 4vw, 42px);
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: -.02em;
+  line-height: 1;
+}
+
+.about-milestone__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-block: var(--space-3) var(--space-2);
+}
+
+.about-milestone__text {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: var(--lh-body);
+}
+
+.about-values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: var(--space-4);
+}
+
+.about-value {
+  padding: var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+}
+
+.about-value__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  color: var(--accent);
+  font-size: 17px;
+  margin-block-end: var(--space-3);
+}
+
+.about-value__title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 var(--space-2);
+}
+
+.about-value__text {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: var(--lh-snug);
+}
+
+@media (max-width: 820px) {
+  .about-genesis {
+    grid-template-columns: 1fr;
+  }
+}
