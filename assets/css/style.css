@@ -9982,3 +9982,41 @@ body.vn-fs-lock {
     gap: var(--space-6);
   }
 }
+
+/* --------------------------------------------------------------------------
+   39. تحسينات الموبايل (نتيجة تدقيق ريسبونسف شامل)
+   -------------------------------------------------------------------------- */
+
+/* (1) مؤشّرات المحافظة: منع قصّ أرقام الفئات على الهواتف الضيّقة.
+   السبب: .counter{overflow:hidden} + حشو 24px في خليّة ~88px كان يقصّ «61,865». */
+@media (max-width: 520px) {
+  .gov-metrics .counter--cat {
+    padding: var(--space-3);
+  }
+  .gov-metrics .counter--cat .counter__value {
+    font-size: 16px;
+  }
+}
+
+/* (2) أهداف لمس أكبر على الموبايل (كانت أصغر من ~32px) */
+@media (max-width: 560px) {
+  .dtable__toggle {
+    width: 34px;
+    height: 34px;
+  }
+  .calendar__nav {
+    width: 36px;
+    height: 36px;
+  }
+  .seg__btn {
+    padding: 9px 14px;
+  }
+}
+
+/* (3) روابط التذييل القانونيّة: التفاف آمن + فجوة أنسب على الموبايل */
+@media (max-width: 560px) {
+  .site-footer__legal {
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+  }
+}
