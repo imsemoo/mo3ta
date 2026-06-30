@@ -533,11 +533,38 @@
     box.appendChild(ol);
   }
 
-  /* ===== 7) المقارنة — كاروسيل بأرقام v الحقيقيّة ===== */
-  function renderCarousel() {
-    var box = slot('gov-carousel'); if (!box) return; clear(box);
+  /* ===== 7) المقارنة — لوحة ترتيب (كل الـ12 محافظة، بلا تمرير) ===== */
+  function renderLeaderboard() {
+    var box = slot('gov-compare-list'); if (!box) return; clear(box);
     var order = GOV.map(function (x, i) { return i; }).sort(function (a, b) { return GOV[b].v - GOV[a].v; });
-    order.forEach(function (i) { var card = buildCard(i); if (i === IDX) card.classList.add('is-current'); box.appendChild(card); });
+    order.forEach(function (i, pos) {
+      var gg = GOV[i], cur = (i === IDX);
+      var row = h('a', 'lb-row' + (cur ? ' is-current' : ''));
+      row.href = 'city_town_info.html?gov=' + i;
+      row.setAttribute('aria-label', 'المرتبة ' + (pos + 1) + ' — ' + gg.n + ' — ' + fmt(gg.v) + ' حدثاً مرصوداً' + (cur ? ' — محافظتك الحالية' : '') + ' — استعراض الملف');
+      row.appendChild(h('span', 'lb-rank num', '#' + (pos + 1)));
+      var info = h('div', 'lb-info');
+      var name = h('span', 'lb-name');
+      name.appendChild(document.createTextNode(gg.n));
+      if (cur) {
+        var you = h('span', 'lb-you');
+        you.innerHTML = '<i class="fa-solid fa-location-dot" aria-hidden="true"></i> محافظتك';
+        name.appendChild(you);
+      }
+      info.appendChild(name);
+      info.appendChild(h('span', 'lb-region', regionOf(i).label));
+      row.appendChild(info);
+      var bar = h('div', 'lb-bar'); bar.setAttribute('aria-hidden', 'true');
+      var fill = h('div', 'lb-bar__fill');
+      fill.style.setProperty('--w', (maxV ? gg.v / maxV * 100 : 0) + '%');
+      fill.style.setProperty('--tone', gg.gaza ? 'var(--red)' : 'var(--accent)');
+      bar.appendChild(fill); row.appendChild(bar);
+      var val = h('div', 'lb-val');
+      val.appendChild(h('span', 'lb-val__num num', fmt(gg.v)));
+      val.appendChild(h('span', 'lb-val__lbl', 'حدثاً مرصوداً'));
+      row.appendChild(val);
+      box.appendChild(row);
+    });
   }
 
   /* ===== 8) في مثل هذا اليوم ===== */
@@ -580,7 +607,7 @@
     renderMapSub(); renderCities(); renderFacts();
     renderDonut(); renderBreakdowns(); renderCompare();
     renderLatestPreview(); renderTypeFilters(); renderExplorer(); bindExplorer(); bindExplorerToggle();
-    renderTimeline(); renderCarousel(); renderToday();
+    renderTimeline(); renderLeaderboard(); renderToday();
     setTimeout(zoomActive, 350);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

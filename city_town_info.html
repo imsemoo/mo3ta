@@ -133,7 +133,7 @@
     </section>
 
     <!-- 4) التحليلات -->
-    <section class="section rv">
+    <section class="section band rv">
       <h2 class="section__title">التحليلات</h2>
       <p class="section__sub">قصّةٌ من العام إلى الخاص: توزّع الفئات، ثم تفصيلاتها، ثم موقع المحافظة رقميّاً.</p>
       <div class="gov-grid">
@@ -200,7 +200,7 @@
     </section>
 
     <!-- 6) التطوّر الزمني (سياق وطنيّ) -->
-    <section class="section rv">
+    <section class="section band rv">
       <h2 class="section__title">التطوّر الزمني</h2>
       <p class="section__sub">سياقٌ وطنيّ موثّق من سجلّ مُعطى — ليست سلسلة زمنيّة خاصّة بهذه المحافظة.</p>
       <div data-render="gov-timeline"></div>
@@ -209,12 +209,12 @@
     <!-- 7) المقارنة (شريط كامل العرض) -->
     <section class="section band band--tint rv" aria-labelledby="cmp-h">
       <h2 class="section__title" id="cmp-h">المقارنة بالمحافظات</h2>
-      <p class="section__sub">ترتيب المحافظات بأعداد الأحداث المرصودة — مرّر أفقيّاً، ومحافظتك مميّزة بإطار.</p>
-      <div class="gov-carousel" data-render="gov-carousel"></div>
+      <p class="section__sub">ترتيب المحافظات الـ12 بأعداد الأحداث المرصودة — كلّها ظاهرة، ومحافظتك الحالية مميّزة بإطار.</p>
+      <div class="gov-leaderboard" data-render="gov-compare-list"></div>
     </section>
 
     <!-- 8) في مثل هذا اليوم -->
-    <section class="section rv">
+    <section class="section band rv">
       <h2 class="section__title">في مثل هذا اليوم</h2>
       <p class="section__sub">أحداثٌ موثّقة وقعت في مثل تاريخ اليوم من أعوام سابقة، من سجلّ مُعطى الوطني.</p>
       <div class="gov-feed" data-render="today"></div>
@@ -222,25 +222,6 @@
 
   </main>
 
-  <!-- ===================== بانر النشرة البريدية ===================== -->
-  <section class="news-band rv" data-st>
-    <div class="news-band__inner">
-      <div class="news-band__intro">
-        <h2 class="news-band__title">ابقَ على اطّلاع بالتوثيق</h2>
-        <p class="news-band__text">اشترك لتصلك أبرز التقارير الدورية والتحديثات الموثّقة أولاً بأول.</p>
-      </div>
-      <form class="news-band__form" onsubmit="return false">
-        <label class="visually-hidden" for="news-band-email">بريدك الإلكتروني</label>
-        <input class="news-band__input" id="news-band-email" type="email" placeholder="بريدك الإلكتروني" autocomplete="email">
-        <button class="btn btn--primary news-band__btn" type="submit">اشترك الآن</button>
-      </form>
-      <div class="news-band__links">
-        <a class="news-band__chip" href="#">القرى الفلسطينية <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i></a>
-        <a class="news-band__chip" href="#">مرصد شيرين <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i></a>
-        <a class="news-band__chip" href="visual_narrative.html">الرواية المصوّرة <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i></a>
-      </div>
-    </div>
-  </section>
 
   <!-- ===================== التذييل ===================== -->
   <footer class="site-footer" data-st>
