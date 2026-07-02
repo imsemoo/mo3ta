@@ -10020,3 +10020,282 @@ body.vn-fs-lock {
     gap: var(--space-2) var(--space-4);
   }
 }
+
+/* --------------------------------------------------------------------------
+   40. عارض «الرواية المصوّرة» — ملء شاشة احترافي بكروم أيقونات
+   -------------------------------------------------------------------------- */
+
+/* خلفية غامرة (تدرّج الهوية الداكن) بدل خلفية الصفحة — تعلو قاعدة الوضع الداكن */
+.vn-book.is-fullscreen,
+:root[data-mode="dark"] .vn-book.is-fullscreen {
+  background: linear-gradient(180deg, #23264f 0%, #14162b 100%);
+  border: 0;
+}
+
+/* الشريط العائم — لا يظهر إلا داخل ملء الشاشة */
+.vn-fsbar {
+  display: none;
+}
+
+.vn-book.is-fullscreen .vn-fsbar {
+  position: absolute;
+  z-index: 24;
+  inset-inline: 10px;
+  margin-inline: auto;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  inset-block-end: calc(14px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 7px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 999px;
+  background: color-mix(in srgb, #10121f 82%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow: 0 18px 44px rgba(5, 7, 20, .5);
+  overflow-x: auto;
+  scrollbar-width: none;
+  transition: opacity var(--t-med) var(--ease), transform var(--t-med) var(--ease);
+}
+
+.vn-book.is-fullscreen .vn-fsbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* زرّ أيقونة */
+.vn-fstool {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  inline-size: 42px;
+  block-size: 42px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 255, 255, .88);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+
+.vn-fstool:hover {
+  background: rgba(255, 255, 255, .13);
+  color: #fff;
+}
+
+.vn-fstool:active {
+  transform: scale(.92);
+}
+
+.vn-fstool:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.vn-fstool[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* تلميح فوق الزرّ (أيقونات بلا نصوص) — content:none افتراضياً كي لا يفيض
+   الصندوق الخفي في scrollWidth للشريط القابل للتمرير؛ يظهر بالمرور عبر أنميشن */
+.vn-fstool[data-tip]::after {
+  content: none;
+  position: absolute;
+  inset-block-end: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 10px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 8px;
+  background: #0c0e1c;
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 5;
+}
+
+.vn-fstool[data-tip]:hover::after,
+.vn-fstool[data-tip]:focus-visible::after {
+  content: attr(data-tip);
+  animation: vn-tip-in var(--t-fast) var(--ease) .3s forwards;
+}
+
+@keyframes vn-tip-in {
+  to {
+    opacity: 1;
+  }
+}
+
+/* فاصل وعدّاد الصفحة */
+.vn-fsbar__sep {
+  flex: none;
+  inline-size: 1px;
+  block-size: 22px;
+  margin-inline: 3px;
+  background: rgba(255, 255, 255, .16);
+}
+
+.vn-fsbar__counter {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-inline: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, .72);
+}
+
+.vn-fsbar__jump {
+  inline-size: 52px;
+  padding: 6px 4px;
+  text-align: center;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(255, 255, 255, .1);
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 9px;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.vn-fsbar__jump:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.vn-fsbar__jump::-webkit-outer-spin-button,
+.vn-fsbar__jump::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* شريط التقدّم في ملء الشاشة: خيط علوي بعرض الشاشة */
+.vn-book.is-fullscreen .vn-book__progress {
+  position: absolute;
+  z-index: 22;
+  inset-block-start: 0;
+  inset-inline: 0;
+  block-size: 4px;
+  border-radius: 0;
+  background: rgba(255, 255, 255, .12);
+  transition: opacity var(--t-med) var(--ease);
+}
+
+/* أسهم التنقّل في ملء الشاشة: زجاج داكن أكبر */
+.vn-book.is-fullscreen .vn-book__nav {
+  inline-size: 52px;
+  block-size: 52px;
+  border-color: rgba(255, 255, 255, .16);
+  background: rgba(255, 255, 255, .09);
+  color: #fff;
+  box-shadow: 0 10px 26px rgba(5, 7, 20, .4);
+}
+
+.vn-book.is-fullscreen .vn-book__nav:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+/* السكون: يخفي الكروم ويترك الصفحة وحدها (كمشغّلات الفيديو) */
+.vn-book.is-fullscreen.is-idle {
+  cursor: none;
+}
+
+.vn-book.is-fullscreen.is-idle .vn-fsbar {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+}
+
+.vn-book.is-fullscreen.is-idle .vn-book__nav,
+.vn-book.is-fullscreen.is-idle .vn-book__progress {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* الوضع الليلي داخل ملء الشاشة: يخفّف سطوع صفحات الكتاب للقراءة الطويلة */
+.vn-book.is-fullscreen.is-night .vn-book__flip img {
+  filter: brightness(.78) contrast(1.05);
+}
+
+.vn-book.is-fullscreen.is-night .vn-page {
+  background: #23253c;
+}
+
+/* تقليل الحركة: لا انزلاق لتمركز الغلاف (القلب نفسه يقصر عبر flippingTime في JS) */
+@media (prefers-reduced-motion: reduce) {
+  .vn-book__stage {
+    transition: none;
+  }
+}
+
+/* موبايل: أدوات أصغر + إخفاء الثانوي (يبقى: تصفّح/فهرس/تنقّل/تكبير/ليلي/عرض/خروج) */
+@media (max-width: 560px) {
+  .vn-book.is-fullscreen .vn-fsbar {
+    gap: 2px;
+    padding: 6px;
+    inset-block-end: calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .vn-fstool {
+    inline-size: 38px;
+    block-size: 38px;
+    font-size: 14px;
+  }
+
+  .vn-fstool--lg,
+  .vn-fsbar__sep--lg,
+  .vn-fsbar__total {
+    display: none;
+  }
+
+  .vn-fsbar__jump {
+    inline-size: 46px;
+  }
+
+  /* أهداف لمس أريح في شريط التنقّل السفلي العادي */
+  .vn-book__edge {
+    padding: 11px 18px;
+  }
+}
+
+@media (max-width: 400px) {
+
+  .vn-book.is-fullscreen .vn-fsbar {
+    gap: 1px;
+    padding: 5px;
+  }
+
+  .vn-fstool {
+    inline-size: 36px;
+    block-size: 36px;
+  }
+
+  .vn-fsbar__jump {
+    inline-size: 42px;
+  }
+
+  .vn-fsbar__sep,
+  .vn-fsbar__counter {
+    margin-inline: 2px;
+  }
+}
+
+@media print {
+  .vn-fsbar {
+    display: none !important;
+  }
+}

@@ -7,8 +7,9 @@
    • RTL: نعكس الحاوية بـscaleX(-1) فيُقلَّب من اليمين كالكتاب العربي،
      ونعكس صورة كل صفحة كي يبقى محتواها سليماً.
    • تحميل كسول: لا تُحمَّل الـ250 صورة معاً — فقط الجوار يُحمَّل عند التقليب.
-   • مزايا: رابط لكل صفحة (#p=N) · استئناف آخر صفحة · شريط تقدّم ·
-     نطق لقارئ الشاشة · معالجة فشل التحميل · صوت تقليب (Web Audio).
+   • مزايا: رابط لكل صفحة (#p=N) · استئناف آخر صفحة · شريط تقدّم (نقرة = انتقال) ·
+     نطق لقارئ الشاشة · معالجة فشل التحميل · صوت تقليب (Web Audio) ·
+     ملء شاشة حقيقي (Fullscreen API + بديل) بكروم أيقونات يختفي عند السكون.
    ========================================================================== */
 (function () {
   'use strict';
@@ -17,11 +18,16 @@
   var mount = document.querySelector('[data-vn-flip]');
   if (!book || !mount || !window.St || !window.St.PageFlip) return;
 
+  function pad(n) { return ('00' + n).slice(-3); }
+  function src(n) { return 'assets/narrative/page-' + pad(n) + '.webp'; }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function $$(s) { return Array.prototype.slice.call(document.querySelectorAll(s)); }
+
   var totalEl = document.querySelector('[data-vn-total]');
   var TOTAL = parseInt((totalEl && totalEl.textContent) || '250', 10) || 250;
-  var jump = document.querySelector('[data-vn-jump]');
-  var fsBtn = document.querySelector('[data-vn-fs]');
-  var soundBtn = document.querySelector('[data-vn-sound]');
+  var jumps = $$('[data-vn-jump]');            // حقلا القفز: الشريط السفلي + شريط ملء الشاشة
+  var fsBtns = $$('[data-vn-fs]');
+  var soundBtns = $$('[data-vn-sound]');
   var loading = document.querySelector('[data-vn-loading]');
   var progress = document.querySelector('[data-vn-progress]');
   var live = document.querySelector('[data-vn-live]');
@@ -30,10 +36,13 @@
   var LS_LAST = 'mo3ta:vn:lastPage';
   var LS_SOUND = 'mo3ta:vn:sound';
 
-  function pad(n) { return ('00' + n).slice(-3); }
-  function src(n) { return 'assets/narrative/page-' + pad(n) + '.webp'; }
-  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
-  function $$(s) { return Array.prototype.slice.call(document.querySelectorAll(s)); }
+  /* أيقونة/تلميح زرّ — يُحدّثان كل النسخ (شريط الأدوات العلوي + شريط ملء الشاشة) */
+  function setIcon(btn, name) { var ic = btn.querySelector('i'); if (ic) ic.className = 'fa-solid ' + name; }
+  function setTip(btn, txt) {
+    btn.title = txt;
+    if (btn.hasAttribute('data-tip')) btn.setAttribute('data-tip', txt);
+    if (btn.hasAttribute('aria-label')) btn.setAttribute('aria-label', txt);
+  }
 
   /* ---------- بناء الصفحات + معالجة فشل التحميل ---------- */
   var pageEls = [];
@@ -90,14 +99,16 @@
   }
 
   /* ---------- StPageFlip ---------- */
+  // احترام تفضيل تقليل الحركة: قلبٌ أقصر (300ms) بلا ظلّ متحرّك
+  var REDUCE = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   var pf = new St.PageFlip(mount, {
     width: 424, height: 600,            // نسبة الصفحة 0.707 (1980×2800)
     size: 'stretch',
     minWidth: 250, minHeight: 354,
     maxWidth: 1600, maxHeight: 2264,
-    maxShadowOpacity: 0.5,
-    drawShadow: true,
-    flippingTime: 800,
+    maxShadowOpacity: REDUCE ? 0 : 0.35,
+    drawShadow: !REDUCE,
+    flippingTime: REDUCE ? 300 : 800,
     usePortrait: true,                  // صفحة واحدة على الضيّق
     showCover: true,                    // الغلاف وحده (يُمركَز عبر .is-cover مع عكس RTL)
     autoSize: true,
@@ -110,7 +121,7 @@
 
   /* ---------- تحميل كسول + فهرس ---------- */
   function loadAround(idx) {
-    for (var n = idx - 2; n <= idx + 3; n++) {
+    for (var n = idx - 2; n <= idx + 4; n++) {   // ‎+4 أماماً كي لا يتلعثم العرض التلقائي السريع (4ث)
       var p = pageEls[n]; if (!p) continue;
       var im = p.querySelector('img');
       if (im && !im.getAttribute('src') && im.dataset.src) im.setAttribute('src', im.dataset.src);
@@ -157,18 +168,20 @@
   }
 
   function syncSound() {
-    if (!soundBtn) return;
-    soundBtn.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
-    soundBtn.title = soundOn ? 'كتم صوت التقليب' : 'تشغيل صوت التقليب';
+    soundBtns.forEach(function (b) {
+      b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+      setIcon(b, soundOn ? 'fa-volume-high' : 'fa-volume-xmark');
+      setTip(b, soundOn ? 'كتم صوت التقليب' : 'تشغيل صوت التقليب');
+    });
   }
-  if (soundBtn) {
-    soundBtn.addEventListener('click', function () {
+  soundBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
       soundOn = !soundOn;
       try { localStorage.setItem(LS_SOUND, soundOn ? '1' : '0'); } catch (e) {}
       syncSound();
       if (soundOn) playFlipSound();   // تغذية راجعة + فكّ قفل الصوت على إيماءة المستخدم
     });
-  }
+  });
 
   /* ---------- رابط الصفحة (#p=N) + الاستئناف ---------- */
   function writeHash(page) {
@@ -202,7 +215,7 @@
   function goTo(idx) { if (!autoTicking) stopAuto(); idx = clamp(idx, 0, TOTAL - 1); setCover(idx === 0); loadAround(idx); pf.flip(idx); }
 
   /* ---------- العرض التلقائي ---------- */
-  var playBtn = document.querySelector('[data-vn-play]');
+  var playBtns = $$('[data-vn-play]');
   var speedSel = document.querySelector('[data-vn-speed]');
   var restartBtn = document.querySelector('[data-vn-restart]');
   var LS_SPEED = 'mo3ta:vn:speed';
@@ -217,11 +230,14 @@
     });
   }
   function syncPlay() {
-    if (!playBtn) return;
     var on = autoTimer != null;
-    playBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
-    playBtn.innerHTML = on ? '<i class="fa-solid fa-pause" aria-hidden="true"></i> إيقاف' : '<i class="fa-solid fa-play" aria-hidden="true"></i> عرض تلقائي';
-    playBtn.title = on ? 'إيقاف العرض التلقائي' : 'عرض تلقائي';
+    playBtns.forEach(function (b) {
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      setIcon(b, on ? 'fa-pause' : 'fa-play');
+      var lab = b.querySelector('[data-vn-play-label]');
+      if (lab) lab.textContent = on ? 'إيقاف' : 'عرض تلقائي';
+      setTip(b, on ? 'إيقاف العرض التلقائي' : 'عرض تلقائي');
+    });
   }
   function stopAuto() { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; syncPlay(); } }
   function startAuto() {
@@ -233,7 +249,7 @@
     if (curIndex() + 1 >= TOTAL) { stopAuto(); return; }
     autoTicking = true; goNext(); autoTicking = false;
   }
-  if (playBtn) playBtn.addEventListener('click', function () { if (autoTimer) stopAuto(); else startAuto(); });
+  playBtns.forEach(function (b) { b.addEventListener('click', function () { if (autoTimer) stopAuto(); else startAuto(); }); });
   if (restartBtn) restartBtn.addEventListener('click', function () { goTo(0); });
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) { if (autoTimer) { autoWasPlaying = true; stopAuto(); } }
@@ -242,7 +258,7 @@
 
   function updateBar() {
     var page = curIndex() + 1;
-    if (jump && document.activeElement !== jump) jump.value = page;
+    jumps.forEach(function (inp) { if (document.activeElement !== inp) inp.value = page; });
     $$('[data-vn-prev]').forEach(function (b) { b.disabled = page <= 1; });
     $$('[data-vn-next]').forEach(function (b) { b.disabled = page >= TOTAL; });
     setCover(curIndex() === 0);
@@ -251,7 +267,8 @@
     if (page > 1) saveLast(page - 1);   // لا نحفظ الغلاف كي لا يمحو التحميلُ قيمةَ الاستئناف
     if (page === TOTAL && !book.classList.contains('is-end')) stopAuto();
     book.classList.toggle('is-end', page === TOTAL);   // شاشة الختام على الصفحة الأخيرة
-    announce('صفحة ' + page + ' من ' + TOTAL);
+    // أثناء العرض التلقائي لا نُثرثر على قارئ الشاشة كل بضع ثوانٍ — نعلن آخر صفحة فقط
+    if (!autoTimer || page === TOTAL) announce('صفحة ' + page + ' من ' + TOTAL);
   }
 
   /* ---------- التهيئة + أولوية البداية (hash > saved > الغلاف) ---------- */
@@ -312,8 +329,8 @@
   /* ---------- أزرار التنقّل ---------- */
   $$('[data-vn-next]').forEach(function (b) { b.addEventListener('click', goNext); });
   $$('[data-vn-prev]').forEach(function (b) { b.addEventListener('click', goPrev); });
-  var firstBtn = document.querySelector('[data-vn-first]'); if (firstBtn) firstBtn.addEventListener('click', function () { goTo(0); });
-  var lastBtn = document.querySelector('[data-vn-last]'); if (lastBtn) lastBtn.addEventListener('click', function () { goTo(TOTAL - 1); });
+  $$('[data-vn-first]').forEach(function (b) { b.addEventListener('click', function () { goTo(0); }); });
+  $$('[data-vn-last]').forEach(function (b) { b.addEventListener('click', function () { goTo(TOTAL - 1); }); });
 
   // «ابدأ القراءة»: يُبرز مساحة القراءة ويفتح الكتاب من الغلاف
   var startBtn = document.querySelector('[data-vn-start]');
@@ -326,8 +343,10 @@
   /* ---------- أدوات: نسخ · مشاركة · حفظ · طباعة ---------- */
   function toast(msg) {
     announce(msg);
+    var host = realFsEl() || document.body;   // داخل عنصر ملء الشاشة الحقيقي وإلا لن تُرى
     var t = document.querySelector('.vn-toast');
-    if (!t) { t = document.createElement('div'); t.className = 'vn-toast'; document.body.appendChild(t); }
+    if (!t) { t = document.createElement('div'); t.className = 'vn-toast'; }
+    if (t.parentNode !== host) host.appendChild(t);
     t.textContent = msg; t.classList.add('is-show');
     clearTimeout(t.__h); t.__h = setTimeout(function () { t.classList.remove('is-show'); }, 2200);
   }
@@ -357,48 +376,73 @@
     });
   }
 
-  // القفز لصفحة: يدعم Enter + يقصّ النطاق + يُغذّي راجعةً عند الخطأ
-  function submitJump() {
-    var v = parseInt(jump.value, 10);
+  // القفز لصفحة: يدعم Enter + يقصّ النطاق + يُغذّي راجعةً عند الخطأ (كلا الحقلين)
+  function submitJump(inp) {
+    var v = parseInt(inp.value, 10);
     if (v >= 1 && v <= TOTAL) { if (v - 1 !== curIndex()) goTo(v - 1); }
     else {
       announce('رقم صفحة غير صالح؛ النطاق 1 إلى ' + TOTAL);
-      jump.value = curIndex() + 1;
-      jump.classList.add('is-invalid');
-      setTimeout(function () { jump.classList.remove('is-invalid'); }, 600);
+      inp.value = curIndex() + 1;
+      inp.classList.add('is-invalid');
+      setTimeout(function () { inp.classList.remove('is-invalid'); }, 600);
     }
   }
-  if (jump) {
-    jump.addEventListener('change', submitJump);
-    jump.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); submitJump(); jump.blur(); } });
-  }
+  jumps.forEach(function (inp) {
+    inp.addEventListener('change', function () { submitJump(inp); });
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); submitJump(inp); inp.blur(); } });
+  });
 
-  // لوحة المفاتيح (RTL: يسار = التالي، يمين = السابق)
+  // لوحة المفاتيح (RTL: يسار = التالي، يمين = السابق · Space يقلّب في ملء الشاشة · F يبدّله)
   document.addEventListener('keydown', function (e) {
     if (/^(input|textarea|select)$/i.test(e.target.tagName || '')) return;
     if (e.key === 'ArrowLeft') goNext();
     else if (e.key === 'ArrowRight') goPrev();
     else if (e.key === 'Home') goTo(0);
     else if (e.key === 'End') goTo(TOTAL - 1);
+    else if (e.key === ' ' && fsOn()) { e.preventDefault(); if (e.shiftKey) goPrev(); else goNext(); }
+    else if ((e.key === 'f' || e.key === 'F') && !e.ctrlKey && !e.metaKey && !e.altKey) setFs(!fsOn());
   });
 
   // السحب باللمس (سحب لليسار = التالي · لليمين = السابق)
-  var tx = null, ty = null;
-  mount.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  // عتبة مسافة + سرعة: نقبل السحبة الطويلة (≥60px) أو الخاطفة القصيرة (≥35px وسريعة)
+  // كي لا يقلب الانزلاقُ البطيء العرضي أثناء القراءة صفحةً بغير قصد.
+  var tx = null, ty = null, tt = 0;
+  mount.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; ty = e.touches[0].clientY; tt = e.timeStamp; }, { passive: true });
   mount.addEventListener('touchend', function (e) {
     if (tx == null) return;
     var dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty; tx = null;
-    if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return; // تجاهل التمرير العمودي
+    if (Math.abs(dx) < Math.abs(dy)) return;                       // تمرير عمودي
+    var speed = Math.abs(dx) / Math.max(1, e.timeStamp - tt);      // px/ms
+    if (Math.abs(dx) < 60 && !(Math.abs(dx) >= 35 && speed > 0.5)) return;
     if (dx < 0) goNext(); else goPrev();
   }, { passive: true });
+
+  /* نقر حافّة الصفحة = تقليب (كنمط fliphtml5) — الوسط يبقى للتكبير بالنقر المزدوج.
+     مهلة 240ms تميّز النقرة المفردة عن المزدوجة؛ اللمسة المزدوجة تُلغيها عبر cancelEdgeClick. */
+  var stageEl = document.querySelector('.vn-book__stage');
+  var edgeClickT = null, suppressEdgeUntil = 0;
+  function cancelEdgeClick() { clearTimeout(edgeClickT); suppressEdgeUntil = Date.now() + 400; }
+  if (stageEl) stageEl.addEventListener('click', function (e) {
+    if (Date.now() < suppressEdgeUntil) return;
+    if (e.target.closest('button, a, input, .vn-page__retry')) return;
+    if (!book.classList.contains('is-ready') || book.classList.contains('is-end')) return;
+    var r = stageEl.getBoundingClientRect();
+    if (!r.width) return;
+    var fx = (e.clientX - r.left) / r.width;   // إحداثيات بصريّة — عكس scaleX لا يغيّرها
+    var go = fx <= 0.32 ? goNext : (fx >= 0.68 ? goPrev : null);   // RTL: يسار = التالي
+    if (!go) return;
+    clearTimeout(edgeClickT);
+    edgeClickT = setTimeout(go, 240);
+  });
+  mount.addEventListener('dblclick', function () { cancelEdgeClick(); });
 
   /* ---------- متصفّح المصغّرات ---------- */
   (function () {
     var panel = document.querySelector('[data-vn-thumbs]');
     var grid = document.querySelector('[data-vn-thumbs-grid]');
-    var openBtn = document.querySelector('[data-vn-grid]');
+    var openBtns = $$('[data-vn-grid]');
     var closeBtn = document.querySelector('[data-vn-thumbs-close]');
-    if (!panel || !grid || !openBtn) return;
+    if (!panel || !grid || !openBtns.length) return;
 
     var built = false, io = null, items = [], lastFocus = null;
     function thumbSrc(n) { return 'assets/narrative/thumb/page-' + pad(n) + '.webp'; }
@@ -459,7 +503,7 @@
         else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       }
     }
-    openBtn.addEventListener('click', open);
+    openBtns.forEach(function (b) { b.addEventListener('click', open); });
     if (closeBtn) closeBtn.addEventListener('click', close);
     panel.addEventListener('click', function (e) { if (e.target === panel) close(); });
   })();
@@ -468,12 +512,12 @@
   (function () {
     var toc = window.VN_TOC;
     if (!toc || !toc.length) return;
-    var openBtn = document.querySelector('[data-vn-toc]');
+    var openBtns = $$('[data-vn-toc]');
     var panel = document.querySelector('[data-vn-toc-panel]');
     var listEl = document.querySelector('[data-vn-toc-list]');
     var closeBtn = document.querySelector('[data-vn-toc-close]');
-    if (!openBtn || !panel || !listEl) return;
-    openBtn.hidden = false;
+    if (!openBtns.length || !panel || !listEl) return;
+    openBtns.forEach(function (b) { b.hidden = false; });
 
     var entries = [];
     toc.forEach(function (s) {
@@ -516,7 +560,7 @@
         else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       }
     }
-    openBtn.addEventListener('click', open);
+    openBtns.forEach(function (b) { b.addEventListener('click', open); });
     if (closeBtn) closeBtn.addEventListener('click', close);
     panel.addEventListener('click', function (e) { if (e.target === panel) close(); });
   })();
@@ -526,14 +570,14 @@
     var panel = document.querySelector('[data-vn-zoom-panel]');
     var stage = document.querySelector('[data-vn-zoom-stage]');
     var img = document.querySelector('[data-vn-zoom-img]');
-    var openBtn = document.querySelector('[data-vn-zoom]');
+    var openBtns = $$('[data-vn-zoom]');
     var closeBtn = document.querySelector('[data-vn-zoom-close]');
     var inBtn = document.querySelector('[data-vn-zoom-in]');
     var outBtn = document.querySelector('[data-vn-zoom-out]');
     var prevBtn = document.querySelector('[data-vn-zoom-prev]');
     var nextBtn = document.querySelector('[data-vn-zoom-next]');
     var levelEl = document.querySelector('[data-vn-zoom-level]');
-    if (!panel || !stage || !img || !openBtn) return;
+    if (!panel || !stage || !img || !openBtns.length) return;
 
     var MINZ = 1, MAXZ = 4;
     var zPage = 1, scale = 1, tx = 0, ty = 0, rot = 0;
@@ -565,7 +609,7 @@
       zPage = clamp(p, 1, TOTAL);
       img.setAttribute('src', src(zPage));
       img.alt = 'صفحة ' + zPage + ' مكبّرة';
-      scale = 1; tx = 0; ty = 0; rot = 0; apply();
+      tx = 0; ty = 0; rot = 0; apply();   // مستوى التكبير يثبت بين الصفحات (كـfliphtml5)؛ يُصفَّر السحب والدوران فقط
       if (prevBtn) prevBtn.disabled = zPage <= 1;
       if (nextBtn) nextBtn.disabled = zPage >= TOTAL;
     }
@@ -590,7 +634,7 @@
       else if (e.key === 'ArrowRight') loadPage(zPage - 1);
     }
 
-    openBtn.addEventListener('click', function () { open(curIndex() + 1); });
+    openBtns.forEach(function (b) { b.addEventListener('click', function () { open(curIndex() + 1); }); });
     // تدوير الصفحة: يفتح طبقة التكبير (إن لزم) ويُدوّر 90° في كل نقرة
     var rotateBtn = document.querySelector('[data-vn-rotate]');
     if (rotateBtn) rotateBtn.addEventListener('click', function () {
@@ -640,24 +684,124 @@
     stage.addEventListener('pointercancel', endPointer);
 
     // فتح بالنقر المزدوج على الصفحة
-    mount.addEventListener('dblclick', function () { open(curIndex() + 1); });
+    mount.addEventListener('dblclick', function () { if (panel.hidden) open(curIndex() + 1); });
+
+    // لمسة مزدوجة باللمس = تكبير (dblclick غير موثوق على المتصفّحات اللمسية)
+    var ltT = 0, ltX = 0, ltY = 0;
+    mount.addEventListener('touchend', function (e) {
+      var t = e.changedTouches[0], now = e.timeStamp;
+      if (now - ltT < 320 && Math.abs(t.clientX - ltX) < 40 && Math.abs(t.clientY - ltY) < 40) {
+        ltT = 0;
+        cancelEdgeClick();               // كي لا تقلب اللمسةُ الأولى صفحةً بالتوازي
+        if (panel.hidden) open(curIndex() + 1);
+      } else { ltT = now; ltX = t.clientX; ltY = t.clientY; }
+    }, { passive: true });
   })();
 
-  /* ---------- ملء الشاشة ---------- */
+  /* ---------- ملء الشاشة (Fullscreen API حقيقي + بديل بطبقة مثبّتة) ---------- */
   function fsOn() { return book.classList.contains('is-fullscreen'); }
+  function realFsEl() { return document.fullscreenElement || document.webkitFullscreenElement || null; }
+
   function syncFs() {
-    if (!fsBtn) return;
-    fsBtn.setAttribute('aria-pressed', fsOn() ? 'true' : 'false');
-    fsBtn.title = fsOn() ? 'خروج من ملء الشاشة' : 'ملء الشاشة';
+    fsBtns.forEach(function (b) {
+      b.setAttribute('aria-pressed', fsOn() ? 'true' : 'false');
+      setIcon(b, fsOn() ? 'fa-compress' : 'fa-expand');
+      setTip(b, fsOn() ? 'خروج من ملء الشاشة' : 'ملء الشاشة');
+    });
   }
-  function setFs(on) {
+
+  function applyFs(on) {
     book.classList.toggle('is-fullscreen', on);
     document.body.classList.toggle('vn-fs-lock', on);
     syncFs();
+    if (on) wakeChrome();
+    else { clearTimeout(idleT); book.classList.remove('is-idle'); }
+    // StPageFlip يقيس حاويته — نبثّ resize على دفعات أثناء انتقال الأبعاد
     [0, 60, 180, 360].forEach(function (t) { setTimeout(function () { window.dispatchEvent(new Event('resize')); }, t); });
   }
-  if (fsBtn) {
-    fsBtn.addEventListener('click', function () { setFs(!fsOn()); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && fsOn()) { setFs(false); fsBtn.focus(); } });
+
+  function setFs(on) {
+    var req = book.requestFullscreen || book.webkitRequestFullscreen;
+    var exit = document.exitFullscreen || document.webkitExitFullscreen;
+    if (on && req) {
+      // الحقيقي: الكلاس يُطبَّق عند fullscreenchange؛ عند الرفض نسقط للبديل
+      try { var p = req.call(book); if (p && p.catch) p.catch(function () { applyFs(true); }); }
+      catch (e) { applyFs(true); }
+    } else if (!on && realFsEl()) {
+      try { exit.call(document); } catch (e) { applyFs(false); }
+    } else {
+      applyFs(on);                       // متصفّحات بلا API (iOS Safari على iPhone)
+    }
+  }
+
+  ['fullscreenchange', 'webkitfullscreenchange'].forEach(function (ev) {
+    document.addEventListener(ev, function () { applyFs(realFsEl() === book); });
+  });
+  fsBtns.forEach(function (b) { b.addEventListener('click', function () { setFs(!fsOn()); }); });
+  // Escape للبديل فقط — الحقيقي يخرج بنفسه ويطلق fullscreenchange
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && fsOn() && !realFsEl()) setFs(false);
+  });
+
+  /* كروم يختفي عند السكون داخل ملء الشاشة (كمشغّلات الفيديو) */
+  var idleT = null;
+  function wakeChrome() {
+    if (!fsOn()) return;
+    book.classList.remove('is-idle');
+    clearTimeout(idleT);
+    idleT = setTimeout(function () {
+      if (!fsOn()) return;
+      if (book.querySelector('.vn-fsbar:hover, .vn-book__nav:hover')) { wakeChrome(); return; } // المؤشر فوق الأدوات
+      book.classList.add('is-idle');
+    }, 2600);
+  }
+  book.addEventListener('pointermove', wakeChrome, { passive: true });
+  book.addEventListener('touchstart', wakeChrome, { passive: true });
+  document.addEventListener('keydown', function () { if (fsOn()) wakeChrome(); });
+
+  /* حصر التركيز داخل العارض في ملء الشاشة (اللوحات المفتوحة تدير حصرها بنفسها) */
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab' || !fsOn()) return;
+    if (book.querySelector('[data-vn-thumbs]:not([hidden]), [data-vn-toc-panel]:not([hidden]), [data-vn-zoom-panel]:not([hidden])')) return;
+    var f = book.querySelectorAll('button:not([hidden]):not(:disabled), a[href], input');
+    var vis = Array.prototype.filter.call(f, function (el) { return el.offsetWidth > 0 || el.offsetHeight > 0; });
+    if (!vis.length) return;
+    var first = vis[0], last = vis[vis.length - 1];
+    var inside = book.contains(document.activeElement);
+    if (e.shiftKey && (document.activeElement === first || !inside)) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && (document.activeElement === last || !inside)) { e.preventDefault(); first.focus(); }
+  }, true);
+
+  /* الوضع الليلي داخل ملء الشاشة — يخفّف سطوع الصفحات للقراءة الطويلة */
+  var LS_NIGHT = 'mo3ta:vn:night';
+  var nightBtns = $$('[data-vn-night]');
+  var nightOn = false; try { nightOn = localStorage.getItem(LS_NIGHT) === '1'; } catch (e) {}
+  function syncNight() {
+    book.classList.toggle('is-night', nightOn);
+    nightBtns.forEach(function (b) {
+      b.setAttribute('aria-pressed', nightOn ? 'true' : 'false');
+      setIcon(b, nightOn ? 'fa-sun' : 'fa-moon');
+      setTip(b, nightOn ? 'إيقاف الوضع الليلي' : 'وضع ليلي للقراءة');
+    });
+  }
+  nightBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      nightOn = !nightOn;
+      try { localStorage.setItem(LS_NIGHT, nightOn ? '1' : '0'); } catch (e) {}
+      syncNight();
+    });
+  });
+  syncNight();
+
+  /* نقرة شريط التقدّم = انتقال مباشر (RTL: يمتلئ من اليمين) */
+  if (progress) {
+    progress.style.cursor = 'pointer';
+    progress.title = 'انقر للانتقال إلى موضعٍ في العدد';
+    progress.addEventListener('click', function (e) {
+      var r = progress.getBoundingClientRect();
+      if (!r.width) return;
+      var frac = (r.right - e.clientX) / r.width;
+      goTo(clamp(Math.round(frac * TOTAL), 1, TOTAL) - 1);
+    });
   }
 })();

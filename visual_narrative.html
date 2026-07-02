@@ -124,7 +124,7 @@
         <article class="vn-meta">
           <div class="vn-meta__cover-wrap">
             <img class="vn-meta__cover" src="assets/narrative/page-001.webp" alt="غلاف الرواية المصوّرة" width="1980"
-              height="2800" loading="lazy" decoding="async">
+              height="2800" loading="eager" fetchpriority="high" decoding="async">
           </div>
           <div class="vn-meta__body">
             <p class="vn-meta__eyebrow">معلومات العدد</p>
@@ -201,7 +201,7 @@
           <div class="vn-ws-sep" aria-hidden="true"></div>
           <div class="vn-ws-group" aria-label="التشغيل">
             <button class="vn-tool" type="button" data-vn-play aria-pressed="false" title="عرض تلقائي"><i
-                class="fa-solid fa-play" aria-hidden="true"></i> عرض تلقائي</button>
+                class="fa-solid fa-play" aria-hidden="true"></i> <span data-vn-play-label>عرض تلقائي</span></button>
             <label class="visually-hidden" for="vn-speed">سرعة العرض التلقائي</label>
             <select class="vn-tool vn-tool--select" id="vn-speed" data-vn-speed title="سرعة العرض التلقائي">
               <option value="4000">سريع</option>
@@ -248,6 +248,84 @@
           </div>
           <button class="vn-book__nav vn-book__nav--next" type="button" data-vn-next
             aria-label="الصفحة التالية"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+
+          <!-- شريط أدوات ملء الشاشة — أيقونات فقط، يطفو أسفل العارض ويختفي عند السكون -->
+          <div class="vn-fsbar" role="toolbar" aria-label="أدوات القراءة في ملء الشاشة">
+            <button class="vn-fstool" type="button" data-vn-grid data-tip="تصفّح المصغّرات"
+              aria-label="تصفّح المصغّرات"><i class="fa-solid fa-table-cells" aria-hidden="true"></i></button>
+            <button class="vn-fstool" type="button" data-vn-toc data-tip="فهرس المحتويات"
+              aria-label="فهرس المحتويات" hidden><i class="fa-solid fa-list-ul" aria-hidden="true"></i></button>
+            <span class="vn-fsbar__sep" aria-hidden="true"></span>
+            <button class="vn-fstool vn-fstool--lg" type="button" data-vn-first data-tip="الصفحة الأولى"
+              aria-label="الصفحة الأولى"><i class="fa-solid fa-angles-right" aria-hidden="true"></i></button>
+            <button class="vn-fstool" type="button" data-vn-prev data-tip="السابقة"
+              aria-label="الصفحة السابقة"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+            <span class="vn-fsbar__counter">
+              <label class="visually-hidden" for="vn-jump-fs">رقم الصفحة الحالية</label>
+              <input class="vn-fsbar__jump num" id="vn-jump-fs" type="number" min="1" max="250" value="1"
+                data-vn-jump inputmode="numeric">
+              <span class="vn-fsbar__total num">/ 250</span>
+            </span>
+            <button class="vn-fstool" type="button" data-vn-next data-tip="التالية"
+              aria-label="الصفحة التالية"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+            <button class="vn-fstool vn-fstool--lg" type="button" data-vn-last data-tip="الصفحة الأخيرة"
+              aria-label="الصفحة الأخيرة"><i class="fa-solid fa-angles-left" aria-hidden="true"></i></button>
+            <span class="vn-fsbar__sep" aria-hidden="true"></span>
+            <button class="vn-fstool" type="button" data-vn-zoom data-tip="تكبير الصفحة"
+              aria-label="تكبير الصفحة"><i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i></button>
+            <button class="vn-fstool" type="button" data-vn-night aria-pressed="false" data-tip="وضع ليلي للقراءة"
+              aria-label="وضع ليلي للقراءة"><i class="fa-solid fa-moon" aria-hidden="true"></i></button>
+            <button class="vn-fstool" type="button" data-vn-play aria-pressed="false" data-tip="عرض تلقائي"
+              aria-label="عرض تلقائي"><i class="fa-solid fa-play" aria-hidden="true"></i></button>
+            <button class="vn-fstool vn-fstool--lg" type="button" data-vn-sound aria-pressed="false"
+              data-tip="صوت التقليب" aria-label="صوت التقليب"><i class="fa-solid fa-volume-high" aria-hidden="true"></i></button>
+            <span class="vn-fsbar__sep" aria-hidden="true"></span>
+            <a class="vn-fstool vn-fstool--lg" href="assets/narrative/mo3ta-visual-narrative-2024.pdf" download
+              data-tip="تحميل PDF" aria-label="تحميل PDF"><i class="fa-solid fa-download" aria-hidden="true"></i></a>
+            <button class="vn-fstool vn-fstool--lg" type="button" data-vn-share data-tip="مشاركة"
+              aria-label="مشاركة"><i class="fa-solid fa-share-nodes" aria-hidden="true"></i></button>
+            <span class="vn-fsbar__sep vn-fsbar__sep--lg" aria-hidden="true"></span>
+            <button class="vn-fstool vn-fstool--exit" type="button" data-vn-fs aria-pressed="false"
+              data-tip="خروج من ملء الشاشة" aria-label="خروج من ملء الشاشة"><i class="fa-solid fa-compress" aria-hidden="true"></i></button>
+          </div>
+
+          <!-- لوحة تصفّح المصغّرات (داخل العارض كي تظهر في ملء الشاشة الحقيقي) -->
+          <div class="vn-thumbs" data-vn-thumbs hidden role="dialog" aria-modal="true" aria-label="تصفّح صفحات العدد">
+            <div class="vn-thumbs__panel">
+              <div class="vn-thumbs__head">
+                <h3 class="vn-thumbs__title">تصفّح الصفحات</h3>
+                <button class="vn-thumbs__close" type="button" data-vn-thumbs-close aria-label="إغلاق التصفّح"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+              </div>
+              <div class="vn-thumbs__grid" data-vn-thumbs-grid></div>
+            </div>
+          </div>
+
+          <!-- فهرس المحتويات (تُبنى عناصره عبر JS من window.VN_TOC) -->
+          <div class="vn-toc" data-vn-toc-panel hidden role="dialog" aria-modal="true" aria-label="فهرس محتويات العدد">
+            <div class="vn-toc__panel">
+              <div class="vn-thumbs__head">
+                <h3 class="vn-thumbs__title">فهرس المحتويات</h3>
+                <button class="vn-thumbs__close" type="button" data-vn-toc-close aria-label="إغلاق الفهرس"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+              </div>
+              <ul class="vn-toc__list" data-vn-toc-list></ul>
+            </div>
+          </div>
+
+          <!-- طبقة تكبير الصفحة (دقة أصلية · سحب وتقريب) -->
+          <div class="vn-zoom" data-vn-zoom-panel hidden role="dialog" aria-modal="true" aria-label="تكبير الصفحة">
+            <div class="vn-zoom__stage" data-vn-zoom-stage>
+              <img class="vn-zoom__img" data-vn-zoom-img alt="صفحة مكبّرة" draggable="false">
+            </div>
+            <div class="vn-zoom__bar">
+              <button class="vn-zoom__btn" type="button" data-vn-zoom-prev aria-label="الصفحة السابقة"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+              <button class="vn-zoom__btn" type="button" data-vn-zoom-out aria-label="تصغير"><i class="fa-solid fa-magnifying-glass-minus" aria-hidden="true"></i></button>
+              <span class="vn-zoom__level" data-vn-zoom-level>100%</span>
+              <button class="vn-zoom__btn" type="button" data-vn-zoom-in aria-label="تكبير"><i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i></button>
+              <button class="vn-zoom__btn" type="button" data-vn-zoom-next aria-label="الصفحة التالية"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+              <button class="vn-zoom__btn vn-zoom__btn--close" type="button" data-vn-zoom-close
+                aria-label="إغلاق التكبير"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+            </div>
+          </div>
         </div>
 
         <!-- شريط التنقّل السفلي البسيط: السابقة · الصفحة/الإجمالي · التالية -->
@@ -268,44 +346,6 @@
 
         <p class="vn-reader__note">إصدار «مُعطى» المصوّر — معروضٌ ومستضافٌ محلياً.</p>
         <p class="visually-hidden" aria-live="polite" data-vn-live></p>
-
-        <!-- لوحة تصفّح المصغّرات (تُبنى عناصرها عبر JS) -->
-        <div class="vn-thumbs" data-vn-thumbs hidden role="dialog" aria-modal="true" aria-label="تصفّح صفحات العدد">
-          <div class="vn-thumbs__panel">
-            <div class="vn-thumbs__head">
-              <h3 class="vn-thumbs__title">تصفّح الصفحات</h3>
-              <button class="vn-thumbs__close" type="button" data-vn-thumbs-close aria-label="إغلاق التصفّح"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
-            </div>
-            <div class="vn-thumbs__grid" data-vn-thumbs-grid></div>
-          </div>
-        </div>
-
-        <!-- فهرس المحتويات (تُبنى عناصره عبر JS من window.VN_TOC) -->
-        <div class="vn-toc" data-vn-toc-panel hidden role="dialog" aria-modal="true" aria-label="فهرس محتويات العدد">
-          <div class="vn-toc__panel">
-            <div class="vn-thumbs__head">
-              <h3 class="vn-thumbs__title">فهرس المحتويات</h3>
-              <button class="vn-thumbs__close" type="button" data-vn-toc-close aria-label="إغلاق الفهرس"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
-            </div>
-            <ul class="vn-toc__list" data-vn-toc-list></ul>
-          </div>
-        </div>
-
-        <!-- طبقة تكبير الصفحة (دقة أصلية · سحب وتقريب) -->
-        <div class="vn-zoom" data-vn-zoom-panel hidden role="dialog" aria-modal="true" aria-label="تكبير الصفحة">
-          <div class="vn-zoom__stage" data-vn-zoom-stage>
-            <img class="vn-zoom__img" data-vn-zoom-img alt="صفحة مكبّرة" draggable="false">
-          </div>
-          <div class="vn-zoom__bar">
-            <button class="vn-zoom__btn" type="button" data-vn-zoom-prev aria-label="الصفحة السابقة"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
-            <button class="vn-zoom__btn" type="button" data-vn-zoom-out aria-label="تصغير"><i class="fa-solid fa-magnifying-glass-minus" aria-hidden="true"></i></button>
-            <span class="vn-zoom__level" data-vn-zoom-level>100%</span>
-            <button class="vn-zoom__btn" type="button" data-vn-zoom-in aria-label="تكبير"><i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i></button>
-            <button class="vn-zoom__btn" type="button" data-vn-zoom-next aria-label="الصفحة التالية"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
-            <button class="vn-zoom__btn vn-zoom__btn--close" type="button" data-vn-zoom-close
-              aria-label="إغلاق التكبير"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
-          </div>
-        </div>
       </section>
 
       <!-- ===================== ٤ · إحصائيات العدد (بعد القراءة) ===================== -->
